@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__figma-console__figma_get_status",
+      "mcp__figma-console__figma_get_file_data",
+      "mcp__figma-console__figma_take_screenshot",
+      "mcp__figma-console__figma_execute",
+      "Bash(dir \"c:\\\\Users\\\\tejasviarya\\\\Dragdrop_Proto\")",
+      "mcp__figma-console__figma_navigate",
+      "mcp__figma-console__figma_capture_screenshot",
+      "mcp__figma-console__figma_get_component_image",
+      "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/wallpaper.jpg \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/3a4e8fce-bb79-4a06-9df2-c56ae24d7d55\")",
+      "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/taskbar_icons.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/0b6e296c-1a4a-45d5-9f46-5bbd332481f2\")",
+      "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/taskbar_full.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/0dbb135a-55a1-48d1-8487-12017e2d0b95\")",
+      "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/weather.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/abd99b9f-e04a-456b-98bb-7a29c5bef454\")",
+      "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/systray.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/f61fcad7-4206-49d9-9a05-1386ebf36a5a\")"
+    ]
+  }
+}

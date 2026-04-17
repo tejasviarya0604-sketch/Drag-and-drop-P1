@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drop Target Hover Variants</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+      background: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      padding: 48px 24px;
+    }
+
+    h1 {
+      color: rgba(255,255,255,0.5);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .variants {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      align-items: center;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .variant-label {
+      color: rgba(255,255,255,0.35);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── BASE PILL ─────────────────────────────────────────── */
+    .pill {
+      width: 232px;
+      height: 34px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      position: relative;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    /* ─── OPTION A: Current state (reference) ────────────────── */
+    .pill-a {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .pill-a .plus {
+      font-size: 20px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    /* desktop only */
+    @media (hover: hover) {
+      .pill-a:hover {
+        background: rgba(255,255,255,0.14);
+        border-color: rgba(255,255,255,0.25);
+      }
+    }
+
+    /* ─── OPTION B: Gradient border animates in ──────────────── */
+    .pill-b {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .pill-b .plus {
+      font-size: 20px;
+      color: rgba(255,255,255,0.40);
+      font-weight: 300;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .pill-b::before {
+      content: '';
+      position: absolute;
+      inset: -1.5px;
+      border-radius: 22px;
+      background: linear-gradient(90deg, #4f8ef7, #a855f7, #4f8ef7);
+      background-size: 200% 100%;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: -1;
+    }
+
+    .pill-b::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: rgba(20, 20, 40, 0.88);
+      z-index: -1;
+    }
+
+    @media (hover: hover) {
+      .pill-b:hover::before {
+        opacity: 1;
+        animation: borderSlide 2s linear infinite;
+      }
+      .pill-b:hover .plus {
+        background: linear-gradient(90deg, #4f8ef7, #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    @keyframes borderSlide {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* ─── OPTION C: Fill + text reveal ──────────────────────── */
+    .pill-c {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .pill-c .plus {
+      font-size: 20px;
+      color: rgba(255,255,255,0.40);
+      font-weight: 300;
+      line-height: 1;
+      transition: color 0.18s, transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .pill-c .label-text {
+      max-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.0);
+      transition: max-width 0.25s ease, color 0.2s, margin 0.2s;
+    }
+
+    @media (hover: hover) {
+      .pill-c:hover {
+        background: rgba(79, 142, 247, 0.18);
+        border-color: rgba(79, 142, 247, 0.40);
+        box-shadow: 0 0 0 3px rgba(79, 142, 247, 0.10);
+      }
+      .pill-c:hover .plus {
+        color: #4f8ef7;
+        transform: rotate(0deg) scale(1.1);
+      }
+      .pill-c:hover .label-text {
+        max-width: 160px;
+        color: rgba(255,255,255,0.75);
+        margin-left: 6px;
+      }
+    }
+
+    /* ─── OPTION D: Glow pulse ───────────────────────────────── */
+    .pill-d {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .pill-d .plus {
+      font-size: 20px;
+      color: rgba(255,255,255,0.40);
+      font-weight: 300;
+      line-height: 1;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    @media (hover: hover) {
+      .pill-d:hover {
+        border-color: rgba(168, 85, 247, 0.6);
+        background: rgba(168, 85, 247, 0.10);
+        box-shadow:
+          0 0 0 3px rgba(168, 85, 247, 0.12),
+          0 0 20px rgba(168, 85, 247, 0.25),
+          inset 0 0 12px rgba(168, 85, 247, 0.08);
+        animation: glowPulse 1.8s ease-in-out infinite;
+      }
+      .pill-d:hover .plus {
+        color: #c084fc;
+        transform: scale(1.15);
+      }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(168,85,247,0.12), 0 0 20px rgba(168,85,247,0.25), inset 0 0 12px rgba(168,85,247,0.08); }
+      50%       { box-shadow: 0 0 0 5px rgba(168,85,247,0.18), 0 0 32px rgba(168,85,247,0.40), inset 0 0 20px rgba(168,85,247,0.14); }
+    }
+
+    /* ─── OPTION E: Acrylic lift ─────────────────────────────── */
+    .pill-e {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+    }
+
+    .pill-e .plus {
+      font-size: 20px;
+      color: rgba(255,255,255,0.40);
+      font-weight: 300;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .pill-e .label-text {
+      max-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.0);
+      transition: max-width 0.22s ease, color 0.22s, margin 0.22s;
+    }
+
+    @media (hover: hover) {
+      .pill-e:hover {
+        background: rgba(255,255,255,0.16);
+        border-color: rgba(255,255,255,0.30);
+        box-shadow:
+          0 4px 24px rgba(0,0,0,0.35),
+          0 1px 0 rgba(255,255,255,0.15) inset;
+        transform: translateY(-1px);
+      }
+      .pill-e:hover .plus {
+        color: rgba(255,255,255,0.75);
+      }
+      .pill-e:hover .label-text {
+        max-width: 130px;
+        color: rgba(255,255,255,0.55);
+        margin-left: 7px;
+        font-size: 11.5px;
+      }
+    }
+
+    /* legend */
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: center;
+    }
+
+    .legend span {
+      font-size: 10px;
+      color: rgba(255,255,255,0.22);
+      letter-spacing: 0.05em;
+    }
+
+    /* On non-hover devices: show a note */
+    @media (hover: none) {
+      .hover-note {
+        display: block;
+        color: rgba(255,255,255,0.3);
+        font-size: 11px;
+        text-align: center;
+      }
+    }
+
+    @media (hover: hover) {
+      .hover-note { display: none; }
+    }
+
+    .hover-note { display: block; color: rgba(255,255,255,0.3); font-size: 11px; }
+  </style>
+</head>
+<body>
+
+  <h1>Drop target hover variants</h1>
+  <p class="hover-note">Hover interactions only appear on desktop</p>
+
+  <div class="variants">
+
+    <!-- A: Current / reference -->
+    <div class="variant-row">
+      <div class="variant-label">A — Subtle (current)</div>
+      <div class="pill pill-a">
+        <span class="plus">+</span>
+      </div>
+      <div class="legend">
+        <span>Hover: slight fill lift, border brightens</span>
+      </div>
+    </div>
+
+    <!-- B: Animated gradient border -->
+    <div class="variant-row">
+      <div class="variant-label">B — Gradient border sweep</div>
+      <div class="pill pill-b">
+        <span class="plus">+</span>
+      </div>
+      <div class="legend">
+        <span>Hover: blue→purple border animates around pill</span>
+      </div>
+    </div>
+
+    <!-- C: Fill + text reveal -->
+    <div class="variant-row">
+      <div class="variant-label">C — Fill + text reveal</div>
+      <div class="pill pill-c">
+        <span class="plus">+</span>
+        <span class="label-text">Drop here to do more</span>
+      </div>
+      <div class="legend">
+        <span>Hover: blue fill, label slides in from left</span>
+      </div>
+    </div>
+
+    <!-- D: Purple glow pulse -->
+    <div class="variant-row">
+      <div class="variant-label">D — Glow pulse</div>
+      <div class="pill pill-d">
+        <span class="plus">+</span>
+      </div>
+      <div class="legend">
+        <span>Hover: purple outer glow breathes</span>
+      </div>
+    </div>
+
+    <!-- E: Acrylic lift + label -->
+    <div class="variant-row">
+      <div class="variant-label">E — Acrylic lift</div>
+      <div class="pill pill-e">
+        <span class="plus">+</span>
+        <span class="label-text">Drop to search</span>
+      </div>
+      <div class="legend">
+        <span>Hover: glass lifts up, label fades in</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
