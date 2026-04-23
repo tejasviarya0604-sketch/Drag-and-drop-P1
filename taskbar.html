@@ -47,7 +47,7 @@
       justify-content: flex-start;
       gap: 5px;
       width: 76px;
-      padding: 12px 4px 6px;
+      padding: 8px 4px;
       border-radius: 4px;
       cursor: grab;
       transition: background 0.12s, opacity 0.12s;
@@ -60,22 +60,54 @@
       border-radius: 4px;
     }
     .d-icon.dragging  { opacity: 1; cursor: grabbing; } /* original stays fully visible */
-    /* Ghost copy that follows the cursor during drag */
+    /* Multi-drag ghost */
     .drag-ghost {
       position: fixed;
-      width: 76px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      padding: 12px 4px 6px;
       pointer-events: none;
       z-index: 9999;
-      opacity: 0.65;
-      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.25));
       cursor: grabbing;
-      background: rgba(255,255,255,0.20);
-      border-radius: 6px;
+    }
+    .drag-ghost-plate {
+      position: relative;
+      width: 80px; height: 80px;
+      background: rgba(255,255,255,0.50);
+      border-radius: 18px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .drag-icon-stack {
+      position: relative;
+      width: 60px; height: 60px;
+    }
+    .drag-icon-item {
+      position: absolute;
+      width: 52px; height: 52px;
+      top: 50%; left: 50%;
+      transform-origin: center center;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .drag-icon-item:nth-child(1) { transform: translate(-50%,-50%) rotate(-12deg) scale(0.80); filter: brightness(0.88); z-index: 1; }
+    .drag-icon-item:nth-child(2) { transform: translate(-50%,-50%) rotate(-5deg)  scale(0.90); filter: brightness(0.94); z-index: 2; }
+    .drag-icon-item:nth-child(3) { transform: translate(-50%,-50%) rotate(0deg)   scale(1.00);                            z-index: 3; }
+    .drag-icon-item:only-child   { transform: translate(-50%,-50%) rotate(0deg)   scale(1.00); filter: none;              z-index: 1; }
+    .drag-icon-item .folder-thumb,
+    .drag-icon-item .pdf-file-thumb { width: 52px !important; height: 52px !important; background-size: contain; }
+    .drag-icon-item .ppt-file-thumb { width: 52px !important; height: 52px !important; background: none !important; border: none !important; border-radius: 0 !important; overflow: visible !important; box-shadow: none !important; }
+    .drag-icon-item .ppt-file-thumb::before { display: none !important; }
+    .drag-icon-item img { width: 52px !important; height: 52px !important; object-fit: contain; filter: none; }
+    .drag-icon-item .img-file-thumb { width: 52px !important; height: 40px !important; }
+    .drag-count-badge {
+      position: absolute;
+      top: -9px; right: -9px;
+      min-width: 22px; height: 22px;
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 12px; font-weight: 700;
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      z-index: 10;
     }
     .drag-ghost span {
       font-size: 11px;
@@ -116,7 +148,7 @@
     }
     .d-icon.selected .sel-tick { display: block; }
     .d-icon img {
-      width: 40px; height: 40px;
+      width: 48px; height: 48px;
       object-fit: contain;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
     }
@@ -136,20 +168,12 @@
     }
     /* Folder icon */
     .folder-thumb {
-      width: 40px; height: 32px;
-      background: #f9c23c;
-      border-radius: 0 4px 4px 4px;
-      position: relative;
+      width: 48px; height: 48px;
+      background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M8%204L6.586%202.586C6.21101%202.2109%205.70239%202.00011%205.172%202H1C0.447715%202%200%202.44772%200%203V13C0%2013.5523%200.447715%2014%201%2014H15C15.5523%2014%2016%2013.5523%2016%2013V5C16%204.44772%2015.5523%204%2015%204H8Z%22%20fill%3D%22%23FFB900%22%2F%3E%3Cpath%20d%3D%22M8%204L6.586%205.414C6.21101%205.7891%205.70239%205.99989%205.172%206H0V13C0%2013.5523%200.447715%2014%201%2014H15C15.5523%2014%2016%2013.5523%2016%2013V5C16%204.44772%2015.5523%204%2015%204H8Z%22%20fill%3D%22%23FFD75E%22%2F%3E%3Cpath%20d%3D%22M8%204L6.586%205.414C6.21101%205.7891%205.70239%205.99989%205.172%206H0V13C0%2013.5523%200.447715%2014%201%2014H15C15.5523%2014%2016%2013.5523%2016%2013V5C16%204.44772%2015.5523%204%2015%204H8Z%22%20fill%3D%22url(%23fld0)%22%2F%3E%3Cpath%20d%3D%22M1%2013.5C0.627%2013.5%200.29%2013.358%200.027%2013.133C0.0877%2013.6253%200.504%2013.9962%201%2014H15C15.505%2014%2015.905%2013.62%2015.973%2013.133C15.711%2013.359%2015.373%2013.5%2015%2013.5H1Z%22%20fill%3D%22%23BF5712%22%2F%3E%3Cpath%20opacity%3D%220.4%22%20d%3D%22M6.836%205.914L8.75%204H8L6.586%205.414C6.21101%205.7891%205.70239%205.99989%205.172%206H0V6.5H5.422C5.95239%206.49989%206.46101%206.2891%206.836%205.914Z%22%20fill%3D%22white%22%2F%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22fld0%22%20x1%3D%220%22%20y1%3D%224%22%20x2%3D%220%22%20y2%3D%2214%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22white%22%20stop-opacity%3D%220.01%22%2F%3E%3Cstop%20offset%3D%220.999%22%20stop-color%3D%22%23FFD75E%22%20stop-opacity%3D%220.3%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3C%2Fsvg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
-    }
-    .folder-thumb::before {
-      content: '';
-      position: absolute;
-      top: -6px; left: 0;
-      width: 18px; height: 6px;
-      background: inherit;
-      border-radius: 3px 3px 0 0;
-      filter: brightness(1.1);
     }
     /* Generic file icon */
     .file-thumb {
@@ -171,7 +195,7 @@
     .file-thumb.txt  { background: #e8e8e8; }
     /* PPT file icon */
     .ppt-file-thumb {
-      width: 36px; height: 40px;
+      width: 40px; height: 48px;
       background: #fff;
       border-radius: 2px 8px 2px 2px;
       position: relative;
@@ -195,6 +219,15 @@
       position: relative;
       z-index: 1;
     }
+    /* PDF file icon */
+    .pdf-file-thumb {
+      width: 48px; height: 48px;
+      background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M2%203C2%201.89543%202.89543%201%204%201H10.5C12.433%201%2014%202.567%2014%204.5V13C14%2014.1046%2013.1046%2015%2012%2015H5.5C3.567%2015%202%2013.433%202%2011.5V3Z%22%20fill%3D%22url(%23pdf0)%22%2F%3E%3Cpath%20d%3D%22M3%203C3%202.44772%203.44772%202%204%202H10.5C11.8807%202%2013%203.11929%2013%204.5V13C13%2013.5523%2012.5523%2014%2012%2014H5.5C4.11929%2014%203%2012.8807%203%2011.5V3Z%22%20fill%3D%22url(%23pdf1)%22%2F%3E%3Cpath%20d%3D%22M3%203C3%202.44772%203.44772%202%204%202H10.5C11.8807%202%2013%203.11929%2013%204.5V13C13%2013.5523%2012.5523%2014%2012%2014H5.5C4.11929%2014%203%2012.8807%203%2011.5V3Z%22%20fill%3D%22url(%23pdf2)%22%2F%3E%3Cpath%20d%3D%22M4.5%204C4.22386%204%204%204.22386%204%204.5V6.5C4%206.77614%204.22386%207%204.5%207C4.77614%207%205%206.77614%205%206.5V6C5.16334%206%205.39723%205.95511%205.60465%205.80577C5.83757%205.63807%206%205.36296%206%205C6%204.63704%205.83757%204.36193%205.60465%204.19423C5.39723%204.04489%205.16334%204%205%204H4.5Z%22%20fill%3D%22%23D20112%22%2F%3E%3Cpath%20d%3D%22M7%204.5C7%204.22386%207.22386%204%207.5%204H7.75C8.10409%204%208.46151%204.11075%208.70846%204.43101C8.93339%204.72272%209%205.10665%209%205.5C9%205.89335%208.93339%206.27728%208.70846%206.56899C8.46151%206.88925%208.10409%207%207.75%207H7.5C7.22386%207%207%206.77614%207%206.5V4.5Z%22%20fill%3D%22%23D20112%22%2F%3E%3Cpath%20d%3D%22M10%204.5C10%204.22386%2010.2239%204%2010.5%204H11.5C11.7761%204%2012%204.22386%2012%204.5C12%204.77614%2011.7761%205%2011.5%205H11.25C11.5261%205%2011.75%205.22386%2011.75%205.5C11.75%205.77614%2011.5261%206%2011.25%206H11V6.5C11%206.77614%2010.7761%207%2010.5%207C10.2239%207%2010%206.77614%2010%206.5V4.5Z%22%20fill%3D%22%23D20112%22%2F%3E%3Cpath%20d%3D%22M10.5%2011C10.7761%2011%2011%2011.2239%2011%2011.5C11%2011.7761%2010.7761%2012%2010.5%2012H5.5C5.22386%2012%205%2011.7761%205%2011.5C5%2011.2239%205.22386%2011%205.5%2011H10.5Z%22%20fill%3D%22url(%23pdf3)%22%2F%3E%3Cpath%20d%3D%22M10.5%209C10.7761%209%2011%209.22386%2011%209.5C11%209.77614%2010.7761%2010%2010.5%2010H5.5C5.22386%2010%205%209.77614%205%209.5C5%209.22386%205.22386%209%205.5%209H10.5Z%22%20fill%3D%22url(%23pdf4)%22%2F%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22pdf0%22%20x1%3D%225.875%22%20y1%3D%221%22%20x2%3D%228.06039%22%20y2%3D%2215.0489%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23BBBBBB%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23888888%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22pdf1%22%20x1%3D%225.77778%22%20y1%3D%222%22%20x2%3D%227.58707%22%20y2%3D%2214.0619%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22white%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23EBEBEB%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22pdf2%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientTransform%3D%22matrix(5.27778%209.5%20-7.91667%203.5625%206.19444%205.125)%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220.177083%22%20stop-color%3D%22white%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23EFEFEF%22%2F%3E%3C%2FradialGradient%3E%3ClinearGradient%20id%3D%22pdf3%22%20x1%3D%226.9375%22%20y1%3D%229%22%20x2%3D%227.14215%22%20y2%3D%2212.0697%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23898989%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23636262%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22pdf4%22%20x1%3D%226.9375%22%20y1%3D%229%22%20x2%3D%227.14215%22%20y2%3D%2212.0697%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23898989%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23636262%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3C%2Fsvg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22));
+    }
     /* Image file icon */
     .img-file-thumb {
       border-radius: 3px;
@@ -202,8 +235,8 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22));
       overflow: hidden;
     }
-    .img-file-thumb.landscape { width: 48px; height: 30px; }
-    .img-file-thumb.portrait  { width: 30px; height: 44px; }
+    .img-file-thumb.landscape { width: 64px; height: 48px; }
+    .img-file-thumb.portrait  { width: 36px; height: 48px; }
     .img-file-thumb::after {
       content: '';
       position: absolute;
@@ -377,29 +410,32 @@
       outline: 1px solid #8b6ef5;
       outline-offset: 1px;
       cursor: default;
-      justify-content: center;
       gap: 6px;
       box-shadow: 0 2px 12px rgba(100,80,200,0.12);
       overflow: visible;
     }
     /* Drag-hover: dashed gradient border via SVG ::after */
-    .search-bar.drop-mode.drag-over {
+    .search-bar.drop-mode.drag-over,
+    .search-bar.drop-mode:not(.holding):hover {
       outline: none;
     }
-    .search-bar.drop-mode.drag-over::after {
+    .search-bar.drop-mode.drag-over::after,
+    .search-bar.holding.drag-over::after,
+    .search-bar.drop-mode:not(.holding):hover::after {
       content: '';
       position: absolute;
       inset: -2px;
       border-radius: 22px;
       pointer-events: none;
       background:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%234f8ef7'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='6 4'/%3E%3C/svg%3E")
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%234f8ef7'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='3 2'/%3E%3C/svg%3E")
         center / 100% 100% no-repeat;
     }
     .search-bar.drop-mode .search-placeholder,
     .search-bar.drop-mode .search-icons,
     .search-bar.drop-mode .search-divider,
-    .search-bar.drop-mode .thinking-dots { display: none; }
+    .search-bar.drop-mode .thinking-dots,
+    .search-bar.drop-mode .holding-label { display: none; }
     .search-bar.drop-mode .drop-mode-label { display: flex; align-items: center; gap: 6px; }
     .drop-mode-label {
       display: none;
@@ -432,6 +468,432 @@
       0%, 80%, 100% { transform: scale(1);   opacity: 0.5; }
       40%            { transform: scale(1.3); opacity: 1;   }
     }
+
+    /* No-drop: app icon dragged over search bar */
+    .no-drop-label {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: rgba(0,0,0,0.42);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .search-bar.no-drop {
+      background: rgba(245,245,245,0.90) !important;
+      outline: none !important;
+      box-shadow: none !important;
+      border-color: rgba(0,0,0,0.08) !important;
+      cursor: not-allowed !important;
+    }
+    .search-bar.no-drop .search-placeholder,
+    .search-bar.no-drop .search-icons,
+    .search-bar.no-drop .search-divider,
+    .search-bar.no-drop .drop-mode-label { display: none !important; }
+    .search-bar.no-drop .no-drop-label { display: flex; }
+    /* Ghost dims + shows prohibition badge */
+    .drag-ghost.no-drop { opacity: 0.45; filter: grayscale(0.3); }
+    .drag-ghost.no-drop::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='6.5' stroke='%23888' stroke-width='1.5'/%3E%3Cline x1='3.5' y1='12.5' x2='12.5' y2='3.5' stroke='%23888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") center/65% no-repeat;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.20);
+    }
+
+    /* ═══════════════════════════════════════════════════════ */
+    /*  FOLDER WINDOW                                          */
+    /* ═══════════════════════════════════════════════════════ */
+    #folder-window {
+      position: fixed;
+      width: 1040px;
+      height: 640px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -54%);
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 28px 80px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.10);
+      display: none;
+      flex-direction: column;
+      z-index: 9200;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.14);
+      font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+      font-size: 12px;
+      user-select: none;
+    }
+    #folder-window.open { display: flex; }
+
+    /* Tab bar */
+    .fw-tabs {
+      display: flex;
+      align-items: center;
+      height: 34px;
+      background: #f3f3f3;
+      padding: 0 4px;
+      flex-shrink: 0;
+      cursor: default;
+    }
+    .fw-tab {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 26px;
+      padding: 0 10px;
+      background: #fff;
+      border-radius: 5px 5px 0 0;
+      font-size: 12px;
+      color: #1a1a1a;
+      max-width: 180px;
+      overflow: hidden;
+    }
+    .fw-tab img { width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; }
+    .fw-tab-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fw-tab-x {
+      width: 16px; height: 16px;
+      border-radius: 3px;
+      border: none; background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #666; cursor: pointer; flex-shrink: 0;
+    }
+    .fw-tab-x:hover { background: rgba(0,0,0,0.10); color: #111; }
+    .fw-new-tab {
+      width: 26px; height: 26px;
+      border: none; background: transparent;
+      border-radius: 4px;
+      font-size: 16px; color: #555; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      margin-left: 2px;
+    }
+    .fw-new-tab:hover { background: rgba(0,0,0,0.07); }
+    .fw-win-controls {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
+    .fw-wc-btn {
+      width: 46px; height: 34px;
+      border: none; background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: #444; cursor: pointer;
+    }
+    .fw-wc-btn:hover { background: rgba(255,255,255,0.15); }
+    .fw-wc-btn.close:hover { background: #c42b1c; color: #fff; }
+
+    /* Navigation bar */
+    .fw-nav {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 8px;
+      gap: 4px;
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      flex-shrink: 0;
+    }
+    .fw-nav-btn {
+      width: 28px; height: 28px;
+      border: none; background: transparent;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: #555; cursor: pointer;
+    }
+    .fw-nav-btn:hover { background: rgba(0,0,0,0.07); }
+    .fw-nav-btn:disabled { color: #ccc; cursor: default; }
+    .fw-nav-btn:disabled:hover { background: transparent; }
+    .fw-breadcrumb {
+      flex: 1;
+      height: 28px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 4px;
+      color: #1a1a1a;
+      font-size: 12px;
+      cursor: text;
+      overflow: hidden;
+    }
+    .fw-breadcrumb:hover { border-color: rgba(0,0,0,0.12); background: rgba(0,0,0,0.03); }
+    .fw-breadcrumb-sep { color: #999; font-size: 10px; }
+    .fw-search-box {
+      display: flex;
+      align-items: center;
+      height: 28px;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 4px;
+      padding: 0 8px;
+      gap: 5px;
+      width: 200px;
+      background: #fafafa;
+    }
+    .fw-search-box:focus-within { border-color: #0078d4; background: #fff; }
+    .fw-search-box input {
+      border: none; background: transparent;
+      font-size: 12px; color: #333;
+      outline: none; flex: 1;
+      font-family: inherit;
+    }
+    .fw-search-box svg { color: #888; flex-shrink: 0; }
+
+    /* Toolbar */
+    .fw-toolbar {
+      display: flex;
+      align-items: center;
+      height: 38px;
+      padding: 0 6px;
+      gap: 1px;
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      flex-shrink: 0;
+    }
+    .fw-tb-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 28px;
+      padding: 0 8px;
+      border: none; background: transparent;
+      border-radius: 4px;
+      font-size: 12px; color: #333;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .fw-tb-btn:hover { background: rgba(0,0,0,0.07); }
+    .fw-tb-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .fw-tb-sep { width: 1px; height: 20px; background: #e0e0e0; margin: 0 3px; flex-shrink: 0; }
+    .fw-tb-right { margin-left: auto; }
+
+    /* Body */
+    .fw-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .fw-sidebar {
+      width: 188px;
+      flex-shrink: 0;
+      background: #fafafa;
+      border-right: 1px solid #ebebeb;
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+    .fw-sidebar::-webkit-scrollbar { width: 4px; }
+    .fw-sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 2px; }
+    .fw-sb-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 28px;
+      padding: 0 10px 0 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 0 4px;
+      color: #222;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fw-sb-item:hover { background: rgba(0,0,0,0.06); }
+    .fw-sb-item.active { background: rgba(0,103,192,0.12); color: #0067c0; }
+    .fw-sb-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .fw-sb-sep { height: 1px; background: #e8e8e8; margin: 4px 12px; }
+    .fw-sb-section {
+      font-size: 10px;
+      font-weight: 600;
+      color: #888;
+      padding: 8px 16px 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Content area */
+    .fw-content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .fw-list-header {
+      display: grid;
+      grid-template-columns: 36px 1fr 160px 160px 80px;
+      padding: 0 8px 0 4px;
+      height: 26px;
+      border-bottom: 1px solid #ebebeb;
+      background: #fff;
+      flex-shrink: 0;
+      align-items: center;
+    }
+    .fw-list-header span {
+      font-size: 11px;
+      color: #555;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .fw-list-header span:hover { color: #0078d4; }
+    .fw-file-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 0;
+    }
+    .fw-file-list::-webkit-scrollbar { width: 6px; }
+    .fw-file-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
+    .fw-file-row {
+      display: grid;
+      grid-template-columns: 36px 1fr 160px 160px 80px;
+      align-items: center;
+      height: 28px;
+      padding: 0 8px 0 4px;
+      cursor: default;
+      border-radius: 4px;
+      margin: 0 4px;
+    }
+    .fw-file-row:hover { background: rgba(0,0,0,0.05); }
+    .fw-file-row.selected { background: rgba(0,103,192,0.10); }
+    /* Row checkbox */
+    .fw-row-check {
+      width: 16px; height: 16px;
+      border-radius: 4px;
+      border: 1.5px solid rgba(0,0,0,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: transparent;
+      margin: auto; flex-shrink: 0; transition: all 0.1s;
+    }
+    .fw-file-row:hover .fw-row-check { border-color: rgba(0,0,0,0.35); }
+    .fw-file-row.selected .fw-row-check { background: #0078d4; border-color: #0078d4; color: #fff; }
+
+    /* Thumbnail gallery view */
+    .fw-thumb-grid { display: flex; flex-direction: column; padding: 4px 12px 12px; gap: 0; }
+    .fw-thumb-section {
+      font-size: 12px; font-weight: 600; color: #333;
+      padding: 12px 4px 8px; display: flex; align-items: center; gap: 5px;
+    }
+    .fw-thumb-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+    .fw-thumb-item {
+      width: 116px;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      padding: 6px; border-radius: 6px; cursor: pointer; position: relative;
+      border: 2px solid transparent; transition: background 0.1s, border-color 0.1s;
+    }
+    .fw-thumb-item:hover { background: rgba(0,0,0,0.05); }
+    .fw-thumb-item.selected { border-color: #0078d4; background: rgba(0,120,212,0.09); }
+    .fw-thumb-check {
+      position: absolute; top: 8px; left: 8px;
+      width: 18px; height: 18px; border-radius: 4px;
+      background: transparent; border: 1.5px solid rgba(255,255,255,0.85);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+      color: transparent; font-size: 11px; font-weight: 700;
+      display: none; align-items: center; justify-content: center; z-index: 2;
+    }
+    .fw-thumb-item:hover .fw-thumb-check { display: flex; }
+    .fw-thumb-item.selected .fw-thumb-check { display: flex; background: #0078d4; border-color: #0078d4; box-shadow: none; color: #fff; }
+    .fw-thumb-preview {
+      width: 104px; height: 80px;
+      border-radius: 5px; overflow: hidden; background: #e0e0e0; flex-shrink: 0;
+    }
+    .fw-thumb-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .fw-thumb-name {
+      font-size: 10.5px; color: #1a1a1a; text-align: center;
+      max-width: 104px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .fw-col-name {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow: hidden;
+    }
+    .fw-file-icon { display: flex; align-items: center; flex-shrink: 0; }
+    .fw-file-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #111; font-size: 12px; }
+    .fw-col-date, .fw-col-type, .fw-col-size {
+      font-size: 12px; color: #555;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      padding-right: 8px;
+    }
+    .fw-col-size { text-align: right; padding-right: 4px; }
+
+    /* Status bar */
+    .fw-statusbar {
+      height: 24px;
+      background: #f3f3f3;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 11px;
+      color: #555;
+      flex-shrink: 0;
+    }
+
+    /* ── Holding state (files staged in UC) ───────────────── */
+    .holding-label {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+      background: linear-gradient(90deg, #4f8ef7, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .holding-label svg { flex-shrink: 0; }
+    .search-bar.holding {
+      background: linear-gradient(135deg, #eef2ff, #f3eeff) !important;
+      border: none !important;
+      outline: 1px solid #8b6ef5 !important;
+      outline-offset: 1px !important;
+      box-shadow: 0 2px 12px rgba(100,80,200,0.12) !important;
+      cursor: pointer;
+    }
+    .search-bar.holding .search-placeholder,
+    .search-bar.holding .search-icons,
+    .search-bar.holding .search-divider,
+    .search-bar.holding .drop-mode-label { display: none !important; }
+    .search-bar.holding .holding-label { display: flex; }
+    /* While dragging over a held search bar — swap to drop label, drop solid outline */
+    .search-bar.holding.drag-over { outline: none !important; box-shadow: none !important; overflow: visible !important; }
+    .search-bar.holding.drag-over .holding-label { display: none !important; }
+    .search-bar.holding.drag-over .drop-mode-label { display: flex !important; }
+
+    /* Folder window held-files banner */
+    #fw-held-banner {
+      display: none;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 10px;
+      margin: 6px 6px 4px;
+      background: rgba(0,103,192,0.09);
+      border-radius: 6px;
+      font-size: 11px;
+      color: #0067c0;
+      cursor: pointer;
+      border: 1px solid rgba(0,103,192,0.18);
+      flex-shrink: 0;
+    }
+    #fw-held-banner:hover { background: rgba(0,103,192,0.16); }
+    #fw-held-banner.visible { display: flex; }
+    #fw-held-banner .banner-arrow { margin-left: auto; opacity: 0.6; font-size: 11px; }
+    .fw-file-row[draggable="true"] { cursor: grab; }
+    .fw-file-row[draggable="true"]:hover::after {
+      content: '⠿';
+      position: absolute;
+      right: 8px;
+      color: rgba(0,0,0,0.25);
+      font-size: 10px;
+    }
+    .fw-file-row { position: relative; }
 
     /* ── Weather widget ────────────────────────────────────── */
     .weather-btn {
@@ -513,7 +975,7 @@
     /* ── Search Composer ──────────────────────────────────── */
     #search-composer {
       position: fixed;
-      bottom: 60px;
+      bottom: 96px;
       left: 50%;
       transform: translateX(-50%) translateY(10px) scale(0.97);
       z-index: 9500;
@@ -594,8 +1056,12 @@
     /* Attached file chips */
     .composer-chips {
       display: none;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 6px;
+      overflow-x: hidden;
+      overflow-y: visible;
+      padding-bottom: 3px;
+      margin-bottom: -3px;
     }
     .composer-chips.visible { display: flex; }
     .file-chip {
@@ -634,7 +1100,58 @@
       font-size: 11px;
       color: #0078d4;
       font-weight: 500;
+      cursor: pointer;
+      flex-shrink: 0;
+      user-select: none;
     }
+    .file-chip-more:hover { background: rgba(0,120,212,0.15); }
+
+    /* Chip overflow menu */
+    #chip-overflow-menu {
+      position: fixed;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.07);
+      padding: 5px;
+      min-width: 210px;
+      z-index: 99999;
+      display: none;
+      flex-direction: column;
+      gap: 1px;
+    }
+    #chip-overflow-menu.open { display: flex; }
+    .cof-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #1a1a1a;
+      cursor: default;
+    }
+    .cof-item:hover { background: rgba(0,0,0,0.05); }
+    .cof-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cof-remove {
+      width: 18px; height: 18px;
+      border: none; background: transparent;
+      cursor: pointer; color: #888;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; border-radius: 4px; flex-shrink: 0; padding: 0;
+    }
+    .cof-remove:hover { background: rgba(0,0,0,0.08); color: #111; }
+    .cof-sep { height: 1px; background: rgba(0,0,0,0.07); margin: 3px 4px; }
+    .cof-clear {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 8px; border-radius: 8px;
+      font-size: 12px; color: #c42b1c;
+      cursor: pointer; border: none;
+      background: transparent; font-family: inherit; width: 100%; text-align: left;
+    }
+    .cof-clear:hover { background: rgba(196,43,28,0.07); }
     /* Bottom row */
     .composer-bottom-row {
       display: flex;
@@ -867,7 +1384,7 @@
     /* ═══════════════════════════════════════════════════════ */
     #mini-drop-zone {
       position: fixed;
-      bottom: 60px;
+      bottom: 96px;
       left: 50%;
       transform: translateX(-50%) translateY(10px);
       width: 480px;
@@ -999,7 +1516,7 @@
         border-radius: 22px;
         pointer-events: none;
         background:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='6 4'/%3E%3C/svg%3E")
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='3 2'/%3E%3C/svg%3E")
           center / 100% 100% no-repeat;
       }
       body[data-hv="f"] .search-bar.drop-mode.drag-over {
@@ -1028,29 +1545,25 @@
 <div class="desktop">
   <div class="desktop-icons" id="desktop-icons">
     <div id="rubberband"></div>
-    <!-- Col 1 -->
-    <div class="d-icon" data-x="12"  data-y="16" ><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Documents</span></div>
-    <div class="d-icon" data-x="12"  data-y="108"><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Projects</span></div>
-    <div class="d-icon" data-x="12"  data-y="200"><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Downloads</span></div>
-    <div class="d-icon" data-x="12"  data-y="292"><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Design Assets</span></div>
+    <!-- Col 1 — mixed -->
+    <div class="d-icon" data-x="12" data-y="16"  ><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Documents</span></div>
+    <div class="d-icon" data-x="12" data-y="116"><span class="sel-tick">✓</span><div class="pdf-file-thumb"></div><span>Acme_Medical_Bill.pdf</span></div>
+    <div class="d-icon" data-x="12" data-y="216"><span class="sel-tick">✓</span><div class="img-file-thumb landscape" style="background-image:url('https://picsum.photos/id/1036/96/60');background-size:cover;background-position:center;"></div><span>Santorini.jpg</span></div>
+    <div class="d-icon" data-x="12" data-y="316" data-type="app"><span class="sel-tick">✓</span><img src="icons/edge.png" /><span>Microsoft Edge</span></div>
+    <div class="d-icon" data-x="12" data-y="416"><span class="sel-tick">✓</span><div class="pdf-file-thumb"></div><span>Lab_Report_Feb26.pdf</span></div>
+    <div class="d-icon" data-x="12" data-y="516"><span class="sel-tick">✓</span><div class="img-file-thumb portrait" style="background-image:url('https://picsum.photos/id/29/60/88');background-size:cover;background-position:center;"></div><span>Alps_hike.jpg</span></div>
+    <div class="d-icon" data-x="12" data-y="616" data-type="app"><span class="sel-tick">✓</span><img src="icons/whatsapp.png" /><span>WhatsApp</span></div>
+    <div class="d-icon" data-x="12" data-y="716"><span class="sel-tick">✓</span><div class="pdf-file-thumb"></div><span>Insurance_Claim.pdf</span></div>
 
-    <!-- Col 2 — PPT files -->
-    <div class="d-icon" data-x="92"  data-y="16" ><span class="sel-tick">✓</span><div class="ppt-file-thumb"><img src="icons/ppt.png" /></div><span>Q1 Review.pptx</span></div>
-    <div class="d-icon" data-x="92"  data-y="108"><span class="sel-tick">✓</span><div class="ppt-file-thumb"><img src="icons/ppt.png" /></div><span>Roadmap 2026.pptx</span></div>
-    <div class="d-icon" data-x="92"  data-y="200"><span class="sel-tick">✓</span><div class="ppt-file-thumb"><img src="icons/ppt.png" /></div><span>Presentation1.pptx</span></div>
-    <div class="d-icon" data-x="92"  data-y="292"><span class="sel-tick">✓</span><div class="ppt-file-thumb"><img src="icons/ppt.png" /></div><span>Design Brief.pptx</span></div>
-
-    <!-- Col 3 — Image files -->
-    <div class="d-icon" data-x="172" data-y="16" ><span class="sel-tick">✓</span><div class="img-file-thumb landscape" style="background-image:url('https://picsum.photos/id/1036/96/60');background-size:cover;background-position:center;"></div><span>Santorini.jpg</span></div>
-    <div class="d-icon" data-x="172" data-y="108"><span class="sel-tick">✓</span><div class="img-file-thumb portrait"  style="background-image:url('https://picsum.photos/id/29/60/88');background-size:cover;background-position:center;"></div><span>Alps_hike.jpg</span></div>
-    <div class="d-icon" data-x="172" data-y="200"><span class="sel-tick">✓</span><div class="img-file-thumb landscape" style="background-image:url('https://picsum.photos/id/164/96/60');background-size:cover;background-position:center;"></div><span>Tokyo_street.jpg</span></div>
-    <div class="d-icon" data-x="172" data-y="292"><span class="sel-tick">✓</span><div class="img-file-thumb portrait"  style="background-image:url('https://picsum.photos/id/417/60/88');background-size:cover;background-position:center;"></div><span>Bali_sunset.jpg</span></div>
-
-    <!-- Col 4 — App shortcuts -->
-    <div class="d-icon" data-x="252" data-y="16" ><span class="sel-tick">✓</span><img src="icons/edge.png" /><span>Microsoft Edge</span></div>
-    <div class="d-icon" data-x="252" data-y="108"><span class="sel-tick">✓</span><img src="icons/outlook.png" /><span>Outlook</span></div>
-    <div class="d-icon" data-x="252" data-y="200"><span class="sel-tick">✓</span><img src="icons/whatsapp.png" /><span>WhatsApp</span></div>
-    <div class="d-icon" data-x="252" data-y="292"><span class="sel-tick">✓</span><img src="icons/copilot.png" /><span>Microsoft 365</span></div>
+    <!-- Col 2 — mixed -->
+    <div class="d-icon" data-x="100" data-y="16"  ><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Projects</span></div>
+    <div class="d-icon" data-x="100" data-y="116"><span class="sel-tick">✓</span><div class="ppt-file-thumb"><img src="icons/ppt.png" /></div><span>Presentation1.pptx</span></div>
+    <div class="d-icon" data-x="100" data-y="216" data-type="app"><span class="sel-tick">✓</span><img src="icons/outlook.png" /><span>Outlook</span></div>
+    <div class="d-icon" data-x="100" data-y="316"><span class="sel-tick">✓</span><div class="img-file-thumb landscape" style="background-image:url('https://picsum.photos/id/164/96/60');background-size:cover;background-position:center;"></div><span>Tokyo_street.jpg</span></div>
+    <div class="d-icon" data-x="100" data-y="416"><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Downloads</span></div>
+    <div class="d-icon" data-x="100" data-y="516" data-type="app"><span class="sel-tick">✓</span><img src="icons/copilot.png" /><span>Microsoft 365</span></div>
+    <div class="d-icon" data-x="100" data-y="616"><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Design Assets</span></div>
+    <div class="d-icon" data-x="100" data-y="716"><span class="sel-tick">✓</span><div class="img-file-thumb portrait" style="background-image:url('https://picsum.photos/id/417/60/88');background-size:cover;background-position:center;"></div><span>Bali_sunset.jpg</span></div>
   </div>
 </div>
 
@@ -1078,11 +1591,22 @@
 
     <!-- Search bar — spans wide, has its own hover preview -->
     <div class="search-bar" title="Search">
+      <div class="no-drop-label">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6.5" stroke="rgba(0,0,0,0.45)" stroke-width="1.5"/>
+          <line x1="3.5" y1="12.5" x2="12.5" y2="3.5" stroke="rgba(0,0,0,0.45)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>Can't drop apps here</span>
+      </div>
       <div class="drop-mode-label"><span class="drop-mode-plus">+</span> Drop here to do more</div>
       <div class="thinking-dots">
         <div class="thinking-dot"></div>
         <div class="thinking-dot"></div>
         <div class="thinking-dot"></div>
+      </div>
+      <div class="holding-label">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#7c5fe6" stroke-width="1.5" stroke-linecap="round"><path d="M13.5 6.5L7 13a4 4 0 01-5.657-5.657l7-7a2.5 2.5 0 013.536 3.536l-7 7a1 1 0 01-1.415-1.414l6.5-6.5"/></svg>
+        <span id="holding-count">Holding 0 files</span>
       </div>
       <span class="search-placeholder">Ask Copilot anything</span>
       <div class="search-icons">
@@ -1244,6 +1768,142 @@
   </div>
 </div>
 
+<!-- ░░ Folder Window ░░ -->
+<div id="folder-window">
+
+  <!-- Tab bar -->
+  <div class="fw-tabs" id="fw-tabs">
+    <div class="fw-tab">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="#f9c23c"><path d="M1 3.5A1.5 1.5 0 012.5 2H6l1.5 2H13.5A1.5 1.5 0 0115 5.5v7A1.5 1.5 0 0113.5 14h-11A1.5 1.5 0 011 12.5z"/></svg>
+      <span class="fw-tab-label" id="fw-tab-name">Folder</span>
+      <button class="fw-tab-x" id="fw-tab-close">✕</button>
+    </div>
+    <button class="fw-new-tab">+</button>
+    <div class="fw-win-controls">
+      <button class="fw-wc-btn">&#8211;</button>
+      <button class="fw-wc-btn">&#9633;</button>
+      <button class="fw-wc-btn close" id="fw-btn-close">✕</button>
+    </div>
+  </div>
+
+  <!-- Navigation bar -->
+  <div class="fw-nav">
+    <button class="fw-nav-btn" disabled>&#8592;</button>
+    <button class="fw-nav-btn" disabled>&#8594;</button>
+    <button class="fw-nav-btn">&#8593;</button>
+    <button class="fw-nav-btn">&#8635;</button>
+    <div class="fw-breadcrumb">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="#f9c23c"><path d="M1 3.5A1.5 1.5 0 012.5 2H6l1.5 2H13.5A1.5 1.5 0 0115 5.5v7A1.5 1.5 0 0113.5 14h-11A1.5 1.5 0 011 12.5z"/></svg>
+      <span id="fw-folder-name">Folder</span>
+      <span class="fw-breadcrumb-sep">&#8250;</span>
+    </div>
+    <div class="fw-search-box">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5l3.5 3.5"/></svg>
+      <input id="fw-search-input" type="text" placeholder="Search" />
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="fw-toolbar">
+    <button class="fw-tb-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+      New
+    </button>
+    <div class="fw-tb-sep"></div>
+    <button class="fw-tb-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M5 3h6M4 3v10h8V3M6 7v4M10 7v4"/></svg>
+    </button>
+    <button class="fw-tb-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="5" y="5" width="8" height="8" rx="1"/><path d="M3 11V3h8"/></svg>
+    </button>
+    <button class="fw-tb-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+    </button>
+    <div class="fw-tb-sep"></div>
+    <button class="fw-tb-btn">Sort &#8964;</button>
+    <button class="fw-tb-btn">View &#8964;</button>
+    <button class="fw-tb-btn fw-tb-right">Details</button>
+  </div>
+
+  <!-- Body -->
+  <div class="fw-body">
+
+    <!-- Sidebar -->
+    <div class="fw-sidebar">
+      <div id="fw-held-banner">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#0067c0" stroke-width="1.5" stroke-linecap="round"><path d="M13.5 6.5L7 13a4 4 0 01-5.657-5.657l7-7a2.5 2.5 0 013.536 3.536l-7 7a1 1 0 01-1.415-1.414l6.5-6.5"/></svg>
+        <span id="fw-held-banner-text">0 files in Copilot</span>
+        <span class="banner-arrow">→</span>
+      </div>
+      <div class="fw-sb-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 13V7l6-5 6 5v6a1 1 0 01-1 1H3a1 1 0 01-1-1z"/></svg>
+        Home
+      </div>
+      <div class="fw-sb-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="4" width="12" height="9" rx="1"/><path d="M5 4V3h6v1" stroke-linecap="round"/><circle cx="6" cy="8" r="1" fill="currentColor" stroke="none"/><path d="M2 12l3-3 3 2 2-2 4 3" stroke-linecap="round"/></svg>
+        Gallery
+      </div>
+      <div class="fw-sb-item" style="padding-left:16px;font-size:11px;color:#555;">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="#0078d4"><path d="M8 1a4 4 0 014 4v1h1a2 2 0 012 2v5a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h1V5a4 4 0 014-4z" opacity=".3"/><path d="M8 1a4 4 0 014 4v1H4V5a4 4 0 014-4z"/></svg>
+        Tejasvi – Microsoft
+      </div>
+      <div class="fw-sb-sep"></div>
+      <div class="fw-sb-item" id="fw-sb-desktop">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1" y="2" width="14" height="10" rx="1.5"/><path d="M5 14h6M8 12v2"/></svg>
+        Desktop
+      </div>
+      <div class="fw-sb-item" id="fw-sb-downloads">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 2v9M5 8l3 3 3-3"/><path d="M2 13h12"/></svg>
+        Downloads
+      </div>
+      <div class="fw-sb-item" id="fw-sb-documents">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M9 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6z"/><path d="M9 2v4h4"/></svg>
+        Documents
+      </div>
+      <div class="fw-sb-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="4" width="12" height="9" rx="1"/><circle cx="6" cy="8" r="1.5" fill="currentColor" stroke="none"/><path d="M2 12l4-3.5 3 2.5 2-2 3 3" stroke-linecap="round"/></svg>
+        Pictures
+      </div>
+      <div class="fw-sb-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="2" y="5" width="5" height="7" rx="1"/><path d="M7 7l5-3v8l-5-3"/></svg>
+        Videos
+      </div>
+      <div class="fw-sb-sep"></div>
+      <div class="fw-sb-sep"></div>
+      <div class="fw-sb-section">Connected devices</div>
+      <div class="fw-sb-item" id="fw-sb-phone">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="4" y="1" width="8" height="14" rx="2"/><circle cx="8" cy="12" r="0.7" fill="currentColor" stroke="none"/></svg>
+        Jack's Android
+      </div>
+      <div class="fw-sb-sep"></div>
+      <div class="fw-sb-item" id="fw-sb-projects">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="#f9c23c"><path d="M1 3.5A1.5 1.5 0 012.5 2H6l1.5 2H13.5A1.5 1.5 0 0115 5.5v7A1.5 1.5 0 0113.5 14h-11A1.5 1.5 0 011 12.5z"/></svg>
+        Projects
+      </div>
+      <div class="fw-sb-item" id="fw-sb-design">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="#f9c23c"><path d="M1 3.5A1.5 1.5 0 012.5 2H6l1.5 2H13.5A1.5 1.5 0 0115 5.5v7A1.5 1.5 0 0113.5 14h-11A1.5 1.5 0 011 12.5z"/></svg>
+        Design Assets
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="fw-content-area">
+      <div class="fw-list-header">
+        <span></span>
+        <span>Name &#8597;</span>
+        <span>Date modified</span>
+        <span>Type</span>
+        <span style="text-align:right">Size</span>
+      </div>
+      <div class="fw-file-list" id="fw-file-list"></div>
+    </div>
+
+  </div>
+
+  <!-- Status bar -->
+  <div class="fw-statusbar"><span id="fw-status-text">0 items</span></div>
+</div>
+
 <!-- ░░ Preview popup ░░ -->
 <div id="preview-popup">
   <div class="preview-card">
@@ -1264,7 +1924,7 @@
 <script>
 /* ── Desktop icon drag + multi-select ── */
 (function () {
-  const ICON_W = 76, ICON_H = 92;
+  const ICON_W = 76, ICON_H = 100;
   const deskEl = document.getElementById('desktop-icons');
   const rb     = document.getElementById('rubberband');
 
@@ -1279,7 +1939,8 @@
   const searchBarEl = document.querySelector('.search-bar');
   const syncDropZone = () => {
     const hasSelection = sel.size > 0;
-    searchBarEl.classList.toggle('drop-mode', hasSelection);
+    const allApps = hasSelection && [...sel].every(ic => ic.dataset.type === 'app');
+    searchBarEl.classList.toggle('drop-mode', hasSelection && !allApps);
     // Don't open the composer in drop-mode
     if (hasSelection) {
       searchBarEl.classList.remove('thinking');
@@ -1292,9 +1953,11 @@
   const selClear = ()  => { [...sel].forEach(selRem); };
 
   /* ── Drag state ── */
-  let dragging    = false;
-  let dragOffsets = [];
-  let hoveredBtn  = null;   // taskbar button being hovered during drag
+  let dragging      = false;
+  let dragOffsets   = [];
+  let dragGhost     = null;
+  let dragGhostGox  = 0, dragGhostGoy = 0;
+  let hoveredBtn    = null;   // taskbar button being hovered during drag
 
   /* ── Rubber-band state ── */
   let rbOn    = false;
@@ -1376,37 +2039,66 @@
 
       if (!sel.has(ic)) { selClear(); selAdd(ic); }
 
-      // Prepare ghost copies for every selected icon
-      const dr = deskEl.getBoundingClientRect();
-      dragOffsets = [...sel].map(s => {
-        const sr    = s.getBoundingClientRect();
-        const origX = parseInt(s.style.left);
-        const origY = parseInt(s.style.top);
+      // Prepare a single stacked ghost for all selected icons
+      const dr     = deskEl.getBoundingClientRect();
+      const selArr = [...sel];
+      const sr     = ic.getBoundingClientRect();
 
-        // Build ghost: clone visual content of the icon
-        const ghost = document.createElement('div');
-        ghost.className = 'drag-ghost';
-        // Clone inner content (thumb + label), skip sel-tick
-        Array.from(s.childNodes).forEach(node => {
-          if (node.classList && node.classList.contains('sel-tick')) return;
-          ghost.appendChild(node.cloneNode(true));
-        });
-        ghost.style.left = sr.left + 'px';
-        ghost.style.top  = sr.top  + 'px';
-        document.body.appendChild(ghost);
+      dragGhost = document.createElement('div');
+      dragGhost.className = 'drag-ghost';
+      dragGhost.style.left = sr.left + 'px';
+      dragGhost.style.top  = sr.top  + 'px';
 
-        s.classList.add('dragging');
+      const plate = document.createElement('div');
+      plate.className = 'drag-ghost-plate';
 
-        return {
-          s, ghost, origX, origY,
-          // offset from cursor to ghost top-left (fixed coords)
-          gox: e.clientX - sr.left,
-          goy: e.clientY - sr.top,
-          // offset for desktop-coord drop calculation
-          ox: e.clientX - dr.left - origX,
-          oy: e.clientY - dr.top  - origY
-        };
-      });
+      const stack = document.createElement('div');
+      stack.className = 'drag-icon-stack';
+
+      // Add icons back-to-front (index 0 = furthest back, last = front/top)
+      const stackN = Math.min(selArr.length, 3);
+      for (let i = 0; i < stackN; i++) {
+        const srcIcon = selArr[i];
+        // Extract just the thumbnail node (first non-sel-tick, non-span child)
+        let thumbNode = null;
+        for (const node of srcIcon.childNodes) {
+          if (node.nodeType !== 1) continue;
+          if (node.classList.contains('sel-tick')) continue;
+          if (node.tagName === 'SPAN') continue;
+          thumbNode = node.cloneNode(true);
+          break;
+        }
+        if (!thumbNode) continue;
+        const item = document.createElement('div');
+        item.className = 'drag-icon-item';
+        item.appendChild(thumbNode);
+        stack.appendChild(item);
+      }
+
+      plate.appendChild(stack);
+
+      // Count badge when more than 1 file
+      if (selArr.length > 1) {
+        const badge = document.createElement('div');
+        badge.className = 'drag-count-badge';
+        badge.textContent = selArr.length;
+        plate.appendChild(badge);
+      }
+
+      dragGhost.appendChild(plate);
+
+      document.body.appendChild(dragGhost);
+      selArr.forEach(s => s.classList.add('dragging'));
+
+      dragGhostGox = e.clientX - sr.left;
+      dragGhostGoy = e.clientY - sr.top;
+      dragOffsets  = selArr.map(s => ({
+        s,
+        origX: parseInt(s.style.left),
+        origY: parseInt(s.style.top),
+        ox: e.clientX - dr.left - parseInt(s.style.left),
+        oy: e.clientY - dr.top  - parseInt(s.style.top)
+      }));
       dragging = true;
     });
   });
@@ -1441,10 +2133,10 @@
     const dr = deskEl.getBoundingClientRect();
 
     if (dragging) {
-      dragOffsets.forEach(({ ghost, gox, goy }) => {
-        ghost.style.left = (e.clientX - gox) + 'px';
-        ghost.style.top  = (e.clientY - goy) + 'px';
-      });
+      if (dragGhost) {
+        dragGhost.style.left = (e.clientX - dragGhostGox) + 'px';
+        dragGhost.style.top  = (e.clientY - dragGhostGoy) + 'px';
+      }
 
       // Highlight taskbar button when dragging over it
       const btn = btnUnderCursor(e.clientX, e.clientY);
@@ -1455,12 +2147,21 @@
       }
 
       // Dashed border on search bar when dragged over it
-      if (searchBarEl.classList.contains('drop-mode')) {
+      if (searchBarEl.classList.contains('drop-mode') || searchBarEl.classList.contains('holding')) {
         const sr = searchBarEl.getBoundingClientRect();
         const overSB = e.clientX >= sr.left && e.clientX <= sr.right &&
                        e.clientY >= sr.top  && e.clientY <= sr.bottom;
         searchBarEl.classList.toggle('drag-over', overSB);
       }
+      // No-drop indicator when dragging app-only selection over search bar
+      if ([...sel].every(ic => ic.dataset.type === 'app')) {
+        const srA = searchBarEl.getBoundingClientRect();
+        const overSBA = e.clientX >= srA.left && e.clientX <= srA.right &&
+                        e.clientY >= srA.top  && e.clientY <= srA.bottom;
+        searchBarEl.classList.toggle('no-drop', overSBA);
+        dragGhost?.classList.toggle('no-drop', overSBA);
+      }
+
       // Variant G: show mini drop zone only while hovering over the search bar;
       // keep visible and add file-over class when mouse moves onto the zone itself
       if (document.body.dataset.hv === 'g' && searchBarEl.classList.contains('drop-mode')) {
@@ -1520,7 +2221,8 @@
           s.style.left = origX + 'px';
           s.style.top  = origY + 'px';
         });
-        openComposerWithFiles([...sel]);
+        const fileIcons = [...sel].filter(ic => ic.dataset.type !== 'app');
+        if (fileIcons.length) openComposerWithFiles(fileIcons);
       } else {
         // Dropped on desktop — move originals to where ghosts landed
         dragOffsets.forEach(({ s, ox, oy }) => {
@@ -1531,12 +2233,13 @@
         });
       }
 
-      // Remove all ghosts
-      dragOffsets.forEach(({ ghost }) => ghost.remove());
+      // Remove ghost
+      dragGhost?.remove();
+      dragGhost = null;
 
       if (hoveredBtn) { hoveredBtn.classList.remove('drop-target'); hoveredBtn = null; }
       mdzEl?.classList.remove('visible', 'file-over');
-      searchBarEl.classList.remove('drag-over');
+      searchBarEl.classList.remove('drag-over', 'no-drop');
       sel.forEach(s => { s.classList.remove('dragging'); s.style.zIndex = ''; });
       dragging    = false;
       dragOffsets = [];
@@ -1551,10 +2254,10 @@
   /* ── Open composer with attached files ── */
   function openComposerWithFiles(icons) {
     const suggestions = [
-      { emoji: '📊', bg: '#eef6ee', title: 'Create a summary sheet of all expenses', sub: 'New conversation · Copilot' },
-      { emoji: '📄', bg: '#f5f5f5', title: 'Merge all files into one PDF',            sub: 'Chat suggestion · Copilot' },
-      { emoji: '📁', bg: '#fff8e6', title: 'Move to folder',                          sub: 'File explorer' },
-      { emoji: '📧', bg: '#eef3fb', title: 'Share using Outlook',                     sub: 'App' },
+      { img: 'icons/whatsapp.png', bg: '#e8fdf0', title: 'Share via WhatsApp',                      sub: 'App · Send files directly' },
+      { svg: `<svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.80108 26H8V15.5961L2 11V24.1626C1.99986 24.4039 2.04636 24.6429 2.13682 24.8659C2.22729 25.0889 2.35995 25.2915 2.52722 25.4622C2.6945 25.6328 2.8931 25.7681 3.11168 25.8604C3.33026 25.9527 3.56452 26.0001 3.80108 26V26Z" fill="#4285F4"/><path d="M24 26H28.1989C28.6763 25.9989 29.1337 25.805 29.4713 25.4606C29.8088 25.1163 29.9989 24.6496 30 24.1626V11L24 15.5903V26Z" fill="#34A853"/><path d="M24 7.88112V16L30 11.3168V8.81572C30 6.50149 27.4598 5.17661 25.6799 6.56752L24 7.88112Z" fill="#FBBC04"/><path d="M8 15.6857V8L16 13.3198L24 8V15.6857L16 21L8 15.6857Z" fill="#EA4335"/><path d="M2 8.81587V11.316L8 16V7.87585L6.32012 6.56755C4.54019 5.17657 2 6.50151 2 8.81587Z" fill="#C5221F"/></svg>`, bg: '#eef3fb', title: 'Send via Gmail', sub: 'Web · Attach and send' },
+      { svg: `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C8.38171 20 6.81782 19.6146 5.41286 18.888L1.58704 19.9553C0.922123 20.141 0.232581 19.7525 0.0469058 19.0876C-0.0145358 18.8676 -0.014506 18.6349 0.046948 18.4151L1.11461 14.5922C0.386366 13.186 0 11.6203 0 10C0 4.47715 4.47715 0 10 0ZM10 1.5C5.30558 1.5 1.5 5.30558 1.5 10C1.5 11.4696 1.87277 12.8834 2.57303 14.1375L2.72368 14.4072L1.61096 18.3914L5.59755 17.2792L5.86709 17.4295C7.12006 18.1281 8.53218 18.5 10 18.5C14.6944 18.5 18.5 14.6944 18.5 10C18.5 5.30558 14.6944 1.5 10 1.5ZM6.75 11H11.2483C11.6625 11 11.9983 11.3358 11.9983 11.75C11.9983 12.1297 11.7161 12.4435 11.35 12.4932L11.2483 12.5H6.75C6.33579 12.5 6 12.1642 6 11.75C6 11.3703 6.28215 11.0565 6.64823 11.0068L6.75 11H11.2483H6.75ZM6.75 7.5H13.2545C13.6687 7.5 14.0045 7.83579 14.0045 8.25C14.0045 8.6297 13.7223 8.94349 13.3563 8.99315L13.2545 9H6.75C6.33579 9 6 8.66421 6 8.25C6 7.8703 6.28215 7.55651 6.64823 7.50685L6.75 7.5H13.2545H6.75Z" fill="#242424"/></svg>`, bg: '#f0f4ff', title: 'Summarise all medical bills', sub: 'New conversation · Copilot' },
+      { emoji: '📁',               bg: '#fff8e6', title: 'Organise into a folder',                   sub: 'File Explorer' },
     ];
 
     // Build suggestions
@@ -1563,8 +2266,11 @@
     suggestions.forEach(s => {
       const row = document.createElement('div');
       row.className = 'suggestion-row';
+      const iconContent = s.img
+        ? `<img src="${s.img}" style="width:18px;height:18px;object-fit:contain;">`
+        : s.svg || s.emoji;
       row.innerHTML = `
-        <div class="suggestion-icon" style="background:${s.bg}">${s.emoji}</div>
+        <div class="suggestion-icon" style="background:${s.bg}">${iconContent}</div>
         <div class="suggestion-text">
           <div class="suggestion-title">${s.title}</div>
           <div class="suggestion-sub">${s.sub}</div>
@@ -1573,26 +2279,26 @@
     });
     sugEl.classList.add('visible');
 
-    // Build file chips (max 2 shown, rest as +N)
+    // Add file chips — merge with any already-held chips (don't wipe them)
     const chipsEl = document.getElementById('composer-chips');
-    chipsEl.innerHTML = '';
-    const shown = icons.slice(0, 2);
-    const extra = icons.length - shown.length;
+    chipsEl.querySelector('.file-chip-more')?.remove(); // remove old +N badge if present
 
-    shown.forEach(ic => {
+    icons.forEach(ic => {
       const label = ic.querySelector('span:last-child')?.textContent || 'File';
       const imgSrc = ic.querySelector('img')?.src || '';
+      // Deduplicate
+      if ([...chipsEl.querySelectorAll('.file-chip-name')].some(el => el.textContent === label)) return;
       const chip = document.createElement('div');
       chip.className = 'file-chip';
-      chip.innerHTML = (imgSrc
-        ? `<img src="${imgSrc}" />`
-        : `<span style="font-size:14px;flex-shrink:0">📄</span>`)
+      const chipIcon = IMAGE_EXTS_RE.test(label)
+        ? PHOTO_ICON_HTML
+        : (imgSrc ? `<img src="${imgSrc}" />` : `<span style="font-size:14px;flex-shrink:0">📄</span>`);
+      chip.innerHTML = chipIcon
         + `<span class="file-chip-name">${label}</span>`
         + `<button class="file-chip-remove" title="Remove">✕</button>`;
-
       chip.querySelector('.file-chip-remove').addEventListener('click', () => {
         chip.remove();
-        // Hide chips row + divider if no chips left
+        trimChips();
         if (!chipsEl.querySelector('.file-chip')) {
           chipsEl.classList.remove('visible');
           document.getElementById('composer-divider').classList.remove('visible');
@@ -1600,12 +2306,7 @@
       });
       chipsEl.appendChild(chip);
     });
-    if (extra > 0) {
-      const more = document.createElement('div');
-      more.className = 'file-chip-more';
-      more.textContent = `+${extra}`;
-      chipsEl.appendChild(more);
-    }
+    trimChips();
     chipsEl.classList.add('visible');
     document.getElementById('composer-divider').classList.add('visible');
 
@@ -1618,13 +2319,119 @@
   }
 })();
 
+/* ── Chip trimmer: show max 3, collapse rest into +N badge ── */
+function trimChips() {
+  const chipsEl = document.getElementById('composer-chips');
+  chipsEl.querySelector('.file-chip-more')?.remove();
+  const all = [...chipsEl.querySelectorAll('.file-chip')];
+  const MAX = 2;
+  all.forEach((c, i) => { c.style.display = i < MAX ? '' : 'none'; });
+  const extra = all.length - MAX;
+  if (extra > 0) {
+    const badge = document.createElement('div');
+    badge.className = 'file-chip-more';
+    badge.textContent = `+${extra}`;
+    badge.addEventListener('click', e => {
+      e.stopPropagation();
+      const hidden = [...chipsEl.querySelectorAll('.file-chip')].filter(c => c.style.display === 'none');
+      toggleOverflowMenu(badge, hidden);
+    });
+    chipsEl.appendChild(badge);
+  }
+}
+
+/* ── Overflow menu for hidden chips ── */
+function getOrCreateOverflowMenu() {
+  let el = document.getElementById('chip-overflow-menu');
+  if (!el) { el = document.createElement('div'); el.id = 'chip-overflow-menu'; document.body.appendChild(el); }
+  return el;
+}
+
+function closeOverflowMenu() {
+  getOrCreateOverflowMenu().classList.remove('open');
+}
+
+function toggleOverflowMenu(anchor, hiddenChips) {
+  const menu = getOrCreateOverflowMenu();
+  if (menu.classList.contains('open')) { closeOverflowMenu(); return; }
+
+  menu.innerHTML = '';
+
+  hiddenChips.forEach(chip => {
+    const name    = chip.querySelector('.file-chip-name')?.textContent || '';
+    const imgEl   = chip.querySelector('img');
+    const iconHtml = imgEl
+      ? `<img src="${imgEl.src}" style="width:14px;height:14px;object-fit:contain;flex-shrink:0;">`
+      : `<span style="font-size:13px;flex-shrink:0">📄</span>`;
+
+    const item = document.createElement('div');
+    item.className = 'cof-item';
+    item.innerHTML = `${iconHtml}<span class="cof-name">${name}</span>
+      <button class="cof-remove" title="Remove">✕</button>`;
+
+    item.querySelector('.cof-remove').addEventListener('click', e => {
+      e.stopPropagation();
+      chip.remove();
+      trimChips();
+      const chipsEl = document.getElementById('composer-chips');
+      if (!chipsEl.querySelector('.file-chip')) {
+        chipsEl.classList.remove('visible');
+        document.getElementById('composer-divider').classList.remove('visible');
+      }
+      // Rebuild menu with updated hidden list
+      const remaining = [...chipsEl.querySelectorAll('.file-chip')].filter(c => c.style.display === 'none');
+      remaining.length ? toggleOverflowMenu(anchor, remaining) : closeOverflowMenu();
+    });
+    menu.appendChild(item);
+  });
+
+  const sep = document.createElement('div'); sep.className = 'cof-sep'; menu.appendChild(sep);
+
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'cof-clear';
+  clearBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><polyline points="3,6 4,14 12,14 13,6"/><line x1="2" y1="6" x2="14" y2="6"/><path d="M6 6V3h4v3"/></svg> Clear all files`;
+  clearBtn.addEventListener('click', () => {
+    const chipsEl = document.getElementById('composer-chips');
+    chipsEl.querySelectorAll('.file-chip, .file-chip-more').forEach(el => el.remove());
+    chipsEl.classList.remove('visible');
+    document.getElementById('composer-divider').classList.remove('visible');
+    document.getElementById('composer-suggestions').classList.remove('visible');
+    closeOverflowMenu();
+  });
+  menu.appendChild(clearBtn);
+
+  menu.classList.add('open');
+  const r = anchor.getBoundingClientRect();
+  const mw = menu.offsetWidth, mh = menu.offsetHeight;
+  // Right-align menu to badge's right edge so it stays inside the composer
+  const left = Math.max(8, Math.min(r.right - mw, window.innerWidth - mw - 8));
+  const top  = Math.max(8, r.top - mh - 8);
+  menu.style.left = left + 'px';
+  menu.style.top  = top  + 'px';
+}
+
+// Close overflow menu on outside click
+document.addEventListener('mousedown', e => {
+  const menu = document.getElementById('chip-overflow-menu');
+  if (menu?.classList.contains('open') && !menu.contains(e.target) && !e.target.closest('.file-chip-more')) {
+    closeOverflowMenu();
+  }
+});
+
 /* ── Search Composer ── */
 const searchBar      = document.querySelector('.search-bar');
 const searchComposer = document.getElementById('search-composer');
 const composerInput  = document.getElementById('composer-input');
 
 searchBar.addEventListener('click', () => {
-  if (searchBar.classList.contains('drop-mode')) return; // ignore clicks in drop-mode
+  if (searchBar.classList.contains('drop-mode')) return;
+  if (searchBar.classList.contains('holding')) {
+    // Reopen composer with existing staged chips
+    searchComposer.classList.add('open');
+    document.getElementById('composer-divider').classList.add('visible');
+    composerInput.focus();
+    return;
+  }
   searchBar.classList.add('thinking');
   searchComposer.classList.add('open');
   composerInput.focus();
@@ -1633,11 +2440,15 @@ searchBar.addEventListener('click', () => {
 function closeComposer() {
   searchComposer.classList.remove('open');
   searchBar.classList.remove('thinking');
-  // Reset file-drop state
   setTimeout(() => {
-    document.getElementById('composer-suggestions').classList.remove('visible');
-    document.getElementById('composer-chips').classList.remove('visible');
-    document.getElementById('composer-divider').classList.remove('visible');
+    const hasChips = !!document.getElementById('composer-chips').querySelector('.file-chip');
+    if (!hasChips) {
+      // No staged files — fully reset
+      document.getElementById('composer-suggestions').classList.remove('visible');
+      document.getElementById('composer-chips').classList.remove('visible');
+      document.getElementById('composer-divider').classList.remove('visible');
+    }
+    // If chips exist, keep suggestions + chips + divider so they reappear on reopen
   }, 200);
 }
 
@@ -2197,6 +3008,742 @@ document.querySelectorAll('.tb-trigger').forEach(el => {
 popup.addEventListener('mouseenter', () => clearTimeout(hideTimer));
 popup.addEventListener('mouseleave', () => hidePopup());
 prevClose.addEventListener('click',  () => hidePopup(0));
+
+/* ── Folder Window ── */
+function _enc(s) { return 'data:image/svg+xml,' + encodeURIComponent(s); }
+function _ic(s)  { return `<img width="16" height="16" src="${_enc(s)}" style="flex-shrink:0;display:block;vertical-align:middle">`; }
+function _UNUSED_bill({ bg, icon, badge, org, addr, tel, acct, rows, total }) {
+  const rowH = 16, rowStart = 107;
+  let rowSVG = '';
+  rows.forEach(([d, a], i) => {
+    const y = rowStart + i * rowH;
+    rowSVG += `<text x="16" y="${y}" font-family="Arial,sans-serif" font-size="7.5" fill="#3a3a3a">${d}</text>`;
+    if (a) rowSVG += `<text x="234" y="${y}" font-family="Arial,sans-serif" font-size="7.5" fill="#111" text-anchor="end">${a}</text>`;
+    if (i < rows.length - 1) rowSVG += `<line x1="16" y1="${y+4}" x2="234" y2="${y+4}" stroke="#f0f0f0" stroke-width="0.8"/>`;
+  });
+  const afterRows = rowStart + rows.length * rowH;
+  const sepY = afterRows + 2;
+  const totBoxY = sepY + 2;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="280" height="200">
+<rect width="280" height="200" fill="#faf9f5"/>
+<rect width="280" height="50" fill="${bg}"/>
+<rect x="8" y="9" width="20" height="28" rx="2" fill="rgba(255,255,255,0.12)"/>
+${icon}
+<rect x="32" y="9" width="62" height="13" rx="2" fill="rgba(255,255,255,0.18)"/>
+<text x="63" y="19.5" font-family="Arial,sans-serif" font-size="5.8" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="0.4">${badge}</text>
+<text x="34" y="35" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="white">${org}</text>
+<text x="34" y="46" font-family="Arial,sans-serif" font-size="6" fill="rgba(255,255,255,0.6)">${addr}</text>
+<rect width="280" height="1" y="50" fill="#e0e0e0"/>
+<rect width="280" height="28" y="50" fill="#f6f6f4"/>
+<text x="16" y="61" font-family="Arial,sans-serif" font-size="6" fill="#aaa" letter-spacing="0.5">PATIENT</text>
+<text x="16" y="71" font-family="Arial,sans-serif" font-size="7.5" font-weight="bold" fill="#1a1a1a">John Smith</text>
+<text x="113" y="61" font-family="Arial,sans-serif" font-size="6" fill="#aaa" letter-spacing="0.5">DATE</text>
+<text x="113" y="71" font-family="Arial,sans-serif" font-size="7.5" font-weight="bold" fill="#1a1a1a">04/21/2026</text>
+<text x="190" y="61" font-family="Arial,sans-serif" font-size="6" fill="#aaa" letter-spacing="0.5">ACCT NO.</text>
+<text x="190" y="71" font-family="Arial,sans-serif" font-size="7.5" font-weight="bold" fill="#1a1a1a">${acct}</text>
+<rect width="280" height="1" y="78" fill="#e0e0e0"/>
+<rect width="280" height="16" y="79" fill="#ffffff"/>
+<text x="16" y="90" font-family="Arial,sans-serif" font-size="6.5" fill="#c8c8c8" letter-spacing="0.8">DESCRIPTION OF SERVICE</text>
+<text x="234" y="90" font-family="Arial,sans-serif" font-size="6.5" fill="#c8c8c8" text-anchor="end" letter-spacing="0.8">CHARGES</text>
+<rect width="280" height="0.8" y="95" fill="#ebebeb"/>
+${rowSVG}
+<rect width="280" height="1.5" y="${sepY}" fill="${bg}" fill-opacity="0.4"/>
+<rect width="280" height="22" y="${totBoxY}" fill="${bg}" fill-opacity="0.07"/>
+<text x="16" y="${totBoxY + 15}" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#333">AMOUNT DUE</text>
+<text x="234" y="${totBoxY + 16}" font-family="Arial,sans-serif" font-size="12.5" font-weight="bold" fill="${bg}" text-anchor="end">${total}</text>
+<text x="140" y="198" font-family="Arial,sans-serif" font-size="5.5" fill="#ccc" text-anchor="middle">Questions? Call ${tel} · Keep for your records</text>
+</svg>`;
+  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
+
+const BILL_THUMBS = {
+
+  /* ─── 1. ACME – Hospital statement with 3-column table (Desc | Charges | Ins Covered) ─── */
+  acme: _enc(`<svg xmlns="http://www.w3.org/2000/svg" width="280" height="200"><rect width="280" height="200" fill="#f8f9fb"/>
+<rect width="280" height="52" fill="#1a3a6b"/>
+<rect x="10" y="13" width="6" height="20" rx="1.5" fill="white" opacity="0.8"/>
+<rect x="6" y="19" width="14" height="6" rx="1.5" fill="white" opacity="0.8"/>
+<text x="28" y="26" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white">Acme Medical Center</text>
+<text x="28" y="37" font-family="Arial,sans-serif" font-size="6" fill="rgba(255,255,255,0.65)">100 Hospital Dr, New York NY 10001  |  (212) 555-0100</text>
+<rect x="170" y="40" width="98" height="10" rx="2" fill="rgba(255,255,255,0.15)"/>
+<text x="219" y="48.5" font-family="Arial,sans-serif" font-size="5.8" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="0.4">STATEMENT OF ACCOUNT</text>
+<rect width="280" height="26" y="52" fill="#edf1f9"/>
+<rect width="280" height="1" y="52" fill="#b8c8e0"/>
+<text x="12" y="62" font-family="Arial,sans-serif" font-size="5.8" fill="#6a7a9a" letter-spacing="0.4">PATIENT</text>
+<text x="12" y="72" font-family="Arial,sans-serif" font-size="7.5" font-weight="bold" fill="#1a1a2e">John Smith  |  DOB: 03/15/1978</text>
+<text x="165" y="62" font-family="Arial,sans-serif" font-size="5.8" fill="#6a7a9a" text-anchor="end">ACCT #</text>
+<text x="268" y="62" font-family="Arial,sans-serif" font-size="5.8" fill="#6a7a9a" text-anchor="end">DATE</text>
+<text x="165" y="72" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="#1a1a2e" text-anchor="end">AMC-2026-4821</text>
+<text x="268" y="72" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="#1a1a2e" text-anchor="end">04/21/2026</text>
+<rect width="280" height="1" y="78" fill="#b8c8e0"/>
+<rect width="280" height="14" y="78" fill="#e8edf5"/>
+<text x="12" y="88.5" font-family="Arial,sans-serif" font-size="6" fill="#888" letter-spacing="0.5">DESCRIPTION</text>
+<text x="198" y="88.5" font-family="Arial,sans-serif" font-size="6" fill="#888" text-anchor="end" letter-spacing="0.5">CHARGES</text>
+<text x="268" y="88.5" font-family="Arial,sans-serif" font-size="6" fill="#888" text-anchor="end" letter-spacing="0.5">INS PAID</text>
+<rect width="280" height="0.8" y="92" fill="#d8e0ee"/>
+<text x="12" y="103" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Consultation – Dr. A. Williams</text>
+<text x="198" y="103" font-family="Arial,sans-serif" font-size="7.5" fill="#444" text-anchor="end">$150.00</text>
+<text x="268" y="103" font-family="Arial,sans-serif" font-size="7.5" fill="#166534" text-anchor="end">$105.00</text>
+<line x1="12" y1="107" x2="268" y2="107" stroke="#eaeef7" stroke-width="0.8"/>
+<text x="12" y="118" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Blood Panel (CBC + Metabolic)</text>
+<text x="198" y="118" font-family="Arial,sans-serif" font-size="7.5" fill="#444" text-anchor="end">$320.00</text>
+<text x="268" y="118" font-family="Arial,sans-serif" font-size="7.5" fill="#166534" text-anchor="end">$224.00</text>
+<line x1="12" y1="122" x2="268" y2="122" stroke="#eaeef7" stroke-width="0.8"/>
+<text x="12" y="133" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Radiology – Chest X-Ray</text>
+<text x="198" y="133" font-family="Arial,sans-serif" font-size="7.5" fill="#444" text-anchor="end">$180.00</text>
+<text x="268" y="133" font-family="Arial,sans-serif" font-size="7.5" fill="#166534" text-anchor="end">$126.00</text>
+<line x1="12" y1="137" x2="268" y2="137" stroke="#eaeef7" stroke-width="0.8"/>
+<text x="12" y="148" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Nurse Observation (2 hrs)</text>
+<text x="198" y="148" font-family="Arial,sans-serif" font-size="7.5" fill="#444" text-anchor="end">$95.00</text>
+<text x="268" y="148" font-family="Arial,sans-serif" font-size="7.5" fill="#166534" text-anchor="end">$66.50</text>
+<rect width="280" height="1.5" y="154" fill="#1a3a6b" fill-opacity="0.3"/>
+<rect width="280" height="30" y="155" fill="#1a3a6b"/>
+<text x="12" y="167" font-family="Arial,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.65)">Total Billed: $745.00  |  Insurance Paid: $521.50</text>
+<text x="12" y="178" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="white">BALANCE DUE</text>
+<text x="268" y="179" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#7eb8ff" text-anchor="end">$223.50</text>
+<rect width="280" height="15" y="185" fill="#f0f2f8"/>
+<rect width="280" height="0.5" y="185" fill="#ccd4e8"/>
+<text x="140" y="195" font-family="Arial,sans-serif" font-size="5.5" fill="#8899bb" text-anchor="middle">Pay by 05/15/2026  |  acmepay.com  |  (212) 555-0100  |  Acct AMC-2026-4821</text>
+</svg>`),
+
+  /* ─── 2. CVS – Pharmacy receipt with NDC numbers, per-drug lines ─── */
+  cvs: _enc(`<svg xmlns="http://www.w3.org/2000/svg" width="280" height="200"><rect width="280" height="200" fill="#fffdf9"/>
+<rect width="280" height="10" fill="#cc0000"/>
+<text x="140" y="29" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#cc0000" text-anchor="middle">CVS pharmacy</text>
+<text x="140" y="40" font-family="Arial,sans-serif" font-size="6.5" fill="#888" text-anchor="middle">450 Lexington Ave, New York NY 10017  |  (212) 555-0220</text>
+<line x1="14" y1="46" x2="266" y2="46" stroke="#ccc" stroke-dasharray="2,2" stroke-width="0.8"/>
+<text x="14" y="56" font-family="Arial,sans-serif" font-size="6.5" fill="#666">Rx #7284901  |  Date: 04/21/2026  |  Dr. A. Williams</text>
+<text x="14" y="69" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#111">Metformin HCL 500mg</text>
+<text x="266" y="69" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#111" text-anchor="end">$12.99</text>
+<text x="14" y="78" font-family="Arial,sans-serif" font-size="6.5" fill="#999">Qty: 60  |  Days: 30  |  NDC: 00093-1048-01</text>
+<line x1="14" y1="83" x2="266" y2="83" stroke="#eee" stroke-width="0.8"/>
+<text x="14" y="93" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#111">Lisinopril 10mg Tabs</text>
+<text x="266" y="93" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#111" text-anchor="end">$8.49</text>
+<text x="14" y="102" font-family="Arial,sans-serif" font-size="6.5" fill="#999">Qty: 30  |  Days: 30  |  NDC: 00093-0057-01</text>
+<line x1="14" y1="107" x2="266" y2="107" stroke="#eee" stroke-width="0.8"/>
+<text x="14" y="117" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#111">Vitamin D3 2000IU Softgels</text>
+<text x="266" y="117" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#111" text-anchor="end">$6.99</text>
+<text x="14" y="126" font-family="Arial,sans-serif" font-size="6.5" fill="#999">Qty: 90  |  OTC  |  UPC: 030772069014</text>
+<line x1="14" y1="131" x2="266" y2="131" stroke="#eee" stroke-width="0.8"/>
+<text x="14" y="141" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#111">Amlodipine 5mg Tabs</text>
+<text x="266" y="141" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#111" text-anchor="end">$9.49</text>
+<text x="14" y="150" font-family="Arial,sans-serif" font-size="6.5" fill="#999">Qty: 30  |  Days: 30  |  NDC: 68382-0005-14</text>
+<line x1="14" y1="156" x2="266" y2="156" stroke="#ccc" stroke-dasharray="3,2" stroke-width="0.8"/>
+<text x="14" y="167" font-family="Arial,sans-serif" font-size="7" fill="#666">Subtotal</text>
+<text x="266" y="167" font-family="Arial,sans-serif" font-size="7" fill="#666" text-anchor="end">$37.96</text>
+<text x="14" y="177" font-family="Arial,sans-serif" font-size="7" fill="#166534">Insurance Savings</text>
+<text x="266" y="177" font-family="Arial,sans-serif" font-size="7" fill="#166534" text-anchor="end">-$0.00</text>
+<rect x="14" y="181" width="252" height="16" rx="2" fill="#cc0000"/>
+<text x="22" y="192.5" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="white">TOTAL DUE</text>
+<text x="260" y="192.5" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="end">$37.96</text>
+</svg>`),
+
+  /* ─── 3. LabCorp – 2×2 coloured result tile grid ─── */
+  labcorp: _enc(`<svg xmlns="http://www.w3.org/2000/svg" width="280" height="200">
+<rect width="280" height="200" fill="#e2f4f2"/>
+<rect width="280" height="42" fill="#007a6e"/>
+<text x="14" y="24" font-family="Arial,sans-serif" font-size="15" font-weight="bold" fill="white">LabCorp</text>
+<text x="14" y="35" font-family="Arial,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.65)">Laboratory Corporation of America</text>
+<text x="266" y="22" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.9)" text-anchor="end">LAB REPORT</text>
+<text x="266" y="34" font-family="Arial,sans-serif" font-size="6" fill="rgba(255,255,255,0.6)" text-anchor="end">04/21/2026</text>
+<text x="140" y="50" font-family="Arial,sans-serif" font-size="6.5" fill="#005a52" text-anchor="middle">Patient: John Smith  |  Specimen: LC-2026-993827</text>
+<rect x="5" y="56" width="130" height="68" rx="3" fill="#16a34a"/>
+<rect x="5" y="70" width="130" height="54" rx="0" fill="#dcfce7"/>
+<rect x="5" y="123" width="130" height="1" fill="#dcfce7"/>
+<text x="70" y="66" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="white" text-anchor="middle">Complete Blood Count</text>
+<text x="70" y="92" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#15803d" text-anchor="middle">NORMAL</text>
+<text x="70" y="108" font-family="Arial,sans-serif" font-size="7" fill="#166534" text-anchor="middle">All values within range</text>
+<text x="70" y="119" font-family="Arial,sans-serif" font-size="7.5" font-weight="bold" fill="#16a34a" text-anchor="middle">✓ OK</text>
+<rect x="143" y="56" width="132" height="68" rx="3" fill="#dc2626"/>
+<rect x="143" y="70" width="132" height="54" rx="0" fill="#fee2e2"/>
+<rect x="143" y="123" width="132" height="1" fill="#fee2e2"/>
+<text x="209" y="66" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="white" text-anchor="middle">LDL Cholesterol</text>
+<text x="209" y="92" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#dc2626" text-anchor="middle">142</text>
+<text x="209" y="106" font-family="Arial,sans-serif" font-size="7" fill="#991b1b" text-anchor="middle">mg/dL  (normal: &lt;100)</text>
+<rect x="163" y="111" width="92" height="12" rx="2" fill="#dc2626"/>
+<text x="209" y="120.5" font-family="Arial,sans-serif" font-size="7.5" font-weight="bold" fill="white" text-anchor="middle">HIGH (H)</text>
+<rect x="5" y="130" width="130" height="64" rx="3" fill="#d97706"/>
+<rect x="5" y="144" width="130" height="50" rx="0" fill="#fef3c7"/>
+<rect x="5" y="193" width="130" height="1" fill="#fef3c7"/>
+<text x="70" y="140" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="white" text-anchor="middle">HbA1c (Glycated Hgb)</text>
+<text x="70" y="164" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#b45309" text-anchor="middle">5.9%</text>
+<text x="70" y="178" font-family="Arial,sans-serif" font-size="7" fill="#92400e" text-anchor="middle">Normal: below 5.7%</text>
+<text x="70" y="191" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="#92400e" text-anchor="middle">BORDERLINE</text>
+<rect x="143" y="130" width="132" height="64" rx="3" fill="#16a34a"/>
+<rect x="143" y="144" width="132" height="50" rx="0" fill="#dcfce7"/>
+<rect x="143" y="193" width="132" height="1" fill="#dcfce7"/>
+<text x="209" y="140" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="white" text-anchor="middle">Thyroid (TSH)</text>
+<text x="209" y="162" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#15803d" text-anchor="middle">2.1 mIU/L</text>
+<text x="209" y="176" font-family="Arial,sans-serif" font-size="7" fill="#166534" text-anchor="middle">Range: 0.4–4.0 mIU/L</text>
+<text x="209" y="191" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#16a34a" text-anchor="middle">NORMAL ✓</text>
+</svg>`),
+
+  /* ─── 4. Aetna – Lavender background + floating white card ─── */
+  aetna: _enc(`<svg xmlns="http://www.w3.org/2000/svg" width="280" height="200">
+<rect width="280" height="200" fill="#f0e8ff"/>
+<rect width="280" height="68" fill="#4a1a7a"/>
+<text x="14" y="28" font-family="Arial,sans-serif" font-size="19" font-weight="bold" fill="white">Aetna</text>
+<text x="14" y="43" font-family="Arial,sans-serif" font-size="8" fill="rgba(255,255,255,0.75)">Health Insurance Company</text>
+<text x="14" y="57" font-family="Arial,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.5)">151 Farmington Ave, Hartford CT</text>
+<rect x="172" y="8" width="100" height="52" rx="4" fill="rgba(255,255,255,0.13)"/>
+<text x="222" y="28" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="white" text-anchor="middle">EXPLANATION</text>
+<text x="222" y="41" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="white" text-anchor="middle">OF BENEFITS</text>
+<text x="222" y="53" font-family="Arial,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.65)" text-anchor="middle">Claim AET-8821</text>
+<rect x="9" y="77" width="262" height="106" rx="5" fill="rgba(0,0,0,0.08)"/>
+<rect x="9" y="75" width="262" height="106" rx="5" fill="white"/>
+<rect x="9" y="75" width="262" height="16" rx="5" fill="#6d28d9"/>
+<rect x="9" y="83" width="262" height="8" fill="#6d28d9"/>
+<text x="20" y="87" font-family="Arial,sans-serif" font-size="6.5" font-weight="bold" fill="white">SERVICE</text>
+<text x="140" y="87" font-family="Arial,sans-serif" font-size="6.5" font-weight="bold" fill="white" text-anchor="end">BILLED</text>
+<text x="186" y="87" font-family="Arial,sans-serif" font-size="6.5" font-weight="bold" fill="white" text-anchor="end">PAID</text>
+<text x="267" y="87" font-family="Arial,sans-serif" font-size="6.5" font-weight="bold" fill="#fbbf24" text-anchor="end">YOU OWE</text>
+<text x="20" y="103" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Consultation</text>
+<text x="140" y="103" font-family="Arial,sans-serif" font-size="7.5" fill="#555" text-anchor="end">$150.00</text>
+<text x="186" y="103" font-family="Arial,sans-serif" font-size="7.5" fill="#16a34a" text-anchor="end">$91.00</text>
+<text x="267" y="103" font-family="Arial,sans-serif" font-size="7.5" fill="#4a1a7a" text-anchor="end">$39.00</text>
+<line x1="20" y1="107" x2="267" y2="107" stroke="#f0e8ff" stroke-width="1"/>
+<text x="20" y="119" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Blood Panel</text>
+<text x="140" y="119" font-family="Arial,sans-serif" font-size="7.5" fill="#555" text-anchor="end">$320.00</text>
+<text x="186" y="119" font-family="Arial,sans-serif" font-size="7.5" fill="#16a34a" text-anchor="end">$196.00</text>
+<text x="267" y="119" font-family="Arial,sans-serif" font-size="7.5" fill="#4a1a7a" text-anchor="end">$84.00</text>
+<line x1="20" y1="123" x2="267" y2="123" stroke="#f0e8ff" stroke-width="1"/>
+<text x="20" y="135" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Radiology</text>
+<text x="140" y="135" font-family="Arial,sans-serif" font-size="7.5" fill="#555" text-anchor="end">$180.00</text>
+<text x="186" y="135" font-family="Arial,sans-serif" font-size="7.5" fill="#16a34a" text-anchor="end">$112.00</text>
+<text x="267" y="135" font-family="Arial,sans-serif" font-size="7.5" fill="#4a1a7a" text-anchor="end">$48.00</text>
+<rect x="9" y="140" width="262" height="16" fill="#f0e8ff"/>
+<rect x="9" y="155" width="262" height="5" rx="5" fill="white"/>
+<text x="20" y="152" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#4a1a7a">TOTAL</text>
+<text x="140" y="152" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#4a1a7a" text-anchor="end">$745.00</text>
+<text x="186" y="152" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#16a34a" text-anchor="end">$458.50</text>
+<text x="267" y="152" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#4a1a7a" text-anchor="end">$196.50</text>
+<text x="140" y="171" font-family="Arial,sans-serif" font-size="6.5" fill="#7c3aed" text-anchor="middle">This is NOT a bill  |  Member: John Smith  |  04/28/2026</text>
+<text x="140" y="182" font-family="Arial,sans-serif" font-size="6" fill="#9c6fe0" text-anchor="middle">Deductible: $26.50  |  Coinsurance: $170.00</text>
+<text x="140" y="195" font-family="Arial,sans-serif" font-size="5.5" fill="#b39dd8" text-anchor="middle">Aetna Health Insurance  |  (800) 555-0300  |  aetna.com</text>
+</svg>`),
+
+  /* ─── 5. NY Presbyterian – Wide navy sidebar split layout ─── */
+  nyp: _enc(`<svg xmlns="http://www.w3.org/2000/svg" width="280" height="200">
+<rect width="280" height="200" fill="#f5f7fb"/>
+<rect width="60" height="200" fill="#002d72"/>
+<rect x="21" y="14" width="18" height="32" rx="3" fill="rgba(255,255,255,0.6)"/>
+<rect x="15" y="22" width="30" height="16" rx="3" fill="rgba(255,255,255,0.6)"/>
+<rect x="24" y="22" width="12" height="16" fill="#002d72"/>
+<text x="30" y="71" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="rgba(255,255,255,0.95)" text-anchor="middle">N</text>
+<text x="30" y="93" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="rgba(255,255,255,0.95)" text-anchor="middle">Y</text>
+<text x="30" y="115" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="rgba(255,255,255,0.95)" text-anchor="middle">P</text>
+<text x="30" y="175" font-family="Arial,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.45)" text-anchor="middle">HOSPITAL</text>
+<text x="30" y="185" font-family="Arial,sans-serif" font-size="5.5" fill="rgba(255,255,255,0.45)" text-anchor="middle">INVOICE</text>
+<rect x="60" width="220" height="52" fill="#002d72"/>
+<text x="74" y="22" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="white">NewYork-Presbyterian</text>
+<text x="74" y="33" font-family="Arial,sans-serif" font-size="6" fill="rgba(255,255,255,0.6)">The University Hospital of Columbia and Cornell</text>
+<text x="278" y="22" font-family="Arial,sans-serif" font-size="9.5" font-weight="bold" fill="white" text-anchor="end">INVOICE</text>
+<text x="278" y="33" font-family="Arial,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.65)" text-anchor="end">#NYP-2026-04491</text>
+<text x="278" y="44" font-family="Arial,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.65)" text-anchor="end">04/21/2026</text>
+<rect x="60" y="52" width="220" height="18" fill="#eef1f8"/>
+<text x="72" y="62" font-family="Arial,sans-serif" font-size="6.5" fill="#334a7a">John Smith  |  Acct: NYP-04491  |  Dept: Emergency</text>
+<text x="72" y="70" font-family="Arial,sans-serif" font-size="6" fill="#5568a0">Admit &amp; Discharge: 04/21/2026</text>
+<rect x="60" y="70" width="220" height="14" fill="#f0f3fa"/>
+<text x="72" y="80.5" font-family="Arial,sans-serif" font-size="6" font-weight="bold" fill="#666">CPT</text>
+<text x="112" y="80.5" font-family="Arial,sans-serif" font-size="6" font-weight="bold" fill="#666">DESCRIPTION</text>
+<text x="278" y="80.5" font-family="Arial,sans-serif" font-size="6" font-weight="bold" fill="#666" text-anchor="end">CHARGE</text>
+<line x1="60" y1="84" x2="280" y2="84" stroke="#d0d8f0" stroke-width="0.8"/>
+<text x="72" y="95" font-family="Arial,sans-serif" font-size="6.5" fill="#7890c0">99283</text>
+<text x="112" y="95" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Emergency Visit</text>
+<text x="278" y="95" font-family="Arial,sans-serif" font-size="7.5" fill="#333" text-anchor="end">$450.00</text>
+<line x1="60" y1="99" x2="280" y2="99" stroke="#edf0f8" stroke-width="0.8"/>
+<text x="72" y="110" font-family="Arial,sans-serif" font-size="6.5" fill="#7890c0">96365</text>
+<text x="112" y="110" font-family="Arial,sans-serif" font-size="7.5" fill="#222">IV Infusion + Medication</text>
+<text x="278" y="110" font-family="Arial,sans-serif" font-size="7.5" fill="#333" text-anchor="end">$220.00</text>
+<line x1="60" y1="114" x2="280" y2="114" stroke="#edf0f8" stroke-width="0.8"/>
+<text x="72" y="125" font-family="Arial,sans-serif" font-size="6.5" fill="#7890c0">99252</text>
+<text x="112" y="125" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Specialist Consultation</text>
+<text x="278" y="125" font-family="Arial,sans-serif" font-size="7.5" fill="#333" text-anchor="end">$280.00</text>
+<line x1="60" y1="129" x2="280" y2="129" stroke="#edf0f8" stroke-width="0.8"/>
+<text x="72" y="140" font-family="Arial,sans-serif" font-size="6.5" fill="#7890c0">A4550</text>
+<text x="112" y="140" font-family="Arial,sans-serif" font-size="7.5" fill="#222">Medical Supplies</text>
+<text x="278" y="140" font-family="Arial,sans-serif" font-size="7.5" fill="#333" text-anchor="end">$48.00</text>
+<rect width="280" height="32" y="148" fill="#002d72"/>
+<text x="72" y="161" font-family="Arial,sans-serif" font-size="7" fill="rgba(255,255,255,0.6)">Insurance Paid: -$380.00  |  Adjustments: -$0.00</text>
+<text x="72" y="173" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="white">PATIENT BALANCE DUE</text>
+<text x="278" y="174" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#7eb8ff" text-anchor="end">$618.00</text>
+<rect x="60" width="220" height="20" y="180" fill="#f5f7fb"/>
+<text x="170" y="191" font-family="Arial,sans-serif" font-size="5.5" fill="#888" text-anchor="middle">nypay.nyp.org  |  Due: 05/21/2026  |  (212) 746-5454</text>
+</svg>`),
+
+  /* ─── 6. Walgreens – Top-half red branding + bottom-half white receipt ─── */
+  walgreens: _enc(`<svg xmlns="http://www.w3.org/2000/svg" width="280" height="200">
+<rect width="280" height="100" fill="#e3001b"/>
+<circle cx="32" cy="38" r="24" fill="rgba(255,255,255,0.15)"/>
+<text x="32" y="45" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">W</text>
+<text x="64" y="26" font-family="Arial,sans-serif" font-size="21" font-weight="bold" fill="white">Walgreens</text>
+<text x="64" y="42" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">PHARMACY RECEIPT</text>
+<text x="64" y="55" font-family="Arial,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.65)">1 Times Square, New York NY 10036</text>
+<line x1="14" y1="63" x2="266" y2="63" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+<text x="14" y="74" font-family="Arial,sans-serif" font-size="7" fill="rgba(255,255,255,0.8)">Patient: John Smith  |  Date: 04/21/2026</text>
+<text x="14" y="85" font-family="Arial,sans-serif" font-size="6.5" fill="rgba(255,255,255,0.6)">Pharmacist: R. Patel, PharmD  |  Store #4712</text>
+<text x="14" y="96" font-family="Arial,sans-serif" font-size="6" fill="rgba(255,255,255,0.5)">Prescriber: Dr. A. Williams  |  Acct: WAG-RX-20260421</text>
+<rect width="280" height="100" y="100" fill="white"/>
+<rect width="280" height="13" y="100" fill="#f5f5f5"/>
+<text x="12" y="110" font-family="Arial,sans-serif" font-size="6" font-weight="bold" fill="#666">MEDICATION</text>
+<text x="170" y="110" font-family="Arial,sans-serif" font-size="6" font-weight="bold" fill="#666">Rx #</text>
+<text x="222" y="110" font-family="Arial,sans-serif" font-size="6" font-weight="bold" fill="#666">QTY</text>
+<text x="268" y="110" font-family="Arial,sans-serif" font-size="6" font-weight="bold" fill="#666" text-anchor="end">PRICE</text>
+<line x1="0" y1="113" x2="280" y2="113" stroke="#e0e0e0" stroke-width="0.8"/>
+<text x="12" y="124" font-family="Arial,sans-serif" font-size="7.5" fill="#111">Amoxicillin 500mg</text>
+<text x="170" y="124" font-family="Arial,sans-serif" font-size="7" fill="#555">7284911</text>
+<text x="222" y="124" font-family="Arial,sans-serif" font-size="7" fill="#555">21</text>
+<text x="268" y="124" font-family="Arial,sans-serif" font-size="7.5" fill="#111" text-anchor="end">$15.99</text>
+<line x1="12" y1="128" x2="268" y2="128" stroke="#f0f0f0" stroke-width="0.8"/>
+<text x="12" y="139" font-family="Arial,sans-serif" font-size="7.5" fill="#111">Ibuprofen 400mg</text>
+<text x="170" y="139" font-family="Arial,sans-serif" font-size="7" fill="#555">7284912</text>
+<text x="222" y="139" font-family="Arial,sans-serif" font-size="7" fill="#555">30</text>
+<text x="268" y="139" font-family="Arial,sans-serif" font-size="7.5" fill="#111" text-anchor="end">$5.49</text>
+<line x1="12" y1="143" x2="268" y2="143" stroke="#f0f0f0" stroke-width="0.8"/>
+<text x="12" y="154" font-family="Arial,sans-serif" font-size="7.5" fill="#111">Omeprazole 20mg</text>
+<text x="170" y="154" font-family="Arial,sans-serif" font-size="7" fill="#555">7284913</text>
+<text x="222" y="154" font-family="Arial,sans-serif" font-size="7" fill="#555">30</text>
+<text x="268" y="154" font-family="Arial,sans-serif" font-size="7.5" fill="#111" text-anchor="end">$11.99</text>
+<rect width="280" height="26" y="160" fill="#e3001b"/>
+<text x="14" y="177" font-family="Arial,sans-serif" font-size="10.5" font-weight="bold" fill="white">TOTAL</text>
+<text x="266" y="177" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="end">$33.47</text>
+<text x="140" y="191" font-family="Arial,sans-serif" font-size="6" fill="#aaa" text-anchor="middle">myWalgreens Rewards: 4,820 pts  |  Insurance copay applied</text>
+<text x="140" y="199" font-family="Arial,sans-serif" font-size="5.5" fill="#ccc" text-anchor="middle">walgreens.com  |  (212) 555-0440  |  Rx valid through 10/21/2026</text>
+</svg>`),
+
+};
+
+const FOLDER_DATA = {
+  'Documents': [
+    { name: 'Project Proposal.docx', date: '4/15/2026 10:30 AM', type: 'Microsoft Word Document', size: '245 KB',     icon: 'word'   },
+    { name: 'Meeting Notes.docx',    date: '4/10/2026  2:15 PM', type: 'Microsoft Word Document', size: '45 KB',      icon: 'word'   },
+    { name: 'Report Q1.pdf',         date: '3/31/2026  5:00 PM', type: 'Adobe PDF Document',      size: '1,240 KB',   icon: 'pdf'    },
+    { name: 'Budget 2026.xlsx',      date: '3/20/2026  9:00 AM', type: 'Microsoft Excel Sheet',   size: '128 KB',     icon: 'excel'  },
+    { name: 'Presentation Draft.pptx', date: '3/15/2026 3:00 PM', type: 'Microsoft PowerPoint',  size: '3,450 KB',   icon: 'ppt'    },
+  ],
+  'Projects': [
+    { name: 'Dragdrop_Proto',    date: '4/21/2026  9:00 AM', type: 'File folder', size: '',          icon: 'folder' },
+    { name: 'Website Redesign', date: '4/5/2026   3:30 PM', type: 'File folder', size: '',          icon: 'folder' },
+    { name: 'Mobile App v2',    date: '3/28/2026 11:00 AM', type: 'File folder', size: '',          icon: 'folder' },
+    { name: 'design-system.fig', date: '4/1/2026  4:00 PM', type: 'Figma File',  size: '8,420 KB', icon: 'figma'  },
+    { name: 'README.md',        date: '4/18/2026  5:00 PM', type: 'Markdown File', size: '4 KB',   icon: 'text'   },
+  ],
+  'Downloads': [
+    { name: 'MSFT_6155371_report.pdf',          date: '4/17/2026 1:29 PM', type: 'Microsoft Edge PDF',        size: '30 KB',       icon: 'pdf'    },
+    { name: '2c525f49-screenshot.jpg',           date: '4/17/2026 1:28 PM', type: 'JPG File',                  size: '600 KB',      icon: 'image'  },
+    { name: 'Figma Access token.txt',            date: '3/25/2026 4:15 PM', type: 'Text Document',             size: '1 KB',        icon: 'text'   },
+    { name: 'FigmaSetup.exe',                    date: '3/25/2026 4:13 PM', type: 'Application',               size: '137,245 KB',  icon: 'app'    },
+    { name: 'node-v24.14.1-x64.msi',            date: '3/25/2026 4:10 PM', type: 'Windows Installer Package', size: '31,628 KB',   icon: 'app'    },
+    { name: 'figma-console-mcp-main',            date: '3/25/2026 4:16 PM', type: 'File folder',               size: '',            icon: 'folder' },
+  ],
+  'Camera': [
+    { name: 'Acme_Medical_Bill_Apr21.jpg',  date:'4/21/2026', group:'Today', type:'JPEG Image', size:'1,840 KB', icon:'image', thumb: BILL_THUMBS.acme      },
+    { name: 'CVS_Pharmacy_Apr21.jpg',       date:'4/21/2026', group:'Today', type:'JPEG Image', size:'980 KB',  icon:'image', thumb: BILL_THUMBS.cvs       },
+    { name: 'LabCorp_BloodWork_Apr21.jpg',  date:'4/21/2026', group:'Today', type:'JPEG Image', size:'1,120 KB',icon:'image', thumb: BILL_THUMBS.labcorp   },
+    { name: 'Aetna_EOB_Apr21.jpg',          date:'4/21/2026', group:'Today', type:'JPEG Image', size:'760 KB',  icon:'image', thumb: BILL_THUMBS.aetna     },
+    { name: 'NYP_Invoice_Apr21.jpg',        date:'4/21/2026', group:'Today', type:'JPEG Image', size:'1,340 KB',icon:'image', thumb: BILL_THUMBS.nyp       },
+    { name: 'Walgreens_Rx_Apr21.jpg',       date:'4/21/2026', group:'Today', type:'JPEG Image', size:'890 KB',  icon:'image', thumb: BILL_THUMBS.walgreens },
+    { name: 'Kashmir_01.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'4,200 KB', icon:'image', thumb:'https://picsum.photos/id/29/280/200'    },
+    { name: 'Kashmir_02.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'3,840 KB', icon:'image', thumb:'https://picsum.photos/id/137/280/200'   },
+    { name: 'Kashmir_03.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'3,960 KB', icon:'image', thumb:'https://picsum.photos/id/173/280/200'   },
+    { name: 'Kashmir_04.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'4,100 KB', icon:'image', thumb:'https://picsum.photos/id/188/280/200'   },
+    { name: 'Kashmir_05.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'3,840 KB', icon:'image', thumb:'https://picsum.photos/id/360/280/200'   },
+    { name: 'Kashmir_06.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'3,240 KB', icon:'image', thumb:'https://picsum.photos/id/1039/280/200'  },
+    { name: 'Kashmir_07.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'2,980 KB', icon:'image', thumb:'https://picsum.photos/id/547/280/200'   },
+    { name: 'Kashmir_08.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'4,400 KB', icon:'image', thumb:'https://picsum.photos/id/163/280/200'   },
+    { name: 'Kashmir_09.jpg',    date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'3,560 KB', icon:'image', thumb:'https://picsum.photos/id/684/280/200'   },
+    { name: 'IMG_9032323.jpg',   date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'2,960 KB', icon:'image', thumb:'https://picsum.photos/id/1015/280/200'  },
+    { name: 'IMG_9032323_2.jpg', date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'3,120 KB', icon:'image', thumb:'https://picsum.photos/id/292/280/200'   },
+    { name: 'IMG_9032324.jpg',   date:'4/20/2026', group:'Yesterday', type:'JPEG Image', size:'2,840 KB', icon:'image', thumb:'https://picsum.photos/id/431/280/200'   },
+    { name: 'IMG_20260419-001.jpg', date:'4/19/2026', group:'2 days ago', type:'JPEG Image', size:'3,540 KB', icon:'image', thumb:'https://picsum.photos/id/1011/280/200' },
+    { name: 'IMG_20260419-002.jpg', date:'4/19/2026', group:'2 days ago', type:'JPEG Image', size:'2,780 KB', icon:'image', thumb:'https://picsum.photos/id/1018/280/200' },
+    { name: 'IMG_20260419-003.jpg', date:'4/19/2026', group:'2 days ago', type:'JPEG Image', size:'4,100 KB', icon:'image', thumb:'https://picsum.photos/id/1044/280/200' },
+    { name: 'IMG_20260419-004.jpg', date:'4/19/2026', group:'2 days ago', type:'JPEG Image', size:'3,200 KB', icon:'image', thumb:'https://picsum.photos/id/1047/280/200' },
+    { name: 'IMG_20260419-005.jpg', date:'4/19/2026', group:'2 days ago', type:'JPEG Image', size:'2,900 KB', icon:'image', thumb:'https://picsum.photos/id/823/280/200'  },
+    { name: 'IMG_20260419-006.jpg', date:'4/19/2026', group:'2 days ago', type:'JPEG Image', size:'3,400 KB', icon:'image', thumb:'https://picsum.photos/id/11/280/200'   },
+    { name: 'IMG_20260419-007.jpg', date:'4/19/2026', group:'2 days ago', type:'JPEG Image', size:'3,100 KB', icon:'image', thumb:'https://picsum.photos/id/167/280/200'  },
+  ],
+  'Design Assets': [
+    { name: 'Icons Pack',          date: '4/18/2026 2:00 PM', type: 'File folder',      size: '',          icon: 'folder' },
+    { name: 'Wallpapers',          date: '4/10/2026 11:30 AM', type: 'File folder',     size: '',          icon: 'folder' },
+    { name: 'brand-guidelines.pdf', date: '4/5/2026 9:00 AM', type: 'Adobe PDF Document', size: '3,450 KB', icon: 'pdf'  },
+    { name: 'mockup-v3.fig',       date: '4/20/2026 6:30 PM', type: 'Figma File',       size: '12,800 KB', icon: 'figma'  },
+    { name: 'logo-final.png',      date: '3/30/2026 3:00 PM', type: 'PNG Image',        size: '450 KB',    icon: 'image'  },
+  ],
+};
+
+const PHOTO_ICON_HTML = _ic(`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.0476 22H2.95238C2.42857 22 2 21.5714 2 21.0476V2.95238C2 2.42857 2.42857 2 2.95238 2H21.0476C21.5714 2 22 2.42857 22 2.95238V21.0476C22 21.5714 21.5714 22 21.0476 22Z" fill="url(#pic0)"/><path d="M15 9C16.1046 9 17 8.10457 17 7C17 5.89543 16.1046 5 15 5C13.8954 5 13 5.89543 13 7C13 8.10457 13.8954 9 15 9Z" fill="#F2F2F2"/><path opacity="0.5" d="M22 17.0893V21.0179C22 21.2634 21.9037 21.5089 21.7111 21.7054C21.5185 21.9018 21.2778 22 21.037 22H9V16.5982L12.8519 12.6696L13.9111 11.5893C14.6815 10.8036 15.8852 10.8036 16.6556 11.5893L22 17.0893Z" fill="url(#pic1)"/><path d="M21 21.7153C20.8164 21.9051 20.587 22 20.3575 22H2.91787C2.41304 22 2 21.573 2 21.0511V14.4088L6.68117 9.56934C7.41547 8.81022 8.5628 8.81022 9.2971 9.56934L12.6015 12.9854L21 21.7153Z" fill="url(#pic2)"/><defs><linearGradient id="pic0" x1="18.6559" y1="23.5474" x2="5.3441" y2="0.490667" gradientUnits="userSpaceOnUse"><stop stop-color="#AE7FE2"/><stop offset="0.2054" stop-color="#8B8CE4"/><stop offset="0.6592" stop-color="#31ACE9"/><stop offset="0.7051" stop-color="#28AFEA"/></linearGradient><linearGradient id="pic1" x1="17.991" y1="23.9649" x2="11.5069" y2="12.9533" gradientUnits="userSpaceOnUse"><stop offset="0.2956" stop-color="#173A73"/><stop offset="0.4822" stop-color="#144381"/><stop offset="1" stop-color="#0C59A4"/></linearGradient><linearGradient id="pic2" x1="13.9818" y1="25.9709" x2="4.82407" y2="10.6278" gradientUnits="userSpaceOnUse"><stop offset="0.2956" stop-color="#173A73"/><stop offset="1" stop-color="#114A8B"/></linearGradient></defs></svg>`);
+const IMAGE_EXTS_RE = /\.(jpe?g|png|gif|webp|bmp|heic|tiff?|avif)$/i;
+
+const ICONS_HTML = {
+  folder: _ic(`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4L6.586 2.586C6.21101 2.2109 5.70239 2.00011 5.172 2H1C0.447715 2 0 2.44772 0 3V13C0 13.5523 0.447715 14 1 14H15C15.5523 14 16 13.5523 16 13V5C16 4.44772 15.5523 4 15 4H8Z" fill="#FFB900"/><path d="M8 4L6.586 5.414C6.21101 5.7891 5.70239 5.99989 5.172 6H0V13C0 13.5523 0.447715 14 1 14H15C15.5523 14 16 13.5523 16 13V5C16 4.44772 15.5523 4 15 4H8Z" fill="#FFD75E"/><path d="M8 4L6.586 5.414C6.21101 5.7891 5.70239 5.99989 5.172 6H0V13C0 13.5523 0.447715 14 1 14H15C15.5523 14 16 13.5523 16 13V5C16 4.44772 15.5523 4 15 4H8Z" fill="url(#fld0)"/><path d="M1 13.5C0.627 13.5 0.29 13.358 0.027 13.133C0.0877 13.6253 0.504 13.9962 1 14H15C15.505 14 15.905 13.62 15.973 13.133C15.711 13.359 15.373 13.5 15 13.5H1Z" fill="#BF5712"/><path opacity="0.4" d="M6.836 5.914L8.75 4H8L6.586 5.414C6.21101 5.7891 5.70239 5.99989 5.172 6H0V6.5H5.422C5.95239 6.49989 6.46101 6.2891 6.836 5.914Z" fill="white"/><defs><linearGradient id="fld0" x1="0" y1="4" x2="0" y2="14" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.01"/><stop offset="0.999" stop-color="#FFD75E" stop-opacity="0.3"/></linearGradient></defs></svg>`),
+  word:   _ic(`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3C2 1.89543 2.89543 1 4 1H10.5C12.433 1 14 2.567 14 4.5V13C14 14.1046 13.1046 15 12 15H5.5C3.567 15 2 13.433 2 11.5V3Z" fill="url(#wd0)"/><path d="M3 3C3 2.44772 3.44772 2 4 2H10.5C11.8807 2 13 3.11929 13 4.5V13C13 13.5523 12.5523 14 12 14H5.5C4.11929 14 3 12.8807 3 11.5V3Z" fill="url(#wd1)"/><path d="M3 3C3 2.44772 3.44772 2 4 2H10.5C11.8807 2 13 3.11929 13 4.5V13C13 13.5523 12.5523 14 12 14H5.5C4.11929 14 3 12.8807 3 11.5V3Z" fill="url(#wd2)"/><path d="M11 8.75391V11.2656C10.9999 11.6711 10.6711 11.9999 10.2656 12H8V10.5C8 9.44035 7.33992 8.53675 6.40918 8.17285L7.78613 6.33301L11 8.75391Z" fill="url(#wd3)"/><path d="M11 8.59863C11 9.00426 10.6712 9.3329 10.2656 9.33301H7.70996C7.29063 8.54056 6.45896 8 5.5 8H5V7.35059C5.00003 6.83132 5.41925 6.40953 5.93848 6.40625L10.3672 6.37988L11 6V8.59863Z" fill="url(#wd4)"/><path d="M11 8.59863C11 9.00426 10.6712 9.3329 10.2656 9.33301H7.70996C7.29063 8.54056 6.45896 8 5.5 8H5V7.35059C5.00003 6.83132 5.41925 6.40953 5.93848 6.40625L10.3672 6.37988L11 6V8.59863Z" fill="url(#wd5)" fill-opacity="0.6"/><path d="M11 8.59863C11 9.00426 10.6712 9.3329 10.2656 9.33301H7.70996C7.29063 8.54056 6.45896 8 5.5 8H5V7.35059C5.00003 6.83132 5.41925 6.40953 5.93848 6.40625L10.3672 6.37988L11 6V8.59863Z" fill="url(#wd6)" fill-opacity="0.1"/><path d="M10.2656 4C10.6712 4.0001 10.9999 4.32884 11 4.73438V5.93164C11 6.33727 10.6712 6.66689 10.2656 6.66699H6.18066C5.52866 6.66699 5 7.19565 5 7.84766V5.25879C5.00025 4.56369 5.56369 4.00025 6.25879 4H10.2656Z" fill="url(#wd7)"/><path d="M10.2656 4C10.6712 4.0001 10.9999 4.32884 11 4.73438V5.93164C11 6.33727 10.6712 6.66689 10.2656 6.66699H6.18066C5.52866 6.66699 5 7.19565 5 7.84766V5.25879C5.00025 4.56369 5.56369 4.00025 6.25879 4H10.2656Z" fill="url(#wd8)" fill-opacity="0.8"/><rect y="9" width="7" height="7" rx="1.5" fill="url(#wd9)"/><rect y="9" width="7" height="7" rx="1.5" fill="url(#wd10)" fill-opacity="0.65"/><path d="M6.21777 10.2354L5.24232 14.7636L4.07635 14.7642L3.50049 12.0469L2.89767 14.7642H1.72055L0.783203 10.2359H1.74463L2.323 13.2244L2.89767 10.2359H4.07635L4.67798 13.2244L5.24232 10.2359L6.21777 10.2354Z" fill="white"/><defs><linearGradient id="wd0" x1="5.875" y1="1" x2="8.06039" y2="15.0489" gradientUnits="userSpaceOnUse"><stop stop-color="#BBBBBB"/><stop offset="1" stop-color="#888888"/></linearGradient><linearGradient id="wd1" x1="5.77778" y1="2" x2="7.58707" y2="14.0619" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="#EBEBEB"/></linearGradient><radialGradient id="wd2" cx="0" cy="0" r="1" gradientTransform="matrix(5.27778 9.5 -7.91667 3.5625 6.19444 5.125)" gradientUnits="userSpaceOnUse"><stop offset="0.177083" stop-color="white"/><stop offset="1" stop-color="#EFEFEF"/></radialGradient><radialGradient id="wd3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10.6487 11.9998) scale(16.4943 4.39153)"><stop offset="0.180414" stop-color="#1657F4"/><stop offset="0.574542" stop-color="#0036C4"/></radialGradient><linearGradient id="wd4" x1="5.05357" y1="10.5085" x2="9.58697" y2="10.5085" gradientUnits="userSpaceOnUse"><stop stop-color="#66C0FF"/><stop offset="0.25606" stop-color="#0094F0"/></linearGradient><radialGradient id="wd5" cx="0" cy="0" r="1" gradientTransform="matrix(-3.9919 7.5407 -8.77446 -20.6153 10.9732 6.8649)" gradientUnits="userSpaceOnUse"><stop offset="0.140259" stop-color="#D471FF"/><stop offset="0.830508" stop-color="#509DF5" stop-opacity="0"/></radialGradient><radialGradient id="wd6" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10.1072 12.0074) rotate(90) scale(6.59516 20.0571)"><stop offset="0.283333" stop-color="#4F006F" stop-opacity="0"/><stop offset="1" stop-color="#4F006F"/></radialGradient><linearGradient id="wd7" x1="5.05357" y1="6.33333" x2="10.9718" y2="6.42525" gradientUnits="userSpaceOnUse"><stop stop-color="#9DEAFF"/><stop offset="0.201276" stop-color="#3BD5FF"/></linearGradient><radialGradient id="wd8" cx="0" cy="0" r="1" gradientTransform="matrix(-5.66748 1.40776 -3.55138 -14.3432 10.9732 4.56735)" gradientUnits="userSpaceOnUse"><stop offset="0.0606583" stop-color="#E4A7FE"/><stop offset="0.538869" stop-color="#E4A7FE" stop-opacity="0"/></radialGradient><radialGradient id="wd9" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(0 9) rotate(45) scale(9.89949)"><stop offset="0.0811439" stop-color="#367AF2"/><stop offset="0.871875" stop-color="#001A8F"/></radialGradient><radialGradient id="wd10" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(3.5 13.2) rotate(90) scale(4.9 5.58468)"><stop offset="0.586954" stop-color="#2763E5" stop-opacity="0"/><stop offset="0.973806" stop-color="#58AAFE"/></radialGradient></defs></svg>`),
+  pdf:    _ic(`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3C2 1.89543 2.89543 1 4 1H10.5C12.433 1 14 2.567 14 4.5V13C14 14.1046 13.1046 15 12 15H5.5C3.567 15 2 13.433 2 11.5V3Z" fill="url(#pdf0)"/><path d="M3 3C3 2.44772 3.44772 2 4 2H10.5C11.8807 2 13 3.11929 13 4.5V13C13 13.5523 12.5523 14 12 14H5.5C4.11929 14 3 12.8807 3 11.5V3Z" fill="url(#pdf1)"/><path d="M3 3C3 2.44772 3.44772 2 4 2H10.5C11.8807 2 13 3.11929 13 4.5V13C13 13.5523 12.5523 14 12 14H5.5C4.11929 14 3 12.8807 3 11.5V3Z" fill="url(#pdf2)"/><path d="M4.5 4C4.22386 4 4 4.22386 4 4.5V6.5C4 6.77614 4.22386 7 4.5 7C4.77614 7 5 6.77614 5 6.5V6C5.16334 6 5.39723 5.95511 5.60465 5.80577C5.83757 5.63807 6 5.36296 6 5C6 4.63704 5.83757 4.36193 5.60465 4.19423C5.39723 4.04489 5.16334 4 5 4H4.5Z" fill="#D20112"/><path d="M7 4.5C7 4.22386 7.22386 4 7.5 4H7.75C8.10409 4 8.46151 4.11075 8.70846 4.43101C8.93339 4.72272 9 5.10665 9 5.5C9 5.89335 8.93339 6.27728 8.70846 6.56899C8.46151 6.88925 8.10409 7 7.75 7H7.5C7.22386 7 7 6.77614 7 6.5V4.5Z" fill="#D20112"/><path d="M10 4.5C10 4.22386 10.2239 4 10.5 4H11.5C11.7761 4 12 4.22386 12 4.5C12 4.77614 11.7761 5 11.5 5H11.25C11.5261 5 11.75 5.22386 11.75 5.5C11.75 5.77614 11.5261 6 11.25 6H11V6.5C11 6.77614 10.7761 7 10.5 7C10.2239 7 10 6.77614 10 6.5V4.5Z" fill="#D20112"/><path d="M10.5 11C10.7761 11 11 11.2239 11 11.5C11 11.7761 10.7761 12 10.5 12H5.5C5.22386 12 5 11.7761 5 11.5C5 11.2239 5.22386 11 5.5 11H10.5Z" fill="url(#pdf3)"/><path d="M10.5 9C10.7761 9 11 9.22386 11 9.5C11 9.77614 10.7761 10 10.5 10H5.5C5.22386 10 5 9.77614 5 9.5C5 9.22386 5.22386 9 5.5 9H10.5Z" fill="url(#pdf4)"/><defs><linearGradient id="pdf0" x1="5.875" y1="1" x2="8.06039" y2="15.0489" gradientUnits="userSpaceOnUse"><stop stop-color="#BBBBBB"/><stop offset="1" stop-color="#888888"/></linearGradient><linearGradient id="pdf1" x1="5.77778" y1="2" x2="7.58707" y2="14.0619" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="#EBEBEB"/></linearGradient><radialGradient id="pdf2" cx="0" cy="0" r="1" gradientTransform="matrix(5.27778 9.5 -7.91667 3.5625 6.19444 5.125)" gradientUnits="userSpaceOnUse"><stop offset="0.177083" stop-color="white"/><stop offset="1" stop-color="#EFEFEF"/></radialGradient><linearGradient id="pdf3" x1="6.9375" y1="9" x2="7.14215" y2="12.0697" gradientUnits="userSpaceOnUse"><stop stop-color="#898989"/><stop offset="1" stop-color="#636262"/></linearGradient><linearGradient id="pdf4" x1="6.9375" y1="9" x2="7.14215" y2="12.0697" gradientUnits="userSpaceOnUse"><stop stop-color="#898989"/><stop offset="1" stop-color="#636262"/></linearGradient></defs></svg>`),
+  excel:  _ic(`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4C1 2.89543 1.89543 2 3 2H11.5C13.433 2 15 3.567 15 5.5V12C15 13.1046 14.1046 14 13 14H4.5C2.567 14 1 12.433 1 10.5V4Z" fill="url(#xl0)"/><path d="M2 4C2 3.44772 2.44772 3 3 3H11.5C12.8807 3 14 4.11929 14 5.5V12C14 12.5523 13.5523 13 13 13H4.5C3.11929 13 2 11.8807 2 10.5V4Z" fill="url(#xl1)"/><path d="M2 4C2 3.44772 2.44772 3 3 3H11.5C12.8807 3 14 4.11929 14 5.5V12C14 12.5523 13.5523 13 13 13H4.5C3.11929 13 2 11.8807 2 10.5V4Z" fill="url(#xl2)"/><path d="M11 11.333C11 11.7012 10.7012 12 10.333 12H8V10.5C8 9.11929 6.88071 8 5.5 8H5V6.5C5 5.94772 5.44772 5.5 6 5.5H11V11.333Z" fill="url(#xl3)"/><path d="M11 11.333C11 11.7012 10.7012 12 10.333 12H8V10.5C8 9.11929 6.88071 8 5.5 8H5V6.5C5 5.94772 5.44772 5.5 6 5.5H11V11.333Z" fill="url(#xl4)" fill-opacity="0.7"/><path d="M8.66504 7C8.29785 7.00022 8.00022 7.29785 8 7.66504V8.83301C8 9.05338 7.89137 9.24679 7.72656 9.36816C7.31336 8.55692 6.47282 8 5.5 8H5C5 7.44772 5.44772 7 6 7H8.66504Z" fill="url(#xl5)"/><path d="M8.66504 7C8.29785 7.00022 8.00022 7.29785 8 7.66504V8.83301C8 9.05338 7.89137 9.24679 7.72656 9.36816C7.31336 8.55692 6.47282 8 5.5 8H5C5 7.44772 5.44772 7 6 7H8.66504Z" fill="url(#xl6)" fill-opacity="0.3"/><rect y="9" width="7" height="7" rx="1.5" fill="url(#xl7)"/><rect y="9" width="7" height="7" rx="1.5" fill="url(#xl8)" fill-opacity="0.3"/><path d="M9 7H6.25C5.64529 7 5.14124 7.42948 5.02539 8H5V5.33301C5.00018 4.59689 5.59689 4.00018 6.33301 4H9V7Z" fill="url(#xl9)"/><path d="M9 7H6.25C5.64529 7 5.14124 7.42948 5.02539 8H5V5.33301C5.00018 4.59689 5.59689 4.00018 6.33301 4H9V7Z" fill="url(#xl10)"/><path d="M9 7H6.25C5.64529 7 5.14124 7.42948 5.02539 8H5V5.33301C5.00018 4.59689 5.59689 4.00018 6.33301 4H9V7Z" fill="url(#xl11)"/><path d="M11 4.66667C11 4.29848 10.7015 4 10.3333 4H8.66667C8.29848 4 8 4.29848 8 4.66667L8 6.33333C8 6.70152 8.29848 7 8.66667 7H10.3333C10.7015 7 11 6.70152 11 6.33333L11 4.66667Z" fill="url(#xl12)"/><path d="M5.80371 15H4.45261L3.60425 13.4066C3.57399 13.3508 3.55072 13.3066 3.53442 13.2741C3.52046 13.2392 3.50533 13.1997 3.48904 13.1555H3.47507C3.45413 13.2113 3.43434 13.2566 3.41572 13.2915C3.3971 13.3264 3.37499 13.3694 3.34939 13.4205L2.4696 15H1.19531L2.72446 12.4965L1.30005 10H2.63369L3.38779 11.4226C3.41805 11.4807 3.44365 11.5318 3.4646 11.576C3.48787 11.6179 3.51115 11.6678 3.53442 11.7259H3.54839C3.58097 11.6585 3.60657 11.6051 3.62519 11.5656C3.64614 11.526 3.67407 11.4737 3.70898 11.4086L4.49102 10H5.76182L4.31646 12.4582L5.80371 15Z" fill="white"/><defs><linearGradient id="xl0" x1="5.52083" y1="2" x2="6.91218" y2="14.1743" gradientUnits="userSpaceOnUse"><stop stop-color="#BBBBBB"/><stop offset="1" stop-color="#888888"/></linearGradient><linearGradient id="xl1" x1="5.33333" y1="3" x2="6.39244" y2="13.1675" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="#EBEBEB"/></linearGradient><radialGradient id="xl2" cx="0" cy="0" r="1" gradientTransform="matrix(6.33333 7.91667 -9.5 2.96875 5.83333 5.60417)" gradientUnits="userSpaceOnUse"><stop offset="0.177083" stop-color="white"/><stop offset="1" stop-color="#EFEFEF"/></radialGradient><radialGradient id="xl3" cx="0" cy="0" r="1" gradientTransform="matrix(-6.13889 -6.68056 5.17263 -4.75127 11.5 12.5417)" gradientUnits="userSpaceOnUse"><stop offset="0.0647233" stop-color="#379539"/><stop offset="0.422149" stop-color="#297C2D"/><stop offset="0.703448" stop-color="#15561C"/></radialGradient><radialGradient id="xl4" cx="0" cy="0" r="1" gradientTransform="matrix(-2.59549 -2.59549 2.00967 -2.00885 6.98611 7.84722)" gradientUnits="userSpaceOnUse"><stop stop-color="#073B10"/><stop offset="0.992234" stop-color="#084A13" stop-opacity="0"/></radialGradient><linearGradient id="xl5" x1="3.97374" y1="10.611" x2="8.13986" y2="10.611" gradientUnits="userSpaceOnUse"><stop stop-color="#52D17C"/><stop offset="0.328512" stop-color="#4AA647"/></linearGradient><linearGradient id="xl6" x1="8.05378" y1="7" x2="8.05378" y2="12.0163" gradientUnits="userSpaceOnUse"><stop stop-color="#29852F"/><stop offset="0.499968" stop-color="#4AA647" stop-opacity="0"/></linearGradient><radialGradient id="xl7" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(0 9) rotate(45) scale(9.8995 28.1812)"><stop stop-color="#20A85E"/><stop offset="0.94375" stop-color="#09442A"/></radialGradient><radialGradient id="xl8" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(3.5 13.2) rotate(90) scale(4.9 5.64375)"><stop offset="0.580357" stop-color="#33A662" stop-opacity="0"/><stop offset="0.973806" stop-color="#98F0B0"/></radialGradient><linearGradient id="xl9" x1="5.14734" y1="8.53249" x2="9.82354" y2="5.6314" gradientUnits="userSpaceOnUse"><stop stop-color="#66D052"/><stop offset="1" stop-color="#85E972"/></linearGradient><radialGradient id="xl10" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(8.856 6.38077) rotate(-180) scale(2.00418 5.9319)"><stop offset="0.292495" stop-color="#4EB43B"/><stop offset="1" stop-color="#72CC61" stop-opacity="0"/></radialGradient><linearGradient id="xl11" x1="6.80326" y1="6.60721" x2="5" y2="6.60721" gradientUnits="userSpaceOnUse"><stop offset="0.183694" stop-color="#C0E075" stop-opacity="0"/><stop offset="1" stop-color="#D1EB95"/></linearGradient><radialGradient id="xl12" cx="0" cy="0" r="1" gradientTransform="matrix(-3.38219 -3.13486 2.77388 -3.82234 11.3822 7.13486)" gradientUnits="userSpaceOnUse"><stop offset="0.439983" stop-color="#79E96D"/><stop offset="1" stop-color="#D0EB76"/></radialGradient></defs></svg>`),
+  ppt:    `<div style="width:16px;height:16px;background:#c43e1c;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff">P</div>`,
+  image:  PHOTO_ICON_HTML,
+  text:   `<svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="1" width="12" height="14" rx="1.5" fill="#e8e8e8" stroke="#ccc" stroke-width="0.5"/><line x1="4" y1="5" x2="12" y2="5" stroke="#aaa" stroke-width="1"/><line x1="4" y1="7.5" x2="12" y2="7.5" stroke="#aaa" stroke-width="1"/><line x1="4" y1="10" x2="9" y2="10" stroke="#aaa" stroke-width="1"/></svg>`,
+  figma:  `<div style="width:16px;height:16px;background:#1a1a1a;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff">F</div>`,
+  app:    `<div style="width:16px;height:16px;background:#555;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff">EXE</div>`,
+};
+
+const folderWin   = document.getElementById('folder-window');
+const fwTabName   = document.getElementById('fw-tab-name');
+const fwFolderName = document.getElementById('fw-folder-name');
+const fwSearchInput = document.getElementById('fw-search-input');
+const fwFileList  = document.getElementById('fw-file-list');
+const fwStatusText = document.getElementById('fw-status-text');
+
+const FW_SB_MAP = {
+  'Documents':    'fw-sb-documents',
+  'Projects':     'fw-sb-projects',
+  'Downloads':    'fw-sb-downloads',
+  'Design Assets': 'fw-sb-design',
+  'Camera':       'fw-sb-phone',
+};
+
+function openFolder(name) {
+  const items = FOLDER_DATA[name];
+  if (!items) return;
+
+  fwTabName.textContent = name === 'Camera' ? 'Jack\'s Android' : name;
+  fwFolderName.innerHTML = name === 'Camera'
+    ? `<span style="color:#999">Connected</span>&nbsp;<span class="fw-breadcrumb-sep">›</span>&nbsp;Jack's Android&nbsp;<span class="fw-breadcrumb-sep">›</span>&nbsp;Internal storage&nbsp;<span class="fw-breadcrumb-sep">›</span>&nbsp;<strong style="font-weight:500">Camera</strong>`
+    : name;
+  fwSearchInput.placeholder = `Search ${name}`;
+  fwStatusText.textContent = `${items.length} items`;
+  fwFileList.innerHTML = '';
+
+  // Track selected items across this folder open
+  const selectedItems = new Set();
+
+  function updateStatus() {
+    const n = selectedItems.size;
+    fwStatusText.textContent = n > 0 ? `${n} item${n > 1 ? 's' : ''} selected` : `${items.length} items`;
+  }
+
+  if (name === 'Camera') {
+    /* ── Thumbnail / gallery view ── */
+    document.querySelector('.fw-list-header').style.display = 'none';
+    const grid = document.createElement('div');
+    grid.className = 'fw-thumb-grid';
+
+    // Group by section
+    const groups = {};
+    items.forEach(item => {
+      const g = item.group || 'Files';
+      (groups[g] = groups[g] || []).push(item);
+    });
+
+    Object.entries(groups).forEach(([groupName, groupItems]) => {
+      const secHeader = document.createElement('div');
+      secHeader.className = 'fw-thumb-section';
+      secHeader.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="2,4 6,8 10,4"/></svg> ${groupName}`;
+      grid.appendChild(secHeader);
+
+      const row = document.createElement('div');
+      row.className = 'fw-thumb-row';
+
+      groupItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'fw-thumb-item';
+        card.innerHTML = `
+          <div class="fw-thumb-check">✓</div>
+          <div class="fw-thumb-preview"><img src="${item.thumb}" loading="lazy" alt="${item.name}"></div>
+          <div class="fw-thumb-name">${item.name}</div>`;
+
+        // Clicking the checkbox circle toggles selection without clearing others
+        card.querySelector('.fw-thumb-check').addEventListener('click', e => {
+          e.stopPropagation();
+          const isSelected = card.classList.toggle('selected');
+          isSelected ? selectedItems.add(item) : selectedItems.delete(item);
+          updateStatus();
+        });
+
+        card.addEventListener('click', e => {
+          if (e.ctrlKey || e.metaKey) {
+            const isSelected = card.classList.toggle('selected');
+            isSelected ? selectedItems.add(item) : selectedItems.delete(item);
+          } else if (!card.classList.contains('selected')) {
+            document.querySelectorAll('.fw-thumb-item.selected').forEach(c => c.classList.remove('selected'));
+            selectedItems.clear();
+            card.classList.add('selected');
+            selectedItems.add(item);
+          } else {
+            card.classList.remove('selected');
+            selectedItems.delete(item);
+          }
+          updateStatus();
+        });
+
+        card.draggable = true;
+        card.addEventListener('dragstart', e => {
+          const toSend = selectedItems.size > 0 ? [...selectedItems] : [item];
+          e.dataTransfer.setData('application/x-fw-file', JSON.stringify({
+            name: item.name, iconHtml: ICONS_HTML[item.icon] || ICONS_HTML.text,
+            allSelected: toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text }))
+          }));
+          e.dataTransfer.effectAllowed = 'copy';
+          e.dataTransfer.setDragImage(_emptyDragImg, 0, 0);
+          buildFwGhost(toSend.map(i => ({ iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text })));
+        });
+        row.appendChild(card);
+      });
+      grid.appendChild(row);
+    });
+
+    fwFileList.appendChild(grid);
+  } else {
+    /* ── List view ── */
+    document.querySelector('.fw-list-header').style.display = '';
+    items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'fw-file-row';
+      row.innerHTML = `
+        <div class="fw-row-check">✓</div>
+        <div class="fw-col-name">
+          <span class="fw-file-icon">${ICONS_HTML[item.icon] || ICONS_HTML.text}</span>
+          <span class="fw-file-name">${item.name}</span>
+        </div>
+        <div class="fw-col-date">${item.date}</div>
+        <div class="fw-col-type">${item.type}</div>
+        <div class="fw-col-size">${item.size}</div>`;
+
+      row.querySelector('.fw-row-check').addEventListener('click', e => {
+        e.stopPropagation();
+        const isSel = row.classList.toggle('selected');
+        isSel ? selectedItems.add(item) : selectedItems.delete(item);
+        updateStatus();
+      });
+
+      row.addEventListener('click', e => {
+        if (e.ctrlKey || e.metaKey) {
+          const isSel = row.classList.toggle('selected');
+          isSel ? selectedItems.add(item) : selectedItems.delete(item);
+        } else if (!row.classList.contains('selected')) {
+          document.querySelectorAll('.fw-file-row.selected').forEach(r => r.classList.remove('selected'));
+          selectedItems.clear();
+          row.classList.add('selected');
+          selectedItems.add(item);
+        } else {
+          row.classList.remove('selected');
+          selectedItems.delete(item);
+        }
+        updateStatus();
+      });
+
+      row.draggable = true;
+      row.addEventListener('dragstart', e => {
+        const toSend = selectedItems.size > 0 ? [...selectedItems] : [item];
+        e.dataTransfer.setData('application/x-fw-file', JSON.stringify({
+          name: item.name, iconHtml: ICONS_HTML[item.icon] || ICONS_HTML.text,
+          allSelected: toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text }))
+        }));
+        e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setDragImage(_emptyDragImg, 0, 0);
+        buildFwGhost(toSend.map(i => ({ iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text })));
+      });
+      fwFileList.appendChild(row);
+    });
+  }
+
+  // Highlight sidebar
+  document.querySelectorAll('.fw-sb-item').forEach(el => el.classList.remove('active'));
+  const sbId = FW_SB_MAP[name];
+  if (sbId) document.getElementById(sbId)?.classList.add('active');
+
+  folderWin.classList.add('open');
+}
+
+// Double-click folder icons to open
+document.querySelectorAll('.d-icon').forEach(ic => {
+  if (!ic.querySelector('.folder-thumb')) return;
+  ic.addEventListener('dblclick', e => {
+    e.stopPropagation();
+    const label = ic.querySelector('span:last-child')?.textContent?.trim() || '';
+    openFolder(label);
+  });
+});
+
+// Close buttons
+['fw-btn-close', 'fw-tab-close'].forEach(id => {
+  document.getElementById(id)?.addEventListener('click', () => folderWin.classList.remove('open'));
+});
+
+// Sidebar folder shortcuts
+document.getElementById('fw-sb-phone')?.addEventListener('click', () => openFolder('Camera'));
+document.getElementById('fw-sb-projects')?.addEventListener('click', () => openFolder('Projects'));
+document.getElementById('fw-sb-downloads')?.addEventListener('click', () => openFolder('Downloads'));
+document.getElementById('fw-sb-documents')?.addEventListener('click', () => openFolder('Documents'));
+document.getElementById('fw-sb-design')?.addEventListener('click', () => openFolder('Design Assets'));
+
+// File Explorer taskbar button opens phone camera folder
+document.querySelector('[data-app="explorer"]')?.addEventListener('click', () => openFolder('Camera'));
+
+// Drag window by tab bar
+let fwDrag = false, fwDragOx = 0, fwDragOy = 0;
+document.getElementById('fw-tabs')?.addEventListener('mousedown', e => {
+  if (e.target.closest('button')) return;
+  const r = folderWin.getBoundingClientRect();
+  folderWin.style.transform = 'none';
+  folderWin.style.left = r.left + 'px';
+  folderWin.style.top  = r.top  + 'px';
+  fwDragOx = e.clientX - r.left;
+  fwDragOy = e.clientY - r.top;
+  fwDrag = true;
+  e.preventDefault();
+});
+window.addEventListener('mousemove', e => {
+  if (!fwDrag) return;
+  folderWin.style.left = (e.clientX - fwDragOx) + 'px';
+  folderWin.style.top  = (e.clientY - fwDragOy) + 'px';
+});
+window.addEventListener('mouseup', () => { fwDrag = false; });
+
+/* ── Held files: sync holding state ── */
+(function () {
+  const bar      = document.querySelector('.search-bar');
+  const composer = document.getElementById('search-composer');
+  const chips    = document.getElementById('composer-chips');
+
+  function addFileChipToComposer(name, iconHtml) {
+    // Deduplicate
+    const dupe = [...chips.querySelectorAll('.file-chip-name')].find(el => el.textContent === name);
+    if (dupe) return;
+
+    const resolvedIcon = IMAGE_EXTS_RE.test(name)
+      ? PHOTO_ICON_HTML
+      : (iconHtml || '<span style="font-size:14px;flex-shrink:0">📄</span>');
+
+    const chip = document.createElement('div');
+    chip.className = 'file-chip';
+    chip.innerHTML = resolvedIcon
+      + `<span class="file-chip-name">${name}</span>`
+      + `<button class="file-chip-remove" title="Remove">✕</button>`;
+    chip.querySelector('.file-chip-remove').addEventListener('click', () => {
+      chip.remove();
+      trimChips();
+      if (!chips.querySelector('.file-chip')) {
+        chips.classList.remove('visible');
+        document.getElementById('composer-divider').classList.remove('visible');
+      }
+    });
+    chips.appendChild(chip);
+    trimChips();
+    chips.classList.add('visible');
+    document.getElementById('composer-divider').classList.add('visible');
+  }
+
+  function syncHoldingState() {
+    const count   = chips.querySelectorAll('.file-chip').length;
+    const isOpen  = composer.classList.contains('open');
+    const holding = count > 0 && !isOpen;
+
+    bar.classList.toggle('holding', holding);
+
+    const countEl   = document.getElementById('holding-count');
+    const bannerEl  = document.getElementById('fw-held-banner');
+    const bannerTxt = document.getElementById('fw-held-banner-text');
+    const label     = `${count} file${count !== 1 ? 's' : ''}`;
+
+    if (holding) {
+      if (countEl)   countEl.textContent   = `Holding ${label}`;
+      if (bannerTxt) bannerTxt.textContent = `${label} in Copilot`;
+      bannerEl?.classList.add('visible');
+    } else {
+      bannerEl?.classList.remove('visible');
+    }
+  }
+
+  // Watch chips for add/remove and composer for open/close
+  new MutationObserver(syncHoldingState).observe(chips, { childList: true });
+  new MutationObserver(syncHoldingState).observe(composer, { attributes: true, attributeFilter: ['class'] });
+
+  // Clicking the banner re-opens the composer
+  document.getElementById('fw-held-banner')?.addEventListener('click', () => {
+    composer.classList.add('open');
+    document.getElementById('composer-input').focus();
+  });
+
+  /* ── Folder-window custom drag ghost ── */
+  let fwDragGhost = null;
+  const _emptyDragImg = document.createElement('canvas');
+
+  function buildFwGhost(items) {
+    fwDragGhost?.remove();
+    const ghost = document.createElement('div');
+    ghost.className = 'drag-ghost';
+    ghost.style.cssText = 'left:-200px;top:-200px;';
+
+    const plate = document.createElement('div');
+    plate.className = 'drag-ghost-plate';
+    const stack = document.createElement('div');
+    stack.className = 'drag-icon-stack';
+
+    const n = Math.min(items.length, 3);
+    for (let i = 0; i < n; i++) {
+      const item = document.createElement('div');
+      item.className = 'drag-icon-item';
+      item.innerHTML = items[i].iconHtml || ICONS_HTML.text;
+      stack.appendChild(item);
+    }
+    plate.appendChild(stack);
+    if (items.length > 1) {
+      const badge = document.createElement('div');
+      badge.className = 'drag-count-badge';
+      badge.textContent = items.length;
+      plate.appendChild(badge);
+    }
+    ghost.appendChild(plate);
+    document.body.appendChild(ghost);
+    fwDragGhost = ghost;
+  }
+
+  document.addEventListener('dragover', e => {
+    if (fwDragGhost) {
+      fwDragGhost.style.left = (e.clientX - 40) + 'px';
+      fwDragGhost.style.top  = (e.clientY - 40) + 'px';
+    }
+  });
+  document.addEventListener('dragend', () => {
+    fwDragGhost?.remove();
+    fwDragGhost = null;
+  });
+
+  // HTML5 drag from folder window → drop on search bar
+  bar.addEventListener('dragenter', e => {
+    if ([...e.dataTransfer.types].includes('application/x-fw-file')) {
+      e.preventDefault();
+      bar.classList.add('drag-over');
+    }
+  });
+  bar.addEventListener('dragover', e => {
+    if ([...e.dataTransfer.types].includes('application/x-fw-file')) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+    }
+  });
+  bar.addEventListener('dragleave', e => {
+    // Only remove drag-over if the cursor genuinely left the bar (not just a child element)
+    if (!bar.contains(e.relatedTarget)) {
+      bar.classList.remove('drag-over');
+    }
+  });
+  bar.addEventListener('drop', e => {
+    e.preventDefault();
+    bar.classList.remove('drag-over');
+    const raw = e.dataTransfer.getData('application/x-fw-file');
+    if (!raw) return;
+    const { name, iconHtml, allSelected } = JSON.parse(raw);
+    if (allSelected && allSelected.length > 1) {
+      allSelected.forEach(f => addFileChipToComposer(f.name, f.iconHtml));
+    } else {
+      addFileChipToComposer(name, iconHtml);
+    }
+    composer.classList.add('open');
+    document.getElementById('composer-input').focus();
+  });
+})();
 
 /* ── Hover Variant Switcher ── */
 const HV_DESCS = {
