@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Windows 11 Taskbar</title>
+  <title>Jack's Android</title>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -69,33 +69,26 @@
     }
     .drag-ghost-plate {
       position: relative;
-      width: 80px; height: 80px;
+      width: 88px; height: 88px;
       background: rgba(255,255,255,0.50);
-      border-radius: 18px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.5);
+      border-radius: 22px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.18);
       display: flex; align-items: center; justify-content: center;
     }
     .drag-icon-stack {
-      position: relative;
-      width: 60px; height: 60px;
+      display: flex; align-items: center; justify-content: center;
+      width: 64px; height: 64px;
     }
     .drag-icon-item {
-      position: absolute;
-      width: 52px; height: 52px;
-      top: 50%; left: 50%;
-      transform-origin: center center;
       display: flex; align-items: center; justify-content: center;
+      width: 64px; height: 64px;
     }
-    .drag-icon-item:nth-child(1) { transform: translate(-50%,-50%) rotate(-12deg) scale(0.80); filter: brightness(0.88); z-index: 1; }
-    .drag-icon-item:nth-child(2) { transform: translate(-50%,-50%) rotate(-5deg)  scale(0.90); filter: brightness(0.94); z-index: 2; }
-    .drag-icon-item:nth-child(3) { transform: translate(-50%,-50%) rotate(0deg)   scale(1.00);                            z-index: 3; }
-    .drag-icon-item:only-child   { transform: translate(-50%,-50%) rotate(0deg)   scale(1.00); filter: none;              z-index: 1; }
     .drag-icon-item .folder-thumb,
-    .drag-icon-item .pdf-file-thumb { width: 52px !important; height: 52px !important; background-size: contain; }
-    .drag-icon-item .ppt-file-thumb { width: 52px !important; height: 52px !important; background: none !important; border: none !important; border-radius: 0 !important; overflow: visible !important; box-shadow: none !important; }
+    .drag-icon-item .pdf-file-thumb { width: 64px !important; height: 64px !important; background-size: contain; }
+    .drag-icon-item .ppt-file-thumb { width: 64px !important; height: 64px !important; background: none !important; border: none !important; border-radius: 0 !important; overflow: visible !important; box-shadow: none !important; }
     .drag-icon-item .ppt-file-thumb::before { display: none !important; }
-    .drag-icon-item img { width: 52px !important; height: 52px !important; object-fit: contain; filter: none; }
-    .drag-icon-item .img-file-thumb { width: 52px !important; height: 40px !important; }
+    .drag-icon-item img { width: 64px !important; height: 64px !important; object-fit: contain; filter: none; }
+    .drag-icon-item .img-file-thumb { width: 64px !important; height: 48px !important; }
     .drag-count-badge {
       position: absolute;
       top: -9px; right: -9px;
@@ -228,6 +221,106 @@
       background-position: center;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22));
     }
+    /* Word file icon */
+    .word-file-thumb {
+      width: 40px; height: 48px;
+      background: #fff;
+      border-radius: 2px 8px 2px 2px;
+      position: relative;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .word-file-thumb::before {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 0; height: 0;
+      border-left: 9px solid rgba(0,0,0,0.12);
+      border-bottom: 9px solid transparent;
+    }
+    .word-file-thumb::after {
+      content: 'W';
+      font-size: 20px; font-weight: 700;
+      color: #185abd;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      position: relative; z-index: 1;
+    }
+    .drag-icon-item .word-file-thumb { width: 64px !important; height: 64px !important; background: none !important; border: none !important; border-radius: 0 !important; overflow: visible !important; box-shadow: none !important; }
+    .drag-icon-item .word-file-thumb::before { display: none !important; }
+
+    /* ═══════════════════════════════════════════════════════ */
+    /*  WORD VIEWER                                            */
+    /* ═══════════════════════════════════════════════════════ */
+    #word-viewer {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 48px; z-index: 9500;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.35);
+      pointer-events: none;
+    }
+    #word-viewer.open { display: flex; }
+    .wv-window {
+      pointer-events: auto;
+      user-select: text;
+      width: min(860px, 94vw); height: min(580px, 88vh);
+      background: #f3f3f3;
+      border-radius: 6px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.38);
+      overflow: hidden;
+      font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+      animation: wvIn 0.18s ease;
+    }
+    @keyframes wvIn { from { transform: scale(0.97); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .wv-titlebar {
+      height: 32px; background: #185abd; color: #fff;
+      display: flex; align-items: center; padding: 0 12px;
+      flex-shrink: 0; gap: 8px; user-select: none;
+    }
+    .wv-tb-icon {
+      width: 18px; height: 18px; background: #fff; color: #185abd;
+      border-radius: 2px; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; flex-shrink: 0;
+    }
+    .wv-tb-name { font-size: 12px; flex: 1; opacity: 0.92; }
+    .wv-tb-btns { display: flex; gap: 0; margin-left: auto; }
+    .wv-tb-btn {
+      width: 46px; height: 32px; background: none; border: none;
+      color: #fff; font-size: 11px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; opacity: 0.8;
+    }
+    .wv-tb-btn:hover { background: rgba(255,255,255,0.15); opacity: 1; }
+    .wv-tb-btn.close:hover { background: #c42b1c; opacity: 1; }
+    .wv-ribbon {
+      height: 28px; background: #fff; border-bottom: 1px solid #d0d0d0;
+      display: flex; align-items: center; padding: 0 12px; gap: 2px; flex-shrink: 0;
+    }
+    .wv-tab {
+      padding: 4px 12px; font-size: 12px; color: #444; cursor: pointer;
+      border-radius: 3px; user-select: none;
+    }
+    .wv-tab:hover { background: rgba(0,0,0,0.06); }
+    .wv-tab.active { color: #185abd; border-bottom: 2px solid #185abd; border-radius: 0; }
+    .wv-body {
+      flex: 1; overflow-y: auto; background: #f3f3f3;
+      display: flex; justify-content: center; align-items: flex-start; padding: 24px 16px;
+    }
+    .wv-page {
+      width: 680px; background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      padding: 72px 80px; padding-bottom: 96px;
+    }
+    .wv-content { color: #1a1a1a; line-height: 1.7; user-select: text; cursor: text; }
+    .wv-content h1 { font-size: 22px; font-weight: 700; color: #185abd; margin-bottom: 6px; }
+    .wv-content h2 { font-size: 14px; font-weight: 600; color: #185abd; margin: 22px 0 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .wv-content p { font-size: 13.5px; margin-bottom: 12px; color: #333; }
+    .wv-content ul { font-size: 13.5px; color: #333; padding-left: 20px; margin-bottom: 12px; }
+    .wv-content ul li { margin-bottom: 4px; }
+    .wv-content .meta { font-size: 11px; color: #999; margin-bottom: 28px; border-bottom: 1px solid #eee; padding-bottom: 16px; }
+    .wv-drag-hint {
+      font-size: 11px; color: #aaa; text-align: center;
+      margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0;
+      user-select: none;
+    }
+
     /* Image file icon */
     .img-file-thumb {
       border-radius: 3px;
@@ -256,7 +349,8 @@
       border-top: 1px solid rgba(0,0,0,0.12);
       display: flex;
       align-items: center;
-      z-index: 9000;
+      z-index: 9100;
+      pointer-events: auto;
     }
 
     /* ── Left / Right wrappers ─────────────────────────────── */
@@ -491,6 +585,8 @@
     .search-bar.no-drop .search-divider,
     .search-bar.no-drop .drop-mode-label { display: none !important; }
     .search-bar.no-drop .no-drop-label { display: flex; }
+    .search-bar.no-drop::after,
+    .search-bar.no-drop::before { content: none !important; }
     /* Ghost dims + shows prohibition badge */
     .drag-ghost.no-drop { opacity: 0.45; filter: grayscale(0.3); }
     .drag-ghost.no-drop::after {
@@ -528,6 +624,12 @@
       user-select: none;
     }
     #folder-window.open { display: flex; }
+    #folder-window.minimizing {
+      transition: transform 0.22s cubic-bezier(0.4,0,1,1), opacity 0.22s ease;
+      transform: translateY(calc(100vh - 50% + 60px)) scaleY(0.1) !important;
+      opacity: 0;
+      pointer-events: none;
+    }
 
     /* Tab bar */
     .fw-tabs {
@@ -621,7 +723,7 @@
       overflow: hidden;
     }
     .fw-breadcrumb:hover { border-color: rgba(0,0,0,0.12); background: rgba(0,0,0,0.03); }
-    .fw-breadcrumb-sep { color: #999; font-size: 10px; }
+    .fw-breadcrumb-sep { color: #999; font-size: 10px; margin: 0 5px; }
     .fw-search-box {
       display: flex;
       align-items: center;
@@ -801,7 +903,9 @@
       width: 104px; height: 80px;
       border-radius: 5px; overflow: hidden; background: #e0e0e0; flex-shrink: 0;
     }
-    .fw-thumb-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .fw-thumb-preview img { width: 100%; height: 100%; object-fit: cover; display: block; -webkit-user-drag: none; pointer-events: none; }
+    #folder-window img { -webkit-user-drag: none; }
+    #folder-window * { user-select: none; }
     .fw-thumb-name {
       font-size: 10.5px; color: #1a1a1a; text-align: center;
       max-width: 104px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -866,6 +970,10 @@
     .search-bar.holding.drag-over { outline: none !important; box-shadow: none !important; overflow: visible !important; }
     .search-bar.holding.drag-over .holding-label { display: none !important; }
     .search-bar.holding.drag-over .drop-mode-label { display: flex !important; }
+    /* App dragged over held bar — show no-drop instead, suppress both other labels */
+    .search-bar.holding.drag-over.no-drop .drop-mode-label { display: none !important; }
+    .search-bar.holding.drag-over.no-drop .holding-label { display: none !important; }
+    .search-bar.holding.drag-over.no-drop .no-drop-label { display: flex !important; }
 
     /* Folder window held-files banner */
     #fw-held-banner {
@@ -885,8 +993,10 @@
     #fw-held-banner:hover { background: rgba(0,103,192,0.16); }
     #fw-held-banner.visible { display: flex; }
     #fw-held-banner .banner-arrow { margin-left: auto; opacity: 0.6; font-size: 11px; }
-    .fw-file-row[draggable="true"] { cursor: grab; }
-    .fw-file-row[draggable="true"]:hover::after {
+    .fw-file-row { cursor: grab; }
+    .fw-file-row.fw-dragging,
+    .fw-thumb-card.fw-dragging { opacity: 0.3; }
+    .fw-file-row:hover::after {
       content: '⠿';
       position: absolute;
       right: 8px;
@@ -1011,6 +1121,7 @@
       width: 100%;
       border: none;
       outline: none;
+      padding: 10px 0;
       background: transparent;
       font-size: 13px;
       color: #1a1a1a;
@@ -1105,6 +1216,34 @@
       user-select: none;
     }
     .file-chip-more:hover { background: rgba(0,120,212,0.15); }
+    .composer-skip-notice {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 7px 10px;
+      background: #fff8ec;
+      border: 1px solid rgba(200,130,0,0.25);
+      border-radius: 8px;
+      font-size: 11.5px;
+      color: #8a5800;
+      line-height: 1.35;
+    }
+    .composer-skip-notice.visible { display: flex; }
+    .composer-skip-notice-icon { font-size: 13px; flex-shrink: 0; }
+    .composer-skip-notice-dismiss {
+      margin-left: auto;
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: rgba(138,88,0,0.5);
+      padding: 0 2px;
+      line-height: 1;
+      transition: color 0.12s;
+    }
+    .composer-skip-notice-dismiss:hover { color: #8a5800; }
 
     /* Chip overflow menu */
     #chip-overflow-menu {
@@ -1157,6 +1296,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      padding: 6px 0;
     }
     .composer-add-btn {
       width: 28px; height: 28px;
@@ -1257,6 +1397,7 @@
       border-radius: 5px;
       overflow: hidden;
       height: 130px;
+      cursor: pointer;
     }
     .fake-win {
       width: 100%; height: 100%;
@@ -1525,6 +1666,420 @@
         border-color: transparent;
       }
     }
+    /* F: holding state matches blue hover */
+    body[data-hv="f"] .search-bar.holding {
+      background: rgba(240,247,255,0.88);
+      border: 1px solid transparent;
+      outline: none;
+      box-shadow: none;
+    }
+    body[data-hv="f"] .search-bar.holding::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      pointer-events: none;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='3 2'/%3E%3C/svg%3E")
+        center / 100% 100% no-repeat;
+    }
+    body[data-hv="f"] .search-bar.holding .holding-label {
+      color: #0078d4;
+    }
+
+    /* H: thick dashed gradient border on hover — same base look as A */
+    @media (hover: hover) {
+      body[data-hv="h"] .search-bar.drop-mode:hover::after,
+      body[data-hv="h"] .search-bar.drop-mode.drag-over::after {
+        content: '';
+        position: absolute; inset: -3px; border-radius: 23px; pointer-events: none;
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='238' height='40' viewBox='0 0 238 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%234f8ef7'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1.5' y='1.5' width='235' height='37' rx='21.5' fill='none' stroke='url(%23g)' stroke-width='3' stroke-dasharray='7 4'/%3E%3C/svg%3E")
+          center / 100% 100% no-repeat !important;
+      }
+    }
+
+    /* I: pulsating dashed gradient border on hover — same base look as A */
+    @keyframes dashBorderPulse {
+      0%, 100% { opacity: 0.35; }
+      50%       { opacity: 1; }
+    }
+    @keyframes dashGlowPulse {
+      0%, 100% {
+        box-shadow: 0 2px 12px rgba(100,80,200,0.12), 0 0 0 3px rgba(139,110,245,0.10);
+        outline-color: #8b6ef5;
+      }
+      50% {
+        box-shadow: 0 4px 22px rgba(100,80,200,0.30), 0 0 0 5px rgba(139,110,245,0.26);
+        outline-color: #a855f7;
+      }
+    }
+    @keyframes bgPulseI {
+      0%, 100% { opacity: 0; }
+      50%       { opacity: 1; }
+    }
+    @media (hover: hover) {
+      body[data-hv="i"] .search-bar.drop-mode:hover,
+      body[data-hv="i"] .search-bar.drop-mode.drag-over {
+        animation: dashGlowPulse 1.6s ease-in-out infinite;
+      }
+      body[data-hv="i"] .search-bar.drop-mode:hover::before,
+      body[data-hv="i"] .search-bar.drop-mode.drag-over::before {
+        content: '';
+        position: absolute; inset: 0; border-radius: 20px;
+        background: linear-gradient(135deg, rgba(100,80,220,0.22), rgba(168,85,247,0.26));
+        animation: bgPulseI 1.6s ease-in-out infinite;
+        pointer-events: none;
+      }
+      body[data-hv="i"] .search-bar.drop-mode:hover::after,
+      body[data-hv="i"] .search-bar.drop-mode.drag-over::after {
+        animation: dashBorderPulse 1.6s ease-in-out infinite;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════ */
+    /*  COPILOT DROP ZONE (variant J)                         */
+    /* ═══════════════════════════════════════════════════════ */
+    #cop-drop-zone {
+      position: fixed;
+      width: 232px;
+      padding: 40px 16px;
+      background: linear-gradient(135deg, #eef2ff, #f3eeff);
+      border: 1.5px solid #8b6ef5;
+      border-radius: 10px;
+      box-shadow: 0 4px 18px rgba(100,80,200,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, border-color 0.18s, border-style 0.18s, box-shadow 0.18s, background 0.18s;
+      z-index: 8999;
+      font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+    }
+    #cop-drop-zone:hover {
+      border-style: dotted;
+    }
+    #cop-drop-zone.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    #cop-drop-zone.file-over {
+      background: linear-gradient(135deg, #dde6ff, #ead6ff);
+      border-color: #a855f7;
+      box-shadow: 0 6px 28px rgba(100,80,200,0.26), 0 0 0 4px rgba(139,110,245,0.14);
+    }
+    .cdz-text {
+      font-size: 13px;
+      color: rgba(100,80,200,0.72);
+      text-align: center;
+      line-height: 1.4;
+      font-weight: 500;
+      background: linear-gradient(90deg, #4f8ef7, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* J: search bar shows 3 dots while cop-drop-zone is the target */
+    body[data-hv="j"] .search-bar.drop-mode {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(0,0,0,0.10);
+      outline: none; box-shadow: none;
+    }
+    body[data-hv="j"] .search-bar.drop-mode:not(.holding) .drop-mode-label { visibility: hidden; }
+    body[data-hv="j"] .search-bar.drop-mode:not(.holding)::before {
+      content: '• • •';
+      font-size: 14px;
+      letter-spacing: 3px;
+      color: rgba(0,0,0,0.28);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    body[data-hv="j"] .search-bar.drop-mode.drag-over { outline: none; }
+    body[data-hv="j"] .search-bar.drop-mode.drag-over::after { content: none; }
+
+  /* ── Copilot App Overlay ──────────────────────────────────────── */
+  .cop-overlay {
+    position: fixed; inset: 0; z-index: 20000;
+    background: rgba(0,0,0,0.45);
+    display: none; align-items: center; justify-content: center;
+    animation: copFadeIn 0.18s ease;
+  }
+  .cop-overlay.open { display: flex; }
+  @keyframes copFadeIn { from { opacity:0 } to { opacity:1 } }
+
+  .cop-window {
+    width: min(1360px, 96vw); height: min(880px, 94vh);
+    background: #fff; border-radius: 10px;
+    display: flex; overflow: hidden;
+    box-shadow: 0 32px 96px rgba(0,0,0,0.35);
+    font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+    animation: copSlideIn 0.2s ease;
+  }
+  @keyframes copSlideIn { from { transform:scale(0.97); opacity:0 } to { transform:scale(1); opacity:1 } }
+
+  /* sidebar */
+  .cop-sb {
+    width: 296px; flex-shrink: 0;
+    background: #fff; border-right: 1px solid rgba(0,0,0,0.07);
+    display: flex; flex-direction: column;
+  }
+  .cop-sb-head {
+    padding: 14px 16px 6px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cop-logo { font-size: 17px; font-weight: 650; color: #1a1a1a; display: flex; align-items: center; gap: 6px; }
+  .cop-beta {
+    font-size: 9px; font-weight: 500; background: #e8e8e8; color: #555;
+    padding: 2px 5px; border-radius: 3px; letter-spacing: 0.02em;
+  }
+  .cop-sb-toggle {
+    background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px; color: #666;
+  }
+  .cop-sb-toggle:hover { background: rgba(0,0,0,0.05); }
+  .cop-nav { padding: 4px 8px; }
+  .cop-nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 8px; cursor: pointer;
+    font-size: 13.5px; color: #2a2a2a; transition: background 0.1s;
+    user-select: none;
+  }
+  .cop-nav-item:hover { background: rgba(0,0,0,0.05); }
+  .cop-nav-icon { width: 18px; text-align: center; font-size: 15px; opacity: 0.75; }
+  .cop-nav-badge {
+    font-size: 9px; background: #e8e8e8; color: #666;
+    padding: 2px 4px; border-radius: 3px; margin-left: 2px; font-weight: 500;
+  }
+  .cop-nav-plus { margin-left: auto; font-size: 17px; color: #999; font-weight: 300; }
+  .cop-nav-sep { height: 1px; background: rgba(0,0,0,0.07); margin: 5px 12px; }
+  .cop-recent { flex: 1; overflow-y: auto; padding: 4px 8px; }
+  .cop-recent-item {
+    padding: 7px 12px; border-radius: 8px; font-size: 12.5px; color: #333;
+    cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.1s;
+  }
+  .cop-recent-item:hover { background: rgba(0,0,0,0.05); }
+  .cop-recent-item.active { background: rgba(0,0,0,0.06); font-weight: 500; }
+  .cop-recent-more { font-size: 16px; color: #999; opacity: 0; flex-shrink: 0; }
+  .cop-recent-item:hover .cop-recent-more { opacity: 1; }
+  .cop-recent-item.active .cop-recent-more { opacity: 1; }
+  .cop-user {
+    padding: 12px 16px; border-top: 1px solid rgba(0,0,0,0.07);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .cop-avatar {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 12px; font-weight: 600;
+  }
+  .cop-user-info { flex: 1; min-width: 0; }
+  .cop-user-name { font-size: 12.5px; font-weight: 500; color: #1a1a1a; }
+  .cop-user-plan { font-size: 11px; color: #888; }
+  .cop-upgrade {
+    background: none; border: 1px solid rgba(0,0,0,0.15); border-radius: 6px;
+    padding: 4px 10px; font-size: 11.5px; cursor: pointer; color: #333;
+    font-family: inherit; transition: background 0.1s;
+  }
+  .cop-upgrade:hover { background: rgba(0,0,0,0.04); }
+
+  /* main */
+  .cop-main { flex: 1; display: flex; flex-direction: column; background: #fafaf7; min-width: 0; }
+  .cop-titlebar {
+    display: flex; align-items: center; justify-content: center;
+    height: 46px; padding: 0 12px; flex-shrink: 0;
+    background: #f3f3ee; border-bottom: 1px solid rgba(0,0,0,0.06); position: relative;
+  }
+  .cop-title { font-size: 12.5px; color: #555; font-weight: 400; }
+  .cop-titlebar-right {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    display: flex; align-items: center; gap: 3px;
+  }
+  .cop-invite {
+    display: flex; align-items: center; gap: 5px;
+    background: #fff; border: 1px solid rgba(0,0,0,0.12); border-radius: 20px;
+    padding: 4px 12px 4px 8px; font-size: 11.5px; cursor: pointer; color: #333;
+    font-family: inherit; margin-right: 8px;
+  }
+  .cop-winbtn {
+    background: none; border: none; width: 28px; height: 28px; border-radius: 6px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: #666; font-size: 13px; transition: background 0.1s, color 0.1s;
+  }
+  .cop-winbtn:hover { background: rgba(0,0,0,0.06); }
+  .cop-winbtn.cop-close:hover { background: #c42b1c; color: #fff; }
+
+  .cop-chat {
+    flex: 1; overflow-y: auto; padding: 36px 88px;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .cop-date-sep {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 11.5px; color: #aaa; margin-bottom: 28px;
+  }
+  .cop-date-sep::after { content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.08); }
+
+  .cop-msg-user {
+    display: flex; flex-direction: column; align-items: flex-end;
+    gap: 6px; margin-bottom: 28px;
+  }
+  .cop-msg-user-bubble {
+    background: #f5d9c8; border-radius: 18px; padding: 10px 18px;
+    font-size: 14px; color: #1a1a1a; max-width: 55%; line-height: 1.5;
+  }
+  .cop-attach-row {
+    display: flex; flex-direction: row; flex-wrap: wrap;
+    gap: 6px; justify-content: flex-end;
+  }
+  .cop-attach-card {
+    display: flex; align-items: center; gap: 10px;
+    background: #fff; border: 1px solid rgba(0,0,0,0.09); border-radius: 12px;
+    padding: 9px 12px; min-width: 0; max-width: 190px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); flex-shrink: 0;
+  }
+  .cop-attach-icon { flex-shrink: 0; display: flex; align-items: center; }
+  .cop-attach-icon img { width: 36px !important; height: 36px !important; object-fit: cover; border-radius: 6px; }
+  .cop-attach-icon svg { width: 36px !important; height: 36px !important; }
+  .cop-attach-icon > div {
+    width: 36px !important; height: 36px !important;
+    font-size: 15px !important; font-weight: 700 !important;
+    border-radius: 8px !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    transform: none !important; flex-shrink: 0;
+    overflow: hidden;
+  }
+  .cop-attach-info { min-width: 0; }
+  .cop-attach-name {
+    font-size: 12px; font-weight: 500; color: #1a1a1a;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px;
+  }
+  .cop-attach-type { font-size: 10.5px; color: #888; margin-top: 1px; }
+  .cop-msg-bot { margin-bottom: 12px; max-width: 720px; }
+  .cop-msg-bot-text { font-size: 14.5px; line-height: 1.7; color: #1a1a1a; }
+  .cop-msg-actions { display: flex; align-items: center; gap: 2px; margin-top: 10px; }
+  .cop-act-btn {
+    background: none; border: none; padding: 6px 8px; border-radius: 6px;
+    cursor: pointer; color: #999; font-size: 14px; transition: all 0.1s;
+  }
+  .cop-act-btn:hover { background: rgba(0,0,0,0.06); color: #444; }
+  .cop-act-label {
+    background: none; border: none; display: flex; align-items: center; gap: 4px;
+    padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 12px;
+    color: #999; font-family: inherit; transition: all 0.1s;
+  }
+  .cop-act-label:hover { background: rgba(0,0,0,0.06); color: #444; }
+
+  /* response output components */
+  .cop-step-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+  .cop-step {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: #555; opacity: 0;
+    animation: copFadeUp 0.3s ease forwards;
+  }
+  .cop-step.done { color: #1a7f37; }
+  .cop-step-icon { font-size: 13px; width: 16px; text-align: center; }
+  @keyframes copFadeUp { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+
+  .cop-output-card {
+    display: flex; flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.10); border-radius: 12px;
+    overflow: hidden; max-width: 340px; margin: 12px 0 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .cop-output-card-body {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #fff;
+  }
+  .cop-output-card-icon { flex-shrink: 0; display: flex; align-items: center; }
+  .cop-output-card-icon img { width: 36px !important; height: 36px !important; }
+  .cop-output-card-info { min-width: 0; }
+  .cop-output-card-name { font-size: 13.5px; font-weight: 500; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 230px; }
+  .cop-output-card-meta { font-size: 11px; color: #888; margin-top: 2px; }
+  .cop-output-card-actions {
+    display: flex; border-top: 1px solid rgba(0,0,0,0.07); background: #fafafa;
+  }
+  .cop-output-action {
+    flex: 1; padding: 9px 0; border: none; background: none; font-size: 12.5px;
+    font-family: inherit; color: #0078d4; cursor: pointer; font-weight: 500;
+    border-right: 1px solid rgba(0,0,0,0.07); transition: background 0.1s;
+  }
+  .cop-output-action:last-child { border-right: none; }
+  .cop-output-action:hover { background: rgba(0,120,212,0.05); }
+
+  .cop-bullet-list { margin: 10px 0 4px; display: flex; flex-direction: column; gap: 10px; }
+  .cop-bullet-item { display: flex; gap: 10px; }
+  .cop-bullet-dot { width: 6px; height: 6px; border-radius: 50%; background: #0078d4; margin-top: 6px; flex-shrink: 0; }
+  .cop-bullet-text { font-size: 14px; line-height: 1.6; color: #1a1a1a; }
+  .cop-bullet-file { font-weight: 600; }
+
+  .cop-compose-box {
+    margin: 10px 0 4px; background: #fff; border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 10px; overflow: hidden; max-width: 340px;
+  }
+  .cop-compose-input {
+    width: 100%; border: none; outline: none; padding: 10px 14px;
+    font-size: 13.5px; font-family: inherit; color: #1a1a1a;
+  }
+  .cop-compose-input::placeholder { color: #bbb; }
+  .cop-compose-send {
+    width: 100%; padding: 9px; border: none; border-top: 1px solid rgba(0,0,0,0.08);
+    background: #0078d4; color: #fff; font-size: 13px; font-weight: 500;
+    font-family: inherit; cursor: pointer; transition: background 0.1s;
+  }
+  .cop-compose-send:hover { background: #106ebe; }
+
+  .cop-folder-options { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 4px; max-width: 280px; }
+  .cop-folder-option {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+    border: 1px solid rgba(0,0,0,0.09); border-radius: 8px; cursor: pointer;
+    background: #fff; font-size: 13px; color: #1a1a1a; transition: background 0.1s;
+  }
+  .cop-folder-option:hover { background: #f0f4ff; border-color: #0078d4; }
+
+  .cop-typing { display: flex; gap: 5px; align-items: center; padding: 8px 0; }
+  .cop-typing span {
+    width: 7px; height: 7px; background: #ccc; border-radius: 50%;
+    animation: copBounce 1.3s ease-in-out infinite;
+  }
+  .cop-typing span:nth-child(2) { animation-delay: 0.18s; }
+  .cop-typing span:nth-child(3) { animation-delay: 0.36s; }
+  @keyframes copBounce {
+    0%,60%,100% { transform: translateY(0); opacity: 0.35; }
+    30% { transform: translateY(-7px); opacity: 1; }
+  }
+
+  .cop-input-area { padding: 0 88px 24px; flex-shrink: 0; }
+  .cop-input-card {
+    background: #fff; border: 1px solid rgba(0,0,0,0.11); border-radius: 14px;
+    padding: 14px 16px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .cop-input-field {
+    width: 100%; border: none; outline: none; font-size: 14px; color: #1a1a1a;
+    background: transparent; font-family: inherit; margin-bottom: 10px;
+  }
+  .cop-input-field::placeholder { color: #bbb; }
+  .cop-input-foot { display: flex; align-items: center; gap: 6px; }
+  .cop-add-btn {
+    width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.18);
+    background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 15px; color: #666; transition: all 0.1s; flex-shrink: 0;
+  }
+  .cop-add-btn:hover { background: rgba(0,0,0,0.05); }
+  .cop-smart-btn {
+    background: none; border: none; display: flex; align-items: center; gap: 4px;
+    font-size: 13px; color: #555; cursor: pointer; padding: 4px 8px; border-radius: 6px;
+    font-family: inherit; transition: background 0.1s;
+  }
+  .cop-smart-btn:hover { background: rgba(0,0,0,0.05); }
+  .cop-input-icons { margin-left: auto; display: flex; gap: 2px; }
+  .cop-icon-btn {
+    width: 28px; height: 28px; background: none; border: none; border-radius: 6px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: #999; font-size: 15px; transition: all 0.1s;
+  }
+  .cop-icon-btn:hover { background: rgba(0,0,0,0.06); color: #444; }
   </style>
 </head>
 <body data-hv="a">
@@ -1537,6 +2092,9 @@
     <button class="hv-btn" data-v="d" title="Purple glow pulse">D</button>
 <button class="hv-btn" data-v="f" title="Minimal – blue dashed on hover">F</button>
     <button class="hv-btn" data-v="g" title="Mini drop zone expands above taskbar">G</button>
+    <button class="hv-btn" data-v="h" title="Thick dashed border on hover">H</button>
+    <button class="hv-btn" data-v="i" title="Pulsating dashed border on hover">I</button>
+    <button class="hv-btn" data-v="j" title="Cop drop zone appears on drag">J</button>
   </div>
   <span class="hv-desc" id="hv-desc">Subtle – slight fill lift</span>
 </div>
@@ -1564,6 +2122,152 @@
     <div class="d-icon" data-x="100" data-y="516" data-type="app"><span class="sel-tick">✓</span><img src="icons/copilot.png" /><span>Microsoft 365</span></div>
     <div class="d-icon" data-x="100" data-y="616"><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Design Assets</span></div>
     <div class="d-icon" data-x="100" data-y="716"><span class="sel-tick">✓</span><div class="img-file-thumb portrait" style="background-image:url('https://picsum.photos/id/417/60/88');background-size:cover;background-position:center;"></div><span>Bali_sunset.jpg</span></div>
+    <div class="d-icon" id="word-doc-icon" data-x="188" data-y="16" data-type="word-doc"><span class="sel-tick">✓</span><div class="word-file-thumb"></div><span>power_of_prototyping_mock_chapter.docx</span></div>
+  </div>
+</div>
+
+<!-- ░░ Word Viewer ░░ -->
+<div id="word-viewer">
+  <div class="wv-window">
+    <!-- Title bar -->
+    <div class="wv-titlebar">
+      <div class="wv-tb-icon">W</div>
+      <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:0;">
+        <span style="font-size:11px;opacity:0.7;white-space:nowrap;">AutoSave</span>
+        <span style="font-size:10px;background:rgba(255,255,255,0.18);border-radius:2px;padding:1px 5px;opacity:0.8;white-space:nowrap;">Off</span>
+        <span class="wv-tb-name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">power_of_prototyping_mock_chapter - Compatibility Mode</span>
+        <span style="font-size:10px;opacity:0.55;white-space:nowrap;">General*</span>
+        <span style="font-size:10px;opacity:0.55;white-space:nowrap;">• Saved to this PC</span>
+      </div>
+      <div class="wv-tb-btns">
+        <button class="wv-tb-btn" title="Minimize">&#8211;</button>
+        <button class="wv-tb-btn" title="Maximize">&#9633;</button>
+        <button class="wv-tb-btn close" id="wv-close" title="Close">&#10005;</button>
+      </div>
+    </div>
+    <!-- Menu bar -->
+    <div style="height:26px;background:#f0f0f0;border-bottom:1px solid #d8d8d8;display:flex;align-items:center;padding:0 4px;gap:0;flex-shrink:0;">
+      <div class="wv-tab active">Home</div>
+      <div class="wv-tab">Insert</div>
+      <div class="wv-tab">Draw</div>
+      <div class="wv-tab">Design</div>
+      <div class="wv-tab">Layout</div>
+      <div class="wv-tab">References</div>
+      <div class="wv-tab">Mailings</div>
+      <div class="wv-tab">Review</div>
+      <div class="wv-tab">View</div>
+      <div class="wv-tab">Help</div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding-right:8px;">
+        <span style="font-size:11px;color:#555;padding:2px 8px;border:1px solid #d0d0d0;border-radius:2px;cursor:pointer;">Comments</span>
+        <span style="font-size:11px;color:#555;padding:2px 8px;border:1px solid #d0d0d0;border-radius:2px;cursor:pointer;">Editing ▾</span>
+        <span style="font-size:11px;color:#fff;background:#185abd;padding:2px 10px;border-radius:2px;cursor:pointer;">Share</span>
+      </div>
+    </div>
+    <!-- Ribbon (formatting toolbar) -->
+    <div style="height:60px;background:#fff;border-bottom:1px solid #d0d0d0;display:flex;align-items:center;padding:0 10px;gap:0;flex-shrink:0;overflow:hidden;">
+      <!-- Paste group -->
+      <div style="display:flex;flex-direction:column;align-items:center;padding:0 8px 0 4px;border-right:1px solid #e0e0e0;height:52px;justify-content:center;gap:3px;">
+        <div style="font-size:22px;color:#555;line-height:1;">⎘</div>
+        <span style="font-size:9px;color:#666;">Paste</span>
+      </div>
+      <!-- Font group -->
+      <div style="display:flex;flex-direction:column;padding:4px 10px 0;border-right:1px solid #e0e0e0;height:52px;justify-content:center;gap:4px;">
+        <div style="display:flex;align-items:center;gap:4px;">
+          <select style="font-size:11px;border:1px solid #ccc;border-radius:2px;padding:1px 4px;color:#333;width:110px;cursor:pointer;">
+            <option>Cambria (Body)</option><option>Calibri</option><option>Arial</option>
+          </select>
+          <select style="font-size:11px;border:1px solid #ccc;border-radius:2px;padding:1px 4px;color:#333;width:40px;cursor:pointer;">
+            <option>11</option><option>12</option><option>14</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:2px;">
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-weight:700;font-size:13px;cursor:pointer;border-radius:2px;">B</button>
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-style:italic;font-size:13px;cursor:pointer;border-radius:2px;font-family:Georgia,serif;">I</button>
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-size:13px;cursor:pointer;border-radius:2px;text-decoration:underline;">U</button>
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-size:11px;cursor:pointer;border-radius:2px;">A▾</button>
+        </div>
+        <span style="font-size:9px;color:#888;text-align:center;">Font</span>
+      </div>
+      <!-- Paragraph group -->
+      <div style="display:flex;flex-direction:column;padding:4px 10px 0;border-right:1px solid #e0e0e0;height:52px;justify-content:center;gap:4px;">
+        <div style="display:flex;align-items:center;gap:2px;">
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-size:12px;cursor:pointer;border-radius:2px;">≡</button>
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#185abd;color:#fff;font-size:12px;cursor:pointer;border-radius:2px;">≡</button>
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-size:12px;cursor:pointer;border-radius:2px;">≡</button>
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-size:12px;cursor:pointer;border-radius:2px;">⁜</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:2px;">
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-size:11px;cursor:pointer;border-radius:2px;">↓≡</button>
+          <button style="width:22px;height:22px;border:1px solid #d0d0d0;background:#fff;font-size:11px;cursor:pointer;border-radius:2px;">¶</button>
+        </div>
+        <span style="font-size:9px;color:#888;text-align:center;">Paragraph</span>
+      </div>
+      <!-- Styles group -->
+      <div style="display:flex;flex-direction:column;padding:4px 10px 0;border-right:1px solid #e0e0e0;height:52px;justify-content:center;gap:2px;">
+        <div style="display:flex;gap:3px;">
+          <div style="font-size:11px;color:#333;padding:2px 8px;border:1.5px solid #185abd;border-radius:2px;background:#eef3fb;cursor:pointer;">Normal</div>
+          <div style="font-size:11px;color:#185abd;padding:2px 8px;border:1px solid #d0d0d0;border-radius:2px;cursor:pointer;font-weight:700;">Heading 1</div>
+          <div style="font-size:11px;color:#555;padding:2px 8px;border:1px solid #d0d0d0;border-radius:2px;cursor:pointer;">Heading 2</div>
+        </div>
+        <span style="font-size:9px;color:#888;text-align:center;">Styles</span>
+      </div>
+      <!-- Editing -->
+      <div style="padding:4px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;height:52px;justify-content:center;">
+        <div style="font-size:20px;color:#555;">🔍</div>
+        <span style="font-size:9px;color:#888;">Find</span>
+      </div>
+    </div>
+    <!-- Document body -->
+    <div class="wv-body">
+      <div class="wv-page">
+        <div class="wv-content" id="wv-content">
+          <p class="meta">Draft — April 2026 &nbsp;·&nbsp; Internal Use Only</p>
+          <h1>The Power of Prototyping</h1>
+          <p>Prototyping is one of the most underrated skills in design. While much attention is paid to visual polish and final-state specifications, the prototype is where real thinking happens — it is the artifact that turns assumptions into evidence.</p>
+          <p>A prototype does not need to be beautiful. It needs to be believable enough to provoke a genuine reaction. The goal is never fidelity for its own sake. The goal is learning.</p>
+
+          <h2>Thinking With Your Hands</h2>
+          <p>There is a reason surgeons practice procedures before operating, and pilots spend hours in flight simulators before touching a real aircraft. Making something tangible — even a rough approximation — forces the mind to confront edge cases that abstract reasoning simply cannot reach.</p>
+          <p>In design, this same principle applies. A wireframe forces you to answer: where does this button live? A clickable prototype forces you to answer: what happens next? Each layer of fidelity answers questions the previous layer could not.</p>
+          <p>The act of building a prototype is itself a form of thinking. You will encounter constraints you never anticipated, surface contradictions in your mental model, and occasionally stumble upon a solution you would never have found by staring at a whiteboard.</p>
+
+          <h2>What a Good Prototype Proves</h2>
+          <ul>
+            <li><strong>Flow:</strong> Does the user know where to go next at every point in the experience?</li>
+            <li><strong>Legibility:</strong> Are labels, affordances, and feedback clear without explanation?</li>
+            <li><strong>Timing:</strong> Do transitions and loading states feel fast, or do they breed anxiety?</li>
+            <li><strong>Delight:</strong> Are there moments of surprise and reward that make the experience memorable?</li>
+            <li><strong>Edge cases:</strong> What happens when the data is long, empty, or unexpected?</li>
+          </ul>
+          <p>A prototype that only shows the happy path is not a prototype — it is a demo. A useful prototype deliberately explores the failure modes.</p>
+
+          <h2>Choosing Fidelity Intentionally</h2>
+          <p>Low-fidelity prototypes (paper sketches, rough wireframes) are best early in a project, when the question is structural: does this mental model make sense? Are we solving the right problem? At this stage, high fidelity is actively harmful — it signals commitment and suppresses honest feedback.</p>
+          <p>High-fidelity prototypes are appropriate when the structure is settled and the question becomes: does this feel right? Can users navigate this without help? They require more investment but generate more actionable data.</p>
+          <p>The mistake most teams make is applying high fidelity too early — before the underlying logic has been validated — and then being reluctant to change the design because it looks finished.</p>
+
+          <h2>Prototypes as Shared Language</h2>
+          <p>A prototype is not just a personal thinking tool. It is a communication artifact. A clickable prototype shown to a stakeholder does more to align expectations in ten minutes than a twenty-slide deck can do in an hour. The prototype makes the abstract concrete, the future present, and the theoretical testable.</p>
+          <p>Engineers who see a working prototype understand the intent in a way that specs alone cannot convey. Researchers who run sessions with real prototypes generate insights that cannot be captured through interviews. Leadership who can click through a flow are able to make decisions with confidence rather than instinct.</p>
+          <p>In this sense, the prototype is the most leveraged artifact a designer can produce. It is worth investing in the craft of making them well.</p>
+
+          <h2>The Discipline of Throwing Away</h2>
+          <p>Perhaps the hardest lesson in prototyping is that a prototype's value is proportional to your willingness to discard it. The purpose of a prototype is to be wrong cheaply. Once it has served that purpose — once the learning has been extracted — it must be replaced by a better one, not preserved and shipped.</p>
+          <p>Teams that treat prototypes as deliverables confuse the map for the territory. The prototype is not the product. The product is built on what the prototype taught you.</p>
+        </div>
+        <div class="wv-drag-hint">Select text and drag it to the search bar to attach as a .txt file</div>
+      </div>
+    </div>
+    <!-- Status bar -->
+    <div style="height:22px;background:#f0f0f0;border-top:1px solid #d8d8d8;display:flex;align-items:center;padding:0 12px;gap:16px;flex-shrink:0;">
+      <span style="font-size:10px;color:#555;">Page 1 of 3</span>
+      <span style="font-size:10px;color:#555;">559 words</span>
+      <span style="font-size:10px;color:#888;margin-left:auto;">English (United States)</span>
+      <span style="font-size:10px;color:#888;">Text Predictions: On</span>
+      <span style="font-size:10px;color:#888;">Accessibility: Good to go</span>
+      <span style="font-size:10px;color:#555;letter-spacing:2px;">— — +</span>
+      <span style="font-size:10px;color:#555;">100%</span>
+    </div>
   </div>
 </div>
 
@@ -1716,6 +2420,11 @@
 
 </div><!-- /taskbar -->
 
+<!-- ░░ Copilot Drop Zone (variant J) ░░ -->
+<div id="cop-drop-zone">
+  <span class="cdz-text">Drop in Copilot to do more</span>
+</div>
+
 <!-- ░░ Mini Drop Zone (variant G) ░░ -->
 <div id="mini-drop-zone">
   <div class="mdz-icon-wrap">
@@ -1742,6 +2451,9 @@
 
     <!-- Attached file chips -->
     <div class="composer-chips" id="composer-chips"></div>
+
+    <!-- Skip notice (shown when apps are excluded) -->
+    <div class="composer-skip-notice" id="composer-skip-notice"></div>
 
     <!-- Input row -->
     <div class="composer-bottom-row">
@@ -1780,7 +2492,7 @@
     </div>
     <button class="fw-new-tab">+</button>
     <div class="fw-win-controls">
-      <button class="fw-wc-btn">&#8211;</button>
+      <button class="fw-wc-btn" id="fw-btn-minimize">&#8211;</button>
       <button class="fw-wc-btn">&#9633;</button>
       <button class="fw-wc-btn close" id="fw-btn-close">✕</button>
     </div>
@@ -2025,6 +2737,24 @@
       e.preventDefault();
       e.stopPropagation();   // <-- critical: window handler won't fire
 
+      // Custom double-click detection (dblclick doesn't fire after e.preventDefault())
+      {
+        const now = Date.now();
+        const last = ic._lastClick || 0;
+        ic._lastClick = now;
+        if (now - last < 400) {
+          if (ic.dataset.type === 'word-doc') {
+            document.getElementById('word-viewer')?.classList.add('open');
+            return;
+          }
+          if (ic.querySelector('.folder-thumb')) {
+            const label = ic.querySelector('span:last-child')?.textContent?.trim() || '';
+            openFolder(label);
+            return;
+          }
+        }
+      }
+
       if (e.ctrlKey || e.metaKey) {
         // Ctrl/Cmd+click: toggle individual icon
         sel.has(ic) ? selRem(ic) : selAdd(ic);
@@ -2055,20 +2785,17 @@
       const stack = document.createElement('div');
       stack.className = 'drag-icon-stack';
 
-      // Add icons back-to-front (index 0 = furthest back, last = front/top)
-      const stackN = Math.min(selArr.length, 3);
-      for (let i = 0; i < stackN; i++) {
-        const srcIcon = selArr[i];
-        // Extract just the thumbnail node (first non-sel-tick, non-span child)
-        let thumbNode = null;
-        for (const node of srcIcon.childNodes) {
-          if (node.nodeType !== 1) continue;
-          if (node.classList.contains('sel-tick')) continue;
-          if (node.tagName === 'SPAN') continue;
-          thumbNode = node.cloneNode(true);
-          break;
-        }
-        if (!thumbNode) continue;
+      // Show only the primary (clicked) icon — clean squircle style
+      const srcIcon = ic;
+      let thumbNode = null;
+      for (const node of srcIcon.childNodes) {
+        if (node.nodeType !== 1) continue;
+        if (node.classList.contains('sel-tick')) continue;
+        if (node.tagName === 'SPAN') continue;
+        thumbNode = node.cloneNode(true);
+        break;
+      }
+      if (thumbNode) {
         const item = document.createElement('div');
         item.className = 'drag-icon-item';
         item.appendChild(thumbNode);
@@ -2109,9 +2836,11 @@
   ════════════════════════════════════════ */
   window.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
-    // Guard: must be inside the desktop area, not taskbar/popups
+    // Guard: must be inside the desktop area, not taskbar/popups/overlays
     const t = e.target;
-    if (t.closest('.taskbar') || t.closest('#search-composer') || t.closest('#preview-popup')) return;
+    if (t.closest('.taskbar') || t.closest('#search-composer') || t.closest('#preview-popup')
+        || t.closest('#hv-switcher') || t.closest('#word-viewer') || t.closest('#folder-window')
+        || t.closest('#copilot-overlay') || t.closest('.drag-ghost')) return;
     if (!t.closest('.desktop') && !t.closest('#desktop-icons')) return;
 
     e.preventDefault();
@@ -2172,6 +2901,21 @@
         mdzEl2.classList.toggle('visible', searchBarEl.classList.contains('drag-over') || overMDZ);
         mdzEl2.classList.toggle('file-over', overMDZ);
       }
+      // Variant J: show cop-drop-zone only when cursor is in bottom 1/4 of screen
+      if (document.body.dataset.hv === 'j' && searchBarEl.classList.contains('drop-mode')) {
+        const cdzEl2 = document.getElementById('cop-drop-zone');
+        const inBottomQuarter = e.clientY >= window.innerHeight * 0.75;
+        if (inBottomQuarter) {
+          snapCopDropZone(searchBarEl);
+          cdzEl2.classList.add('visible');
+          const cdzR2 = cdzEl2.getBoundingClientRect();
+          const overCDZ = e.clientX >= cdzR2.left && e.clientX <= cdzR2.right &&
+                          e.clientY >= cdzR2.top  && e.clientY <= cdzR2.bottom;
+          cdzEl2.classList.toggle('file-over', overCDZ);
+        } else {
+          cdzEl2.classList.remove('visible', 'file-over');
+        }
+      }
     }
 
     if (rbOn) {
@@ -2208,6 +2952,13 @@
         e.clientX >= mdzR.left && e.clientX <= mdzR.right &&
         e.clientY >= mdzR.top  && e.clientY <= mdzR.bottom;
 
+      const cdzEl = document.getElementById('cop-drop-zone');
+      const cdzR  = cdzEl?.getBoundingClientRect();
+      const droppedOnCDZ = document.body.dataset.hv === 'j' &&
+        cdzEl?.classList.contains('visible') && cdzR &&
+        e.clientX >= cdzR.left && e.clientX <= cdzR.right &&
+        e.clientY >= cdzR.top  && e.clientY <= cdzR.bottom;
+
       if (btn) {
         // Dropped on taskbar app — ghost flies into button, original snaps back
         showDropEffect(btn, [...sel]);
@@ -2215,14 +2966,20 @@
           s.style.left = origX + 'px';
           s.style.top  = origY + 'px';
         });
-      } else if (droppedOnSearchBar || droppedOnMDZ) {
-        // Dropped on search bar or mini drop zone — restore originals, open composer
+      } else if (droppedOnSearchBar || droppedOnMDZ || droppedOnCDZ) {
+        // Dropped on search bar, mini drop zone, or cop-drop-zone — restore originals
         dragOffsets.forEach(({ s, origX, origY }) => {
           s.style.left = origX + 'px';
           s.style.top  = origY + 'px';
         });
         const fileIcons = [...sel].filter(ic => ic.dataset.type !== 'app');
-        if (fileIcons.length) openComposerWithFiles(fileIcons);
+        const appIcons  = [...sel].filter(ic => ic.dataset.type === 'app');
+        if (fileIcons.length) {
+          openComposerWithFiles(fileIcons);
+          if (appIcons.length) showSkipNotice(appIcons.length, fileIcons.length);
+        } else if (appIcons.length) {
+          showSkipNotice(appIcons.length, 0);
+        }
       } else {
         // Dropped on desktop — move originals to where ghosts landed
         dragOffsets.forEach(({ s, ox, oy }) => {
@@ -2239,6 +2996,7 @@
 
       if (hoveredBtn) { hoveredBtn.classList.remove('drop-target'); hoveredBtn = null; }
       mdzEl?.classList.remove('visible', 'file-over');
+      cdzEl?.classList.remove('visible', 'file-over');
       searchBarEl.classList.remove('drag-over', 'no-drop');
       sel.forEach(s => { s.classList.remove('dragging'); s.style.zIndex = ''; });
       dragging    = false;
@@ -2250,6 +3008,23 @@
       rbStart = null;
     }
   });
+
+  /* ── Show skip notice when apps are excluded from a drop ── */
+  function showSkipNotice(appCount, fileCount) {
+    const el = document.getElementById('composer-skip-notice');
+    if (!el) return;
+    const msg = fileCount > 0
+      ? `${appCount} app${appCount > 1 ? 's' : ''} can't be attached — only files are supported`
+      : `Apps can't be dropped here — select files instead`;
+    el.innerHTML = `<span class="composer-skip-notice-icon">⚠</span><span>${msg}</span><button class="composer-skip-notice-dismiss" title="Dismiss">✕</button>`;
+    el.querySelector('.composer-skip-notice-dismiss').addEventListener('click', () => {
+      el.classList.remove('visible');
+      clearTimeout(el._hideTimer);
+    });
+    el.classList.add('visible');
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(() => el.classList.remove('visible'), 4000);
+  }
 
   /* ── Open composer with attached files ── */
   function openComposerWithFiles(icons) {
@@ -2275,6 +3050,12 @@
           <div class="suggestion-title">${s.title}</div>
           <div class="suggestion-sub">${s.sub}</div>
         </div>`;
+      row.addEventListener('click', () => {
+        const chips = [...document.querySelectorAll('#composer-chips .file-chip')]
+          .map(c => c.querySelector('.file-chip-name')?.textContent || '').filter(Boolean);
+        document.getElementById('search-composer').classList.remove('open');
+        window._openCopilot?.(s.title, chips);
+      });
       sugEl.appendChild(row);
     });
     sugEl.classList.add('visible');
@@ -2290,9 +3071,13 @@
       if ([...chipsEl.querySelectorAll('.file-chip-name')].some(el => el.textContent === label)) return;
       const chip = document.createElement('div');
       chip.className = 'file-chip';
+      const WORD_ICON_HTML = `<div style="width:20px;height:20px;background:#185abd;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">W</div>`;
+      const isWordDoc = /\.(docx?|doc)$/i.test(label);
       const chipIcon = IMAGE_EXTS_RE.test(label)
         ? PHOTO_ICON_HTML
-        : (imgSrc ? `<img src="${imgSrc}" />` : `<span style="font-size:14px;flex-shrink:0">📄</span>`);
+        : isWordDoc
+          ? WORD_ICON_HTML
+          : (imgSrc ? `<img src="${imgSrc}" />` : `<span style="font-size:14px;flex-shrink:0">📄</span>`);
       chip.innerHTML = chipIcon
         + `<span class="file-chip-name">${label}</span>`
         + `<button class="file-chip-remove" title="Remove">✕</button>`;
@@ -2317,6 +3102,14 @@
     composer.classList.add('open');
     document.getElementById('composer-input').focus();
   }
+  window._openComposerWithFiles = openComposerWithFiles;
+  window._openComposerDirect = function() {
+    searchBarEl.classList.remove('drop-mode');
+    selClear();
+    const composer = document.getElementById('search-composer');
+    composer.classList.add('open');
+    document.getElementById('composer-input').focus();
+  };
 })();
 
 /* ── Chip trimmer: show max 3, collapse rest into +N badge ── */
@@ -2440,6 +3233,8 @@ searchBar.addEventListener('click', () => {
 function closeComposer() {
   searchComposer.classList.remove('open');
   searchBar.classList.remove('thinking');
+  const skipNotice = document.getElementById('composer-skip-notice');
+  if (skipNotice) { skipNotice.classList.remove('visible'); clearTimeout(skipNotice._hideTimer); }
   setTimeout(() => {
     const hasChips = !!document.getElementById('composer-chips').querySelector('.file-chip');
     if (!hasChips) {
@@ -2511,7 +3306,7 @@ const APPS = {
   },
   explorer: {
     key: 'explorer',
-    name: 'Dragdrop_Proto',
+    name: "Jack's Android",
     iconImg: 'icons/explorer.png',
     tbColor: 'linear-gradient(135deg,#c87d0e,#d9960f)',
     tbText: 'rgba(255,255,255,0.9)',
@@ -2991,6 +3786,7 @@ function showPopup(trigger) {
   prevCaret.style.left      = caretX + 'px';
   prevCaret.style.transform = 'translateX(-50%)';
 
+  popup.dataset.currentApp = key;
   popup.classList.add('visible');
 }
 
@@ -2998,6 +3794,16 @@ function hidePopup(delay = 180) {
   clearTimeout(hideTimer);
   hideTimer = setTimeout(() => popup.classList.remove('visible'), delay);
 }
+
+/* Click on thumb opens the matching app */
+prevThumb.addEventListener('click', () => {
+  const key = popup.dataset.currentApp;
+  if (key === 'explorer') {
+    popup.classList.remove('visible');
+    if (typeof openFolder === 'function') openFolder('Camera');
+    else document.getElementById('folder-window')?.classList.add('open');
+  }
+});
 
 /* Attach listeners */
 document.querySelectorAll('.tb-trigger').forEach(el => {
@@ -3394,6 +4200,80 @@ const fwSearchInput = document.getElementById('fw-search-input');
 const fwFileList  = document.getElementById('fw-file-list');
 const fwStatusText = document.getElementById('fw-status-text');
 
+function snapCopDropZone(anchorEl) {
+  const cdz = document.getElementById('cop-drop-zone');
+  if (!cdz || !anchorEl) return;
+  const r = anchorEl.getBoundingClientRect();
+  const cdzW = 232;
+  const gap = 10;
+  const left = Math.round(r.left + r.width / 2 - cdzW / 2);
+  const top  = Math.round(r.top - cdz.offsetHeight - gap);
+  cdz.style.left = left + 'px';
+  cdz.style.top  = top  + 'px';
+}
+
+/* ── FW pointer-drag state (outer scope so mousedown handlers can reach it) ── */
+let fwDragGhost = null;
+let fwDragging = false;
+let fwDragItems = [];
+let fwDragThresholdMet = false;
+let fwDragStartX = 0, fwDragStartY = 0;
+let fwDragOriginEl = null;
+
+function buildFwGhost(items) {
+  fwDragGhost?.remove();
+  const ghost = document.createElement('div');
+  ghost.className = 'drag-ghost';
+  ghost.style.cssText = 'left:-200px;top:-200px;';
+  const plate = document.createElement('div');
+  plate.className = 'drag-ghost-plate';
+  const stack = document.createElement('div');
+  stack.className = 'drag-icon-stack';
+  const iconItem = document.createElement('div');
+  iconItem.className = 'drag-icon-item';
+  const first = items[0];
+  if (first.thumb && typeof first.thumb === 'string' && first.thumb.startsWith('http')) {
+    const thumbImg = document.createElement('img');
+    thumbImg.src = first.thumb;
+    thumbImg.style.cssText = 'width:64px;height:64px;object-fit:cover;border-radius:8px;';
+    iconItem.appendChild(thumbImg);
+  } else {
+    const tmpDiv = document.createElement('div');
+    tmpDiv.innerHTML = first.iconHtml || ICONS_HTML.text;
+    const srcImg = tmpDiv.querySelector('img');
+    const srcSvg = tmpDiv.querySelector('svg');
+    const srcEl  = tmpDiv.firstElementChild;
+    if (srcImg) {
+      const scaledImg = document.createElement('img');
+      scaledImg.src = srcImg.src;
+      scaledImg.style.cssText = 'width:64px;height:64px;object-fit:contain;';
+      iconItem.appendChild(scaledImg);
+    } else if (srcSvg) {
+      srcSvg.setAttribute('width', '64');
+      srcSvg.setAttribute('height', '64');
+      iconItem.appendChild(srcSvg);
+    } else if (srcEl) {
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = 'display:flex;align-items:center;justify-content:center;width:64px;height:64px;';
+      srcEl.style.transform = 'scale(3.5)';
+      srcEl.style.transformOrigin = 'center';
+      wrapper.appendChild(srcEl);
+      iconItem.appendChild(wrapper);
+    }
+  }
+  stack.appendChild(iconItem);
+  plate.appendChild(stack);
+  if (items.length > 1) {
+    const badge = document.createElement('div');
+    badge.className = 'drag-count-badge';
+    badge.textContent = items.length;
+    plate.appendChild(badge);
+  }
+  ghost.appendChild(plate);
+  document.body.appendChild(ghost);
+  fwDragGhost = ghost;
+}
+
 const FW_SB_MAP = {
   'Documents':    'fw-sb-documents',
   'Projects':     'fw-sb-projects',
@@ -3408,7 +4288,7 @@ function openFolder(name) {
 
   fwTabName.textContent = name === 'Camera' ? 'Jack\'s Android' : name;
   fwFolderName.innerHTML = name === 'Camera'
-    ? `<span style="color:#999">Connected</span>&nbsp;<span class="fw-breadcrumb-sep">›</span>&nbsp;Jack's Android&nbsp;<span class="fw-breadcrumb-sep">›</span>&nbsp;Internal storage&nbsp;<span class="fw-breadcrumb-sep">›</span>&nbsp;<strong style="font-weight:500">Camera</strong>`
+    ? `<span style="color:#999">Connected</span><span class="fw-breadcrumb-sep">›</span>Jack's Android<span class="fw-breadcrumb-sep">›</span>Internal storage<span class="fw-breadcrumb-sep">›</span><strong style="font-weight:500">Camera</strong>`
     : name;
   fwSearchInput.placeholder = `Search ${name}`;
   fwStatusText.textContent = `${items.length} items`;
@@ -3476,16 +4356,15 @@ function openFolder(name) {
           updateStatus();
         });
 
-        card.draggable = true;
-        card.addEventListener('dragstart', e => {
+        card.addEventListener('dragstart', e => e.preventDefault());
+        card.addEventListener('mousedown', e => {
+          if (e.button !== 0) return;
+          fwDragStartX = e.clientX; fwDragStartY = e.clientY;
+          fwDragThresholdMet = false;
           const toSend = selectedItems.size > 0 ? [...selectedItems] : [item];
-          e.dataTransfer.setData('application/x-fw-file', JSON.stringify({
-            name: item.name, iconHtml: ICONS_HTML[item.icon] || ICONS_HTML.text,
-            allSelected: toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text }))
-          }));
-          e.dataTransfer.effectAllowed = 'copy';
-          e.dataTransfer.setDragImage(_emptyDragImg, 0, 0);
-          buildFwGhost(toSend.map(i => ({ iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text })));
+          fwDragItems = toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text, thumb: i.thumb }));
+          fwDragOriginEl = card;
+          fwDragging = true;
         });
         row.appendChild(card);
       });
@@ -3532,16 +4411,15 @@ function openFolder(name) {
         updateStatus();
       });
 
-      row.draggable = true;
-      row.addEventListener('dragstart', e => {
+      row.addEventListener('dragstart', e => e.preventDefault());
+      row.addEventListener('mousedown', e => {
+        if (e.button !== 0) return;
+        fwDragStartX = e.clientX; fwDragStartY = e.clientY;
+        fwDragThresholdMet = false;
         const toSend = selectedItems.size > 0 ? [...selectedItems] : [item];
-        e.dataTransfer.setData('application/x-fw-file', JSON.stringify({
-          name: item.name, iconHtml: ICONS_HTML[item.icon] || ICONS_HTML.text,
-          allSelected: toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text }))
-        }));
-        e.dataTransfer.effectAllowed = 'copy';
-        e.dataTransfer.setDragImage(_emptyDragImg, 0, 0);
-        buildFwGhost(toSend.map(i => ({ iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text })));
+        fwDragItems = toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text }));
+        fwDragOriginEl = row;
+        fwDragging = true;
       });
       fwFileList.appendChild(row);
     });
@@ -3555,19 +4433,98 @@ function openFolder(name) {
   folderWin.classList.add('open');
 }
 
-// Double-click folder icons to open
-document.querySelectorAll('.d-icon').forEach(ic => {
-  if (!ic.querySelector('.folder-thumb')) return;
-  ic.addEventListener('dblclick', e => {
-    e.stopPropagation();
-    const label = ic.querySelector('span:last-child')?.textContent?.trim() || '';
-    openFolder(label);
+// Folder double-click is handled via mousedown timestamp (dblclick blocked by preventDefault)
+
+// Word viewer open/close
+(function() {
+  const wordIcon = document.getElementById('word-doc-icon');
+  const wordViewer = document.getElementById('word-viewer');
+  if (!wordIcon || !wordViewer) return;
+
+  document.getElementById('wv-close')?.addEventListener('click', () => {
+    wordViewer.classList.remove('open');
   });
-});
+
+  wordViewer.addEventListener('click', e => {
+    if (e.target === wordViewer) wordViewer.classList.remove('open');
+  });
+
+  // Custom text drag: mousedown in content → mousemove → drop on search bar
+  const wvContent = document.getElementById('wv-content');
+  const searchBarEl = document.querySelector('.search-bar');
+  if (wvContent && searchBarEl) {
+    let wvDragging = false;
+    let wvGhost = null;
+    let wvDragText = '';
+    let wvStartX = 0, wvStartY = 0;
+
+    wvContent.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      wvStartX = e.clientX;
+      wvStartY = e.clientY;
+      wvDragging = false;
+      wvDragText = '';
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (e.buttons !== 1) { wvDragging = false; return; }
+
+      if (wvDragging) {
+        if (wvGhost) {
+          wvGhost.style.left = (e.clientX + 14) + 'px';
+          wvGhost.style.top  = (e.clientY - 22) + 'px';
+        }
+        const r = searchBarEl.getBoundingClientRect();
+        const over = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        searchBarEl.classList.toggle('drag-over', over);
+        return;
+      }
+
+      // Check drag threshold from wv-content
+      if (!wvContent.contains(document.elementFromPoint(wvStartX, wvStartY))) return;
+      if (Math.hypot(e.clientX - wvStartX, e.clientY - wvStartY) < 8) return;
+      const sel = window.getSelection()?.toString().trim();
+      if (!sel) return;
+
+      wvDragText = sel;
+      wvDragging = true;
+      searchBarEl.classList.add('drop-mode', 'drag-over');
+
+      wvGhost = document.createElement('div');
+      wvGhost.style.cssText = `position:fixed;pointer-events:none;z-index:99999;background:#185abd;color:#fff;font-size:12px;font-weight:600;padding:4px 14px;border-radius:14px;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.28);left:${e.clientX+14}px;top:${e.clientY-22}px;`;
+      wvGhost.textContent = (sel.length > 32 ? sel.slice(0, 32) + '…' : sel);
+      document.body.appendChild(wvGhost);
+    });
+
+    document.addEventListener('mouseup', e => {
+      if (!wvDragging) return;
+      const r = searchBarEl.getBoundingClientRect();
+      const dropped = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+      searchBarEl.classList.remove('drop-mode', 'drag-over');
+      wvGhost?.remove();
+      wvGhost = null;
+      wvDragging = false;
+      if (dropped && wvDragText) {
+        const wIconHtml = `<div style="width:20px;height:20px;background:#185abd;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">W</div>`;
+        window._addFileChipToComposer?.('Selected text.txt', wIconHtml);
+        window._openComposerDirect?.();
+      }
+      wvDragText = '';
+    });
+  }
+})();
 
 // Close buttons
 ['fw-btn-close', 'fw-tab-close'].forEach(id => {
   document.getElementById(id)?.addEventListener('click', () => folderWin.classList.remove('open'));
+});
+
+// Minimize button
+document.getElementById('fw-btn-minimize')?.addEventListener('click', () => {
+  folderWin.classList.add('minimizing');
+  folderWin.addEventListener('transitionend', () => {
+    folderWin.classList.remove('open', 'minimizing');
+  }, { once: true });
 });
 
 // Sidebar folder shortcuts
@@ -3665,83 +4622,518 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
     document.getElementById('composer-input').focus();
   });
 
-  /* ── Folder-window custom drag ghost ── */
-  let fwDragGhost = null;
-  const _emptyDragImg = document.createElement('canvas');
-
-  function buildFwGhost(items) {
-    fwDragGhost?.remove();
-    const ghost = document.createElement('div');
-    ghost.className = 'drag-ghost';
-    ghost.style.cssText = 'left:-200px;top:-200px;';
-
-    const plate = document.createElement('div');
-    plate.className = 'drag-ghost-plate';
-    const stack = document.createElement('div');
-    stack.className = 'drag-icon-stack';
-
-    const n = Math.min(items.length, 3);
-    for (let i = 0; i < n; i++) {
-      const item = document.createElement('div');
-      item.className = 'drag-icon-item';
-      item.innerHTML = items[i].iconHtml || ICONS_HTML.text;
-      stack.appendChild(item);
+  /* ── FW drag ghost tracking (state + buildFwGhost live in outer scope) ── */
+  window.addEventListener('mousemove', e => {
+    if (!fwDragging) return;
+    if (!fwDragThresholdMet) {
+      const dx = e.clientX - fwDragStartX, dy = e.clientY - fwDragStartY;
+      if (Math.sqrt(dx*dx + dy*dy) >= 6) {
+        fwDragThresholdMet = true;
+        buildFwGhost(fwDragItems);
+        fwDragOriginEl?.classList.add('fw-dragging');
+        bar.classList.add('drop-mode');
+      }
     }
-    plate.appendChild(stack);
-    if (items.length > 1) {
-      const badge = document.createElement('div');
-      badge.className = 'drag-count-badge';
-      badge.textContent = items.length;
-      plate.appendChild(badge);
-    }
-    ghost.appendChild(plate);
-    document.body.appendChild(ghost);
-    fwDragGhost = ghost;
-  }
-
-  document.addEventListener('dragover', e => {
-    if (fwDragGhost) {
-      fwDragGhost.style.left = (e.clientX - 40) + 'px';
-      fwDragGhost.style.top  = (e.clientY - 40) + 'px';
+    if (fwDragThresholdMet && fwDragGhost) {
+      fwDragGhost.style.left = (e.clientX - 44) + 'px';
+      fwDragGhost.style.top  = (e.clientY - 44) + 'px';
+      if (bar.classList.contains('drop-mode') || bar.classList.contains('holding')) {
+        const sr = bar.getBoundingClientRect();
+        const overSB = e.clientX >= sr.left && e.clientX <= sr.right &&
+                       e.clientY >= sr.top  && e.clientY <= sr.bottom;
+        bar.classList.toggle('drag-over', overSB);
+      }
+      // Variant J: show cop-drop-zone only when cursor is in bottom 1/4 of screen
+      if (document.body.dataset.hv === 'j') {
+        const cdzFw = document.getElementById('cop-drop-zone');
+        const inBottomQuarterFw = e.clientY >= window.innerHeight * 0.75;
+        if (inBottomQuarterFw) {
+          snapCopDropZone(bar);
+          cdzFw.classList.add('visible');
+          const cdzFwR = cdzFw.getBoundingClientRect();
+          const overCDZFw = e.clientX >= cdzFwR.left && e.clientX <= cdzFwR.right &&
+                            e.clientY >= cdzFwR.top  && e.clientY <= cdzFwR.bottom;
+          cdzFw.classList.toggle('file-over', overCDZFw);
+        } else {
+          cdzFw.classList.remove('visible', 'file-over');
+        }
+      }
     }
   });
-  document.addEventListener('dragend', () => {
+
+  window.addEventListener('mouseup', e => {
+    if (!fwDragging) return;
+    if (fwDragThresholdMet) {
+      const sr = bar.getBoundingClientRect();
+      const dropped = e.clientX >= sr.left && e.clientX <= sr.right &&
+                      e.clientY >= sr.top  && e.clientY <= sr.bottom;
+      const cdzFwUp = document.getElementById('cop-drop-zone');
+      const cdzFwUpR = cdzFwUp?.getBoundingClientRect();
+      const droppedCDZ = document.body.dataset.hv === 'j' &&
+        cdzFwUp?.classList.contains('visible') && cdzFwUpR &&
+        e.clientX >= cdzFwUpR.left && e.clientX <= cdzFwUpR.right &&
+        e.clientY >= cdzFwUpR.top  && e.clientY <= cdzFwUpR.bottom;
+      if (dropped || droppedCDZ) {
+        fwDragItems.forEach(f => addFileChipToComposer(f.name, f.iconHtml));
+        window._openComposerWithFiles?.([]);
+      }
+      cdzFwUp?.classList.remove('visible', 'file-over');
+    }
     fwDragGhost?.remove();
     fwDragGhost = null;
+    fwDragOriginEl?.classList.remove('fw-dragging');
+    fwDragOriginEl = null;
+    bar.classList.remove('drag-over', 'drop-mode');
+    fwDragging = false;
+    fwDragThresholdMet = false;
+    fwDragItems = [];
   });
 
-  // HTML5 drag from folder window → drop on search bar
+  /* ── Cleanup stuck fwDragGhost when browser loses focus or OS drag enters ── */
+  function cancelFwDrag() {
+    if (fwDragGhost) { fwDragGhost.remove(); fwDragGhost = null; }
+    if (fwDragOriginEl) { fwDragOriginEl.classList.remove('fw-dragging'); fwDragOriginEl = null; }
+    bar.classList.remove('drag-over', 'drop-mode');
+    document.getElementById('cop-drop-zone')?.classList.remove('visible', 'file-over');
+    fwDragging = false;
+    fwDragThresholdMet = false;
+    fwDragItems = [];
+  }
+  window.addEventListener('blur', cancelFwDrag);
+  document.addEventListener('dragenter', cancelFwDrag);
+
+  /* ── OS file-explorer drops (native HTML5 Files drag into bar) ── */
+  let _osDrag = false;
   bar.addEventListener('dragenter', e => {
-    if ([...e.dataTransfer.types].includes('application/x-fw-file')) {
+    const types = [...e.dataTransfer.types];
+    if (types.includes('Files') || types.includes('application/word-text') || types.includes('text/plain')) {
       e.preventDefault();
-      bar.classList.add('drag-over');
+      _osDrag = true;
+      bar.classList.add('drop-mode', 'drag-over');
     }
   });
   bar.addEventListener('dragover', e => {
-    if ([...e.dataTransfer.types].includes('application/x-fw-file')) {
+    const types = [...e.dataTransfer.types];
+    if (types.includes('Files') || types.includes('application/word-text') || types.includes('text/plain')) {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy';
     }
   });
   bar.addEventListener('dragleave', e => {
-    // Only remove drag-over if the cursor genuinely left the bar (not just a child element)
-    if (!bar.contains(e.relatedTarget)) {
-      bar.classList.remove('drag-over');
+    if (_osDrag && !bar.contains(e.relatedTarget)) {
+      _osDrag = false;
+      bar.classList.remove('drag-over', 'drop-mode');
     }
   });
   bar.addEventListener('drop', e => {
+    const types = [...e.dataTransfer.types];
+    const isWordText = types.includes('application/word-text') || types.includes('text/plain');
+    const isFiles = types.includes('Files');
+    if (!isFiles && !isWordText) return;
     e.preventDefault();
-    bar.classList.remove('drag-over');
-    const raw = e.dataTransfer.getData('application/x-fw-file');
-    if (!raw) return;
-    const { name, iconHtml, allSelected } = JSON.parse(raw);
-    if (allSelected && allSelected.length > 1) {
-      allSelected.forEach(f => addFileChipToComposer(f.name, f.iconHtml));
-    } else {
-      addFileChipToComposer(name, iconHtml);
+    _osDrag = false;
+    bar.classList.remove('drag-over', 'drop-mode');
+    if (isWordText) {
+      const txt = e.dataTransfer.getData('text/plain') || '';
+      if (txt) {
+        const wordIconHtml = `<div style="width:20px;height:20px;background:#185abd;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;">W</div>`;
+        addFileChipToComposer('Selected text.txt', wordIconHtml);
+        window._openComposerWithFiles?.([]);
+      }
+      return;
     }
-    composer.classList.add('open');
-    document.getElementById('composer-input').focus();
+    [...e.dataTransfer.files].forEach(file => addFileChipToComposer(file.name, null));
+    window._openComposerWithFiles?.([]);
+  });
+  window._addFileChipToComposer = addFileChipToComposer;
+})();
+
+/* ── Composer: dynamic suggestions while typing ── */
+(function () {
+  const input = document.getElementById('composer-input');
+  const sugEl = document.getElementById('composer-suggestions');
+
+  const COPILOT_SVG = `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C8.38171 20 6.81782 19.6146 5.41286 18.888L1.58704 19.9553C0.922123 20.141 0.232581 19.7525 0.0469058 19.0876C-0.0145358 18.8676 -0.014506 18.6349 0.046948 18.4151L1.11461 14.5922C0.386366 13.186 0 11.6203 0 10C0 4.47715 4.47715 0 10 0ZM10 1.5C5.30558 1.5 1.5 5.30558 1.5 10C1.5 11.4696 1.87277 12.8834 2.57303 14.1375L2.72368 14.4072L1.61096 18.3914L5.59755 17.2792L5.86709 17.4295C7.12006 18.1281 8.53218 18.5 10 18.5C14.6944 18.5 18.5 14.6944 18.5 10C18.5 5.30558 14.6944 1.5 10 1.5ZM6.75 11H11.2483C11.6625 11 11.9983 11.3358 11.9983 11.75C11.9983 12.1297 11.7161 12.4435 11.35 12.4932L11.2483 12.5H6.75C6.33579 12.5 6 12.1642 6 11.75C6 11.3703 6.28215 11.0565 6.64823 11.0068L6.75 11ZM6.75 7.5H13.2545C13.6687 7.5 14.0045 7.83579 14.0045 8.25C14.0045 8.6297 13.7223 8.94349 13.3563 8.99315L13.2545 9H6.75C6.33579 9 6 8.66421 6 8.25C6 7.8703 6.28215 7.55651 6.64823 7.50685L6.75 7.5Z" fill="#242424"/></svg>`;
+
+  let savedRows  = null;
+  let inQueryMode = false;
+
+  // Whenever openComposerWithFiles rebuilds the suggestions, snapshot them
+  new MutationObserver(() => {
+    if (inQueryMode) return;
+    const rows = sugEl.querySelectorAll('.suggestion-row');
+    if (rows.length) savedRows = [...rows].map(r => r.cloneNode(true));
+  }).observe(sugEl, { childList: true });
+
+  input.addEventListener('input', () => {
+    if (!sugEl.classList.contains('visible')) return;
+    const query = input.value.trim();
+    if (query) {
+      inQueryMode = true;
+      renderQuerySuggestions(query);
+    } else {
+      inQueryMode = false;
+      if (savedRows) {
+        sugEl.innerHTML = '';
+        savedRows.forEach(r => sugEl.appendChild(r.cloneNode(true)));
+      }
+    }
+  });
+
+  function renderQuerySuggestions(query) {
+    const label = query.length > 48 ? query.slice(0, 48) + '…' : query;
+    const items = [
+      {
+        icon: COPILOT_SVG,
+        bg: '#f0f4ff',
+        title: label,
+        sub: 'New conversation · Copilot',
+        titleStyle: 'font-weight:600;color:#1a1a1a;',
+      },
+      {
+        icon: COPILOT_SVG,
+        bg: '#f0f4ff',
+        title: 'Summarise these files',
+        sub: 'Copilot · Add to conversation',
+      },
+      {
+        emoji: '📁',
+        bg: '#fff8e6',
+        title: 'Move to a folder',
+        sub: 'File Explorer',
+      },
+    ];
+    sugEl.innerHTML = '';
+    items.forEach(s => {
+      const row = document.createElement('div');
+      row.className = 'suggestion-row';
+      row.innerHTML = `
+        <div class="suggestion-icon" style="background:${s.bg}">${s.icon || s.emoji}</div>
+        <div class="suggestion-text">
+          <div class="suggestion-title" style="${s.titleStyle || ''}">${s.title}</div>
+          <div class="suggestion-sub">${s.sub}</div>
+        </div>`;
+      row.addEventListener('click', () => {
+        const chips = [...document.querySelectorAll('#composer-chips .file-chip')]
+          .map(c => c.querySelector('.file-chip-name')?.textContent || '').filter(Boolean);
+        document.getElementById('search-composer').classList.remove('open');
+        window._openCopilot?.(s.title, chips);
+      });
+      sugEl.appendChild(row);
+    });
+  }
+})();
+
+/* ── Copilot App Overlay ── */
+(function () {
+  const RECENT = [
+    'Request for Summary Clarificat…',
+    'Troubleshooting PDF Merge Issue',
+    'Sharing a Presentation Slide',
+    'Adjusting Screen Brightness',
+    'Searching for a File from Manjiri',
+    'New conversation',
+    'Searching for DSG File on PC',
+    'Understanding DSG Files',
+  ];
+
+  function getIntent(query) {
+    const q = query.toLowerCase();
+    if (/merge|combin|join/.test(q))                         return 'merge';
+    if (/convert|make.*pdf|export|pdf/.test(q))              return 'convert';
+    if (/summar/.test(q))                                    return 'summarise';
+    if (/send|share|email|gmail|whatsapp/.test(q))           return 'send';
+    if (/move|organis|organiz|folder/.test(q))               return 'folder';
+    if (/find|search|where/.test(q))                        return 'find';
+    return 'default';
+  }
+
+  function buildBotResponse(intent, query, fileNames, msgsEl) {
+    const botMsg = document.createElement('div');
+    botMsg.className = 'cop-msg-bot';
+
+    const firstName = fileNames[0] || 'document';
+    const baseName  = firstName.replace(/\.[^.]+$/, '');
+
+    const actions = `
+      <div class="cop-msg-actions" style="margin-top:14px;">
+        <button class="cop-act-btn" title="Like">👍</button>
+        <button class="cop-act-btn" title="Dislike">👎</button>
+        <button class="cop-act-btn" title="Copy">📋</button>
+        <button class="cop-act-btn" title="Regenerate">↻</button>
+        <button class="cop-act-label">✏️ Edit in a page</button>
+      </div>`;
+
+    function outputCard(name, meta, iconKey) {
+      const icon = (typeof ICONS_HTML !== 'undefined' && ICONS_HTML[iconKey]) || '📄';
+      return `<div class="cop-output-card">
+        <div class="cop-output-card-body">
+          <div class="cop-output-card-icon">${icon}</div>
+          <div class="cop-output-card-info">
+            <div class="cop-output-card-name">${name}</div>
+            <div class="cop-output-card-meta">${meta}</div>
+          </div>
+        </div>
+        <div class="cop-output-card-actions">
+          <button class="cop-output-action">↓ Download</button>
+          <button class="cop-output-action">⬡ Open</button>
+          <button class="cop-output-action">↗ Share</button>
+        </div>
+      </div>`;
+    }
+
+    function steps(list) {
+      return `<div class="cop-step-list">${list.map((s, i) =>
+        `<div class="cop-step done" style="animation-delay:${i * 0.15}s">
+          <span class="cop-step-icon">✓</span>${s}
+        </div>`).join('')}</div>`;
+    }
+
+    if (intent === 'merge') {
+      const count = fileNames.length > 1 ? fileNames.length : 2;
+      botMsg.innerHTML = `
+        <div class="cop-msg-bot-text">
+          ${steps([`Reading ${count} file${count>1?'s':''}…`, 'Merging content…', 'Generating PDF…'])}
+          Done! Here's your merged document:
+          ${outputCard(`merged_${baseName}.pdf`, `${(Math.random()*3+1).toFixed(1)} MB · PDF Document`, 'pdf')}
+        </div>${actions}`;
+    } else if (intent === 'convert') {
+      botMsg.innerHTML = `
+        <div class="cop-msg-bot-text">
+          ${steps(['Reading source file…', 'Converting to PDF…', 'Optimising output…'])}
+          Conversion complete:
+          ${outputCard(`${baseName}.pdf`, `${(Math.random()*2+0.5).toFixed(1)} MB · PDF Document`, 'pdf')}
+        </div>${actions}`;
+    } else if (intent === 'summarise') {
+      const bullets = fileNames.length > 0
+        ? fileNames.map(n => {
+            const ext = n.split('.').pop().toLowerCase();
+            const hints = {
+              pdf: 'Contains detailed records and financial figures.',
+              jpg: 'Image file — no text content detected.',
+              jpeg: 'Image file — no text content detected.',
+              docx: 'Word document with structured content.',
+              doc: 'Word document with structured content.',
+              pptx: 'Presentation with slides and visuals.',
+            };
+            return `<div class="cop-bullet-item">
+              <div class="cop-bullet-dot"></div>
+              <div class="cop-bullet-text"><span class="cop-bullet-file">${n}</span> — ${hints[ext] || 'File reviewed successfully.'}</div>
+            </div>`;
+          }).join('')
+        : `<div class="cop-bullet-item"><div class="cop-bullet-dot"></div><div class="cop-bullet-text">No files were attached. Please attach files and try again.</div></div>`;
+      botMsg.innerHTML = `
+        <div class="cop-msg-bot-text">
+          Here's a summary of your attached file${fileNames.length !== 1 ? 's' : ''}:
+          <div class="cop-bullet-list">${bullets}</div>
+          Would you like a deeper analysis of any specific file?
+        </div>${actions}`;
+    } else if (intent === 'send') {
+      botMsg.innerHTML = `
+        <div class="cop-msg-bot-text">
+          Sure — who would you like to send ${fileNames.length > 1 ? 'these files' : 'this file'} to?
+          <div class="cop-compose-box">
+            <input class="cop-compose-input" placeholder="Enter name or email…" />
+            <button class="cop-compose-send">Send via Gmail</button>
+          </div>
+        </div>${actions}`;
+    } else if (intent === 'folder') {
+      botMsg.innerHTML = `
+        <div class="cop-msg-bot-text">
+          I can move ${fileNames.length > 1 ? 'these files' : 'this file'} for you. Choose a destination:
+          <div class="cop-folder-options">
+            ${['📁 Documents / Medical', '📁 Downloads', '📁 Projects', '📁 Create new folder…'].map(f =>
+              `<div class="cop-folder-option">${f}</div>`).join('')}
+          </div>
+        </div>${actions}`;
+    } else {
+      botMsg.innerHTML = `
+        <div class="cop-msg-bot-text">
+          <p>Could you clarify what you'd like me to help with — is it about the attached files, a topic you're researching, or something else? I'm ready to assist once I understand the context.</p>
+        </div>${actions}`;
+    }
+
+    msgsEl.appendChild(botMsg);
+  }
+
+  function deriveTitle(query) {
+    if (!query || query.trim() === '') return 'New conversation';
+    const q = query.trim();
+    if (q.length <= 42) return q;
+    return q.slice(0, 42) + '…';
+  }
+
+  function buildOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'copilot-overlay';
+    overlay.className = 'cop-overlay';
+    overlay.innerHTML = `
+      <div class="cop-window">
+        <div class="cop-sb">
+          <div class="cop-sb-head">
+            <div class="cop-logo">Copilot <span class="cop-beta">BETA</span></div>
+            <button class="cop-sb-toggle">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="1.5" rx=".75" fill="#555"/><rect x="2" y="7.25" width="12" height="1.5" rx=".75" fill="#555"/><rect x="2" y="11.5" width="12" height="1.5" rx=".75" fill="#555"/></svg>
+            </button>
+          </div>
+          <div class="cop-nav">
+            <div class="cop-nav-item"><span class="cop-nav-icon">🗒</span>New chat</div>
+            <div class="cop-nav-item"><span class="cop-nav-icon">📚</span>Library</div>
+            <div class="cop-nav-item"><span class="cop-nav-icon">☑️</span>Tasks <span class="cop-nav-badge">PREVIEW</span><span class="cop-nav-plus">+</span></div>
+            <div class="cop-nav-item"><span class="cop-nav-icon">📁</span>Projects<span class="cop-nav-plus">+</span></div>
+            <div class="cop-nav-sep"></div>
+            <div class="cop-nav-item"><span class="cop-nav-icon">🔍</span>Discover</div>
+            <div class="cop-nav-item"><span class="cop-nav-icon">🎨</span>Imagine</div>
+            <div class="cop-nav-item"><span class="cop-nav-icon">🧪</span>Labs</div>
+          </div>
+          <div class="cop-recent" id="cop-recent-list"></div>
+          <div class="cop-user">
+            <div class="cop-avatar">T</div>
+            <div class="cop-user-info">
+              <div class="cop-user-name">tejasvi</div>
+              <div class="cop-user-plan">Free Plan</div>
+            </div>
+            <button class="cop-upgrade">Upgrade</button>
+          </div>
+        </div>
+        <div class="cop-main">
+          <div class="cop-titlebar">
+            <span class="cop-title" id="cop-title">New conversation</span>
+            <div class="cop-titlebar-right">
+              <button class="cop-invite">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="7" r="4" stroke="#555" stroke-width="1.5"/><path d="M2 18c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#555" stroke-width="1.5" stroke-linecap="round"/><path d="M15 8v6M12 11h6" stroke="#555" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Invite
+              </button>
+              <button class="cop-winbtn">⌄</button>
+              <button class="cop-winbtn">−</button>
+              <button class="cop-winbtn">⬜</button>
+              <button class="cop-winbtn cop-close" id="cop-close">✕</button>
+            </div>
+          </div>
+          <div class="cop-chat" id="cop-chat">
+            <div class="cop-date-sep">Today</div>
+            <div id="cop-messages"></div>
+          </div>
+          <div class="cop-input-area">
+            <div class="cop-input-card">
+              <input class="cop-input-field" placeholder="Message Copilot" autocomplete="off" />
+              <div class="cop-input-foot">
+                <button class="cop-add-btn">+</button>
+                <button class="cop-smart-btn">Smart <span style="font-size:10px;opacity:.6">▾</span></button>
+                <div class="cop-input-icons">
+                  <button class="cop-icon-btn">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3.5" stroke="#999" stroke-width="1.5"/><circle cx="10" cy="10" r="8" stroke="#999" stroke-width="1.5"/></svg>
+                  </button>
+                  <button class="cop-icon-btn">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="7" y="2" width="6" height="11" rx="3" stroke="#999" stroke-width="1.5"/><path d="M4 11a6 6 0 0012 0" stroke="#999" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="17" x2="10" y2="19" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+
+    // Close button
+    overlay.querySelector('#cop-close').addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
+
+    return overlay;
+  }
+
+  let overlay = null;
+
+  function attachCardEl(name) {
+    const ext = (name.split('.').pop() || '').toLowerCase();
+    let iconKey = 'text', label = ext ? ext.charAt(0).toUpperCase() + ext.slice(1) : 'File';
+    if (/jpe?g|png|gif|webp|heic|avif|svg/.test(ext)) { iconKey = 'image';  label = 'Image'; }
+    else if (ext === 'pdf')   { iconKey = 'pdf';   label = 'PDF'; }
+    else if (/pptx?/.test(ext)) { iconKey = 'ppt';  label = 'PowerPoint'; }
+    else if (/docx?/.test(ext)) { iconKey = 'word'; label = 'Doc'; }
+    else if (/xlsx?/.test(ext)) { iconKey = 'excel'; label = 'Excel'; }
+    else if (ext === 'fig')   { iconKey = 'figma'; label = 'Figma'; }
+    const iconHtml = (typeof ICONS_HTML !== 'undefined' && ICONS_HTML[iconKey]) || ICONS_HTML?.text || '📄';
+    const card = document.createElement('div');
+    card.className = 'cop-attach-card';
+    const displayName = name.length > 16 ? name.slice(0, 16) + '…' : name;
+    card.innerHTML = `
+      <div class="cop-attach-icon">${iconHtml}</div>
+      <div class="cop-attach-info">
+        <div class="cop-attach-name">${displayName}</div>
+        <div class="cop-attach-type">${label}</div>
+      </div>`;
+    return card;
+  }
+
+  function openCopilot(query, fileNames) {
+    if (!overlay) overlay = buildOverlay();
+
+    // Build recent list
+    const recentEl = overlay.querySelector('#cop-recent-list');
+    const title = deriveTitle(query);
+    const recentItems = [title, ...RECENT.filter(r => r !== title)].slice(0, 9);
+    recentEl.innerHTML = recentItems.map((r, i) => `
+      <div class="cop-recent-item${i === 0 ? ' active' : ''}">
+        <span>${r}</span>${i === 0 ? '<span class="cop-recent-more">···</span>' : ''}
+      </div>`).join('');
+
+    overlay.querySelector('#cop-title').textContent = title;
+
+    // Clear messages
+    const msgsEl = overlay.querySelector('#cop-messages');
+    msgsEl.innerHTML = '';
+
+    // User message: file cards above, then message bubble
+    const userMsg = document.createElement('div');
+    userMsg.className = 'cop-msg-user';
+    const displayQuery = query || 'Summarise';
+    if (fileNames && fileNames.length) {
+      const attachRow = document.createElement('div');
+      attachRow.className = 'cop-attach-row';
+      fileNames.forEach(name => attachRow.appendChild(attachCardEl(name)));
+      userMsg.appendChild(attachRow);
+    }
+    const bubble = document.createElement('div');
+    bubble.className = 'cop-msg-user-bubble';
+    bubble.textContent = displayQuery;
+    userMsg.appendChild(bubble);
+    msgsEl.appendChild(userMsg);
+
+    // Typing indicator
+    const typing = document.createElement('div');
+    typing.className = 'cop-typing';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    msgsEl.appendChild(typing);
+
+    overlay.classList.add('open');
+    overlay.querySelector('#cop-chat').scrollTop = 9999;
+
+    // Simulate response after delay
+    setTimeout(() => {
+      typing.remove();
+      buildBotResponse(getIntent(query), query, fileNames, msgsEl);
+      overlay.querySelector('#cop-chat').scrollTop = 9999;
+    }, 1400);
+  }
+
+  window._openCopilot = openCopilot;
+
+  function closeOverlay() {
+    overlay?.classList.remove('open');
+  }
+
+  // Listen for Enter in composer input
+  document.getElementById('composer-input').addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const query = e.target.value.trim();
+    // Grab all file names including those hidden behind the +N badge
+    const chips = [...document.querySelectorAll('#composer-chips .file-chip')]
+      .map(chip => chip.querySelector('.file-chip-name')?.textContent || '')
+      .filter(Boolean);
+    e.target.value = '';
+    document.getElementById('search-composer').classList.remove('open');
+    openCopilot(query || 'Summarise', chips);
   });
 })();
 
@@ -3749,8 +5141,11 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
 const HV_DESCS = {
   a: 'Subtle – slight fill lift',
   d: 'Purple glow pulse',
-f: 'Minimal – blue dashed border on hover',
+  f: 'Minimal – blue dashed border on hover',
   g: 'Mini drop zone rises above taskbar on drag',
+  h: 'Thick dashed border on hover',
+  i: 'Pulsating dashed border + glow on hover',
+  j: '"Drop in Copilot" square appears on drag',
 };
 const hvDesc = document.getElementById('hv-desc');
 document.querySelectorAll('.hv-btn').forEach(btn => {
