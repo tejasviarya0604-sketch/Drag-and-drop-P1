@@ -5259,12 +5259,38 @@ const HV_DESCS = {
   j: '"Drop in Copilot" square appears on drag',
 };
 const hvDesc = document.getElementById('hv-desc');
+function resetUCState() {
+  const bar      = document.querySelector('.search-bar');
+  const composer = document.getElementById('search-composer');
+  const input    = document.getElementById('composer-input');
+  const chips    = document.getElementById('composer-chips');
+  const divider  = document.getElementById('composer-divider');
+  const sugEl    = document.getElementById('composer-suggestions');
+
+  // Close composer and clear all state classes
+  bar?.classList.remove('drop-mode', 'thinking', 'holding', 'drag-over', 'no-drop');
+  composer?.classList.remove('open');
+
+  // Clear chips
+  chips?.querySelectorAll('.file-chip').forEach(c => c.remove());
+  chips?.classList.remove('visible');
+  divider?.classList.remove('visible');
+  sugEl?.classList.remove('visible');
+
+  // Clear input
+  if (input) {
+    input.value = '';
+    input.style.height = 'auto';
+  }
+}
+
 document.querySelectorAll('.hv-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.hv-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.body.dataset.hv = btn.dataset.v;
     hvDesc.textContent = HV_DESCS[btn.dataset.v] || '';
+    resetUCState();
   });
 });
 </script>
