@@ -5259,12 +5259,38 @@ const HV_DESCS = {
   j: '"Drop in Copilot" square appears on drag',
 };
 const hvDesc = document.getElementById('hv-desc');
+function resetUCState() {
+  const bar      = document.querySelector('.search-bar');
+  const composer = document.getElementById('search-composer');
+  const input    = document.getElementById('composer-input');
+  const chips    = document.getElementById('composer-chips');
+  const divider  = document.getElementById('composer-divider');
+  const sugEl    = document.getElementById('composer-suggestions');
+
+  // Clear chips FIRST — so when composer.classList.remove('open') fires the
+  // MutationObserver, syncHoldingState sees count=0 and won't re-add 'holding'
+  chips?.querySelectorAll('.file-chip').forEach(c => c.remove());
+  chips?.classList.remove('visible');
+  divider?.classList.remove('visible');
+  sugEl?.classList.remove('visible');
+
+  // Now safe to close composer and strip all state classes
+  composer?.classList.remove('open');
+  bar?.classList.remove('drop-mode', 'thinking', 'holding', 'drag-over', 'no-drop');
+
+  if (input) {
+    input.value = '';
+    input.style.height = 'auto';
+  }
+}
+
 document.querySelectorAll('.hv-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.hv-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.body.dataset.hv = btn.dataset.v;
     hvDesc.textContent = HV_DESCS[btn.dataset.v] || '';
+    resetUCState();
   });
 });
 </script>
