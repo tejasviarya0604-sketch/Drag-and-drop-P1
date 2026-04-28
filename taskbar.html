@@ -5267,17 +5267,17 @@ function resetUCState() {
   const divider  = document.getElementById('composer-divider');
   const sugEl    = document.getElementById('composer-suggestions');
 
-  // Close composer and clear all state classes
-  bar?.classList.remove('drop-mode', 'thinking', 'holding', 'drag-over', 'no-drop');
-  composer?.classList.remove('open');
-
-  // Clear chips
+  // Clear chips FIRST — so when composer.classList.remove('open') fires the
+  // MutationObserver, syncHoldingState sees count=0 and won't re-add 'holding'
   chips?.querySelectorAll('.file-chip').forEach(c => c.remove());
   chips?.classList.remove('visible');
   divider?.classList.remove('visible');
   sugEl?.classList.remove('visible');
 
-  // Clear input
+  // Now safe to close composer and strip all state classes
+  composer?.classList.remove('open');
+  bar?.classList.remove('drop-mode', 'thinking', 'holding', 'drag-over', 'no-drop');
+
   if (input) {
     input.value = '';
     input.style.height = 'auto';
