@@ -13,7 +13,10 @@
       "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/taskbar_icons.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/0b6e296c-1a4a-45d5-9f46-5bbd332481f2\")",
       "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/taskbar_full.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/0dbb135a-55a1-48d1-8487-12017e2d0b95\")",
       "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/weather.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/abd99b9f-e04a-456b-98bb-7a29c5bef454\")",
-      "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/systray.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/f61fcad7-4206-49d9-9a05-1386ebf36a5a\")"
+      "Bash(curl -s -o /c/Users/tejasviarya/Dragdrop_Proto/systray.png \"https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/f61fcad7-4206-49d9-9a05-1386ebf36a5a\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git rm *)"
     ]
   }
 }

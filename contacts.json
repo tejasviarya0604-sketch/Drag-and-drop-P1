@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Sarah Whitman",
+    "sub": "Contact",
+    "gender": "female",
+    "recentMsg": {
+      "sender": "Sarah Whitman",
+      "group": "Sunday trek!!!",
+      "time": "Sun, 10:00 PM",
+      "body": "Guys, this trip was super fun, lets plan one more next weeked!!",
+      "photos": ["1.jpg", "2.jpg", "3.jpg", "4.jpg"]
+    },
+    "results": [
+      { "type": "chat", "label": "Sarah W", "context": "in files", "sub": "New conversation · Copilot" },
+      { "type": "pdf",  "label": "Sarah Whitman resume", "context": "", "sub": "File explorer · Downloads" }
+    ]
+  }
+]
