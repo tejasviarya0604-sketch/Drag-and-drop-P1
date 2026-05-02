@@ -460,6 +460,7 @@
       justify-content: center;
       cursor: default;
       padding: 0;
+      transition: none;
     }
     .search-placeholder {
       flex: 1;
@@ -524,6 +525,19 @@
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%234f8ef7'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='3 2'/%3E%3C/svg%3E")
         center / 100% 100% no-repeat;
     }
+    /* Chips-attached: static dashed gradient border after file drop */
+    .search-bar.chips-attached { overflow: visible !important; }
+    .search-bar.chips-attached::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      pointer-events: none;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%234f8ef7'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='3 2'/%3E%3C/svg%3E")
+        center / 100% 100% no-repeat;
+    }
+
     .search-bar.drop-mode .search-placeholder,
     .search-bar.drop-mode .search-icons,
     .search-bar.drop-mode .search-divider,
@@ -1960,6 +1974,393 @@
     color: #999; font-size: 15px; transition: all 0.1s;
   }
   .cop-icon-btn:hover { background: rgba(0,0,0,0.06); color: #444; }
+
+  /* ── Variant Switcher ─────────────────────────────────── */
+  #variant-switcher {
+    position: fixed;
+    bottom: 64px;
+    right: 20px;
+    display: flex;
+    gap: 6px;
+    z-index: 99999;
+  }
+  .var-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0,0,0,0.15);
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    font-size: 12px; font-weight: 600; color: #444;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .var-btn:hover { background: rgba(255,255,255,1); }
+  .var-btn.active { background: #0078d4; color: #fff; border-color: #0078d4; }
+
+  /* ── While you were away card ─────────────────────────── */
+  .uc-away-card {
+    margin: 8px 8px 4px;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    padding: 14px 16px 10px;
+  }
+  .uc-away-title {
+    font-size: 11px; font-weight: 600; color: #888;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .uc-away-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  .uc-away-item:hover { background: rgba(0,0,0,0.05); }
+  .uc-away-item + .uc-away-item { border-top: 1px solid rgba(0,0,0,0.07); }
+  .uc-away-icon-wrap {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: #f0f0f0; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .uc-away-text { flex: 1; min-width: 0; padding-top: 2px; }
+  .uc-away-label { font-size: 13px; color: #1a1a1a; line-height: 1.4; }
+  .uc-away-label strong { font-weight: 600; }
+  .uc-away-sub { font-size: 11.5px; color: #888; margin-top: 1px; }
+  .uc-away-photos {
+    display: flex; gap: 4px; margin-top: 8px;
+  }
+  .uc-away-photo {
+    flex: 1; height: 56px; border-radius: 8px; overflow: hidden;
+  }
+  .uc-away-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Accordion zero rows */
+  .uc-zero-accordion { position: relative; }
+  .uc-zero-accordion.open {
+    background: #fff;
+    border-radius: 10px;
+    margin: 6px 6px 0;
+    padding-top: 6px;
+  }
+  .uc-zero-accordion.open > .uc-zero-row { margin: 0; position: relative; }
+  .uc-zero-accordion.open > .uc-zero-row::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: #0078d4;
+    border-radius: 2px;
+  }
+  .uc-zero-accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.28s ease;
+  }
+  .uc-zero-accordion.open .uc-zero-accordion-body { max-height: 600px; }
+  .uc-zero-row-chevron {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: #bbb;
+    transition: transform 0.2s ease;
+    align-self: center;
+  }
+  .uc-zero-accordion.open .uc-zero-row-chevron { transform: rotate(90deg); }
+  .uc-todo-list { padding: 0 16px 10px 52px; }
+  .uc-todo-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 5px 0; font-size: 13px; color: #1a1a1a; line-height: 1.4;
+  }
+  .uc-todo-item + .uc-todo-item { border-top: 1px solid rgba(0,0,0,0.05); }
+  .uc-todo-check {
+    width: 16px; height: 16px; flex-shrink: 0;
+    border-radius: 50%; border: 1.5px solid #c8c8c8;
+  }
+  .uc-missed-list { padding: 0 16px 10px 16px; }
+
+  /* ── UC People Search Panel ──────────────────────────── */
+  #uc-search-panel {
+    position: fixed;
+    bottom: 96px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px) scale(0.97);
+    z-index: 9500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  #uc-search-panel.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  .uc-card {
+    width: 420px;
+    background: rgba(240,240,240,0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+  }
+  .uc-inner {
+    background: transparent;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Input wrapper — white card, equal padding on all sides */
+  .uc-input-wrap {
+    background: #fff;
+    border-radius: 14px;
+    margin: 5px;
+    overflow: hidden;
+  }
+
+  /* Search input area — top, takes full width, cursor top-left */
+  .uc-input-row {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px 10px 16px;
+    min-height: 80px;
+  }
+  .uc-search-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+    color: #1a1a1a;
+    background: transparent;
+    caret-color: #0078d4;
+    resize: none;
+    flex: 1;
+    align-self: stretch;
+  }
+  .uc-search-input::placeholder { color: #aaa; font-size: 13px; }
+
+  /* Bottom row: + on the left */
+  .uc-input-bottom {
+    display: flex;
+    align-items: center;
+    padding: 6px 14px 12px 14px;
+  }
+  .uc-add-btn {
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 300; line-height: 1;
+    color: #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .uc-add-btn:hover { background: rgba(0,0,0,0.07); color: #1a1a1a; }
+
+  /* Zero state */
+  .uc-zero-state { display: none; flex-direction: column; }
+  .uc-zero-state.visible { display: flex; }
+  .uc-zero-top {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+  }
+  .uc-zero-accent { width: 3px; align-self: stretch; background: #0078d4; border-radius: 2px; flex-shrink: 0; }
+  .uc-zero-top-inner { flex: 1; min-width: 0; }
+  .uc-zero-top-header { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+  .uc-zero-top-icon {
+    width: 28px; height: 28px; border-radius: 7px; background: #f0f0f0;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .uc-zero-top-title { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+  .uc-zero-chips { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .uc-zero-chip {
+    display: flex; align-items: center; gap: 4px;
+    padding: 3px 9px; background: #f0f0f0; border-radius: 999px;
+    font-size: 12px; font-weight: 500; color: #1a1a1a;
+  }
+  .uc-zero-chip img { width: 13px; height: 13px; object-fit: contain; }
+  .uc-zero-chip-more { font-size: 12px; color: #888; }
+  .uc-zero-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 10px; margin: 6px 6px 0;
+    border-radius: 10px; cursor: pointer; transition: background 0.12s;
+  }
+  .uc-zero-row:hover { background: rgba(0,0,0,0.05); }
+  .uc-zero-row-icon {
+    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; background: #f0f0f0;
+  }
+  .uc-zero-row-text { flex: 1; min-width: 0; }
+  .uc-zero-row-title {
+    font-size: 13px; font-weight: 500; color: #1a1a1a;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .uc-zero-row-sub { font-size: 11.5px; color: #888; margin-top: 2px; line-height: 1.4; }
+  .uc-new-badge {
+    font-size: 10px; font-weight: 600; background: #e0e0e0; color: #555;
+    border-radius: 999px; padding: 2px 8px;
+  }
+
+  /* File-drop suggestion list */
+  .uc-file-suggestions { display: none; flex-direction: column; padding-bottom: 6px; }
+  .uc-file-suggestions.visible { display: flex; }
+
+  /* Results area — hidden until typing produces a match */
+  .uc-results-area {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+  }
+  .uc-results-area.visible { display: flex; }
+
+  /* File chips */
+  .uc-file-chips { display: none; flex-wrap: wrap; gap: 6px; padding: 10px 14px 2px; }
+  .uc-file-chips.visible { display: flex; }
+  .uc-file-chip {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 10px 4px 8px;
+    background: #fff; border: 1.5px solid #c8c8c8;
+    border-radius: 20px; font-size: 12px; color: #1a1a1a; max-width: 200px;
+  }
+  .uc-file-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .uc-file-chip-remove {
+    background: none; border: none; cursor: pointer;
+    font-size: 13px; color: #888; padding: 0; line-height: 1; flex-shrink: 0;
+  }
+  .uc-file-chip-remove:hover { color: #333; }
+
+  /* Input bottom icons */
+  .uc-input-right { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .uc-icon-btn {
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    background: none; border: none; cursor: pointer; border-radius: 6px;
+    color: #888; transition: background 0.12s, color 0.12s;
+  }
+  .uc-icon-btn:hover { background: rgba(0,0,0,0.07); color: #1a1a1a; }
+
+  /* People section — solid white card */
+  .uc-people-section {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .uc-contact-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 16px 8px;
+  }
+  .uc-contact-accent {
+    width: 3px;
+    height: 42px;
+    background: #0078d4;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .uc-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .uc-contact-meta { flex: 1; min-width: 0; }
+  .uc-contact-name { font-size: 15px; font-weight: 600; color: #1a1a1a; }
+  .uc-contact-name em { font-style: normal; }
+  .uc-contact-role { font-size: 12px; color: #888; margin-top: 2px; }
+  .uc-actions {
+    display: flex;
+    align-items: center;
+    margin: 4px 16px 0;
+    gap: 8px;
+  }
+  .uc-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 12px;
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+    color: #1a1a1a;
+    transition: background 0.12s;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+  .uc-action:hover { background: #f5f5f5; }
+  .uc-action-msg { flex: 0 0 auto; }
+  .uc-action-icon { flex: 0 0 auto; padding: 0 10px; }
+  .uc-action-sep { display: none; }
+  .uc-action-caret { display: flex; align-items: center; opacity: 0.55; margin-left: 2px; }
+  .uc-action-img { width: 18px; height: 18px; object-fit: contain; }
+  .uc-msg-card {
+    margin: 12px 16px 16px;
+    background: #f0f6ff;
+    border-radius: 12px;
+    padding: 12px 14px 14px;
+  }
+  .uc-msg-header { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+  .uc-msg-icon { width: 16px; height: 16px; object-fit: contain; }
+  .uc-msg-title {
+    flex: 1;
+    font-size: 12.5px; font-weight: 600; color: #1a1a1a;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .uc-msg-title em { font-style: normal; }
+  .uc-msg-time { font-size: 11px; color: #888; flex-shrink: 0; margin-left: 6px; }
+  .uc-msg-body { font-size: 12px; color: #444; line-height: 1.5; margin-bottom: 10px; }
+  .uc-msg-photos { display: flex; gap: 6px; }
+  .uc-msg-photo { flex: 1; height: 68px; border-radius: 8px; overflow: hidden; }
+
+  /* Generic search results — transparent, on frosted background */
+  .uc-results-card {
+    background: transparent;
+  }
+  .uc-results { display: flex; flex-direction: column; }
+  .uc-result-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 16px;
+    cursor: pointer; transition: background 0.12s;
+  }
+  .uc-result-row:hover { background: rgba(0,0,0,0.04); }
+  .uc-result-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; background: #f0f0f0; color: #555;
+  }
+  .uc-result-text { flex: 1; min-width: 0; }
+  .uc-result-label { font-size: 13px; font-weight: 500; color: #1a1a1a; }
+  .uc-result-label em { font-style: normal; font-weight: 700; }
+  .uc-result-sub { font-size: 11.5px; color: #888; margin-top: 1px; }
+  .uc-see-more {
+    display: none; padding: 4px 16px 10px;
+    font-size: 12.5px; color: #0078d4; cursor: pointer;
+  }
+  .uc-see-more:hover { text-decoration: underline; }
+  .uc-see-more.visible { display: block; }
   </style>
 </head>
 <body data-hv="a">
@@ -2414,6 +2815,307 @@
   </div>
 </div>
 
+<!-- ░░ UC People Search Panel ░░ -->
+<div id="uc-search-panel">
+  <div class="uc-card" id="uc-card">
+    <div class="uc-inner">
+
+    <!-- Zero state — shown when input is empty -->
+    <div class="uc-zero-state" id="uc-zero-state">
+
+      <!-- Suggestion rows -->
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:none;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C10.3817 22 8.81782 21.6146 7.41286 20.888L3.58704 21.9553C2.92212 22.141 2.23258 21.7525 2.04691 21.0876C1.98546 20.8676 1.98549 20.6349 2.04695 20.4151L3.11461 16.5922C2.38637 15.186 2 13.6203 2 12C2 6.47715 6.47715 2 12 2ZM12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 13.4696 3.87277 14.8834 4.57303 16.1375L4.72368 16.4072L3.61096 20.3914L7.59755 19.2792L7.86709 19.4295C9.12006 20.1281 10.5322 20.5 12 20.5C16.6944 20.5 20.5 16.6944 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM8.75 13H13.2483C13.6625 13 13.9983 13.3358 13.9983 13.75C13.9983 14.1297 13.7161 14.4435 13.35 14.4932L13.2483 14.5H8.75C8.33579 14.5 8 14.1642 8 13.75C8 13.3703 8.28215 13.0565 8.64823 13.0068L8.75 13ZM8.75 9.5H15.2545C15.6687 9.5 16.0045 9.83579 16.0045 10.25C16.0045 10.6297 15.7223 10.9435 15.3563 10.9932L15.2545 11H8.75C8.33579 11 8 10.6642 8 10.25C8 9.8703 8.28215 9.55651 8.64823 9.50685L8.75 9.5Z" fill="black" fill-opacity="0.8956"/></svg>
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Help me get started planning my week</div>
+          <div class="uc-zero-row-sub">Chat suggestion • Copilot</div>
+        </div>
+      </div>
+
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:none;">
+          <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 33.0901L23 16L39 27.1052V38.5C39 40.433 37.433 42 35.5 42H15C11.6863 42 9 39.3137 9 36V33.0901Z" fill="url(#pw0)"/>
+            <path d="M9 21.0385C9 18.5532 11.0147 16.5385 13.5 16.5385H33.8889L39 14V26.5C39 28.433 37.433 30 35.5 30H15C11.6863 30 9 32.6863 9 36V21.0385Z" fill="url(#pw1)"/>
+            <path d="M9 21.0385C9 18.5532 11.0147 16.5385 13.5 16.5385H33.8889L39 14V26.5C39 28.433 37.433 30 35.5 30H15C11.6863 30 9 32.6863 9 36V21.0385Z" fill="url(#pw2)" fill-opacity="0.6"/>
+            <path d="M9 21.0385C9 18.5532 11.0147 16.5385 13.5 16.5385H33.8889L39 14V26.5C39 28.433 37.433 30 35.5 30H15C11.6863 30 9 32.6863 9 36V21.0385Z" fill="url(#pw3)" fill-opacity="0.1"/>
+            <path d="M9 12C9 8.68629 11.6863 6 15 6H35.5C37.433 6 39 7.567 39 9.5V14.5C39 16.433 37.433 18 35.5 18H15C11.6863 18 9 20.6863 9 24V12Z" fill="url(#pw4)"/>
+            <path d="M9 12C9 8.68629 11.6863 6 15 6H35.5C37.433 6 39 7.567 39 9.5V14.5C39 16.433 37.433 18 35.5 18H15C11.6863 18 9 20.6863 9 24V12Z" fill="url(#pw5)" fill-opacity="0.8"/>
+            <rect x="4" y="23" width="16" height="16" rx="3.25" fill="url(#pw6)"/>
+            <rect x="4" y="23" width="16" height="16" rx="3.25" fill="url(#pw7)" fill-opacity="0.65"/>
+            <path d="M17.486 26.4287L15.5167 35.5705L13.1628 35.5716L12.0002 30.0859L10.7833 35.5716H8.40687L6.51453 26.4298H8.45548L9.6231 32.463L10.7833 26.4298H13.1628L14.3774 32.463L15.5167 26.4298L17.486 26.4287Z" fill="white"/>
+            <defs>
+              <radialGradient id="pw0" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(38.1254 41.9993) scale(47.5733 20.1494)"><stop offset="0.180414" stop-color="#1657F4"/><stop offset="0.574542" stop-color="#0036C4"/></radialGradient>
+              <linearGradient id="pw1" x1="9" y1="25" x2="31.9747" y2="25" gradientUnits="userSpaceOnUse"><stop stop-color="#66C0FF"/><stop offset="0.25606" stop-color="#0094F0"/></linearGradient>
+              <radialGradient id="pw2" cx="0" cy="0" r="1" gradientTransform="matrix(-20.2305 21.2842 -44.4679 -58.1885 39 14.7158)" gradientUnits="userSpaceOnUse"><stop offset="0.140259" stop-color="#D471FF"/><stop offset="0.830508" stop-color="#509DF5" stop-opacity="0"/></radialGradient>
+              <radialGradient id="pw3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(34.6111 29.2308) rotate(90) scale(18.6154 101.647)"><stop offset="0.283333" stop-color="#4F006F" stop-opacity="0"/><stop offset="1" stop-color="#4F006F"/></radialGradient>
+              <linearGradient id="pw4" x1="9" y1="15" x2="38.9918" y2="15.4954" gradientUnits="userSpaceOnUse"><stop stop-color="#9DEAFF"/><stop offset="0.201276" stop-color="#3BD5FF"/></linearGradient>
+              <radialGradient id="pw5" cx="0" cy="0" r="1" gradientTransform="matrix(-28.722 6.70755 -17.9979 -68.3411 39 6.58563)" gradientUnits="userSpaceOnUse"><stop offset="0.0606583" stop-color="#E4A7FE"/><stop offset="0.538869" stop-color="#E4A7FE" stop-opacity="0"/></radialGradient>
+              <radialGradient id="pw6" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(4 23) rotate(45) scale(22.6274)"><stop offset="0.0811439" stop-color="#367AF2"/><stop offset="0.871875" stop-color="#001A8F"/></radialGradient>
+              <radialGradient id="pw7" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(12 32.6) rotate(90) scale(11.2 12.765)"><stop offset="0.586954" stop-color="#2763E5" stop-opacity="0"/><stop offset="0.973806" stop-color="#58AAFE"/></radialGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Book Report</div>
+          <div class="uc-zero-row-sub">Recently opened • Word</div>
+        </div>
+      </div>
+
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:none;">
+          <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 13.5C4 11.0147 6.01472 9 8.5 9H35C39.9706 9 44 13.0294 44 18V34.5C44 36.9853 41.9853 39 39.5 39H13C8.02944 39 4 34.9706 4 30V13.5Z" fill="url(#pp0)"/>
+            <path d="M5 13.5C5 11.567 6.567 10 8.5 10H35C39.4183 10 43 13.5817 43 18V34.5C43 36.433 41.433 38 39.5 38H13C8.58172 38 5 34.4183 5 30V13.5Z" fill="url(#pp1)"/>
+            <path d="M5 13.5C5 11.567 6.567 10 8.5 10H35C39.4183 10 43 13.5817 43 18V34.5C43 36.433 41.433 38 39.5 38H13C8.58172 38 5 34.4183 5 30V13.5Z" fill="url(#pp2)"/>
+            <path d="M24 14C29.5228 14 34 18.4776 34 24.001C34 29.5243 29.5228 34.002 24 34.002V29.5C24 26.4624 21.5376 24 18.5 24H14C14.0005 18.4771 18.4775 14 24 14Z" fill="url(#pp3)"/>
+            <path d="M24 14C29.5228 14 34 18.4776 34 24.001C34 29.5243 29.5228 34.002 24 34.002V29.5C24 26.4624 21.5376 24 18.5 24H14C14.0005 18.4771 18.4775 14 24 14Z" fill="url(#pp4)"/>
+            <path d="M24 14C29.5228 14 34 18.4776 34 24.001C34 29.5243 29.5228 34.002 24 34.002V29.5C24 26.4624 21.5376 24 18.5 24H14C14.0005 18.4771 18.4775 14 24 14Z" fill="url(#pp5)" fill-opacity="0.5"/>
+            <path d="M24 14C29.5228 14 34 18.4777 34 24.001C34 25.83 33.5058 27.5425 32.6484 29.0176L32.8027 28.6748C33.792 26.4783 32.1854 23.9932 29.7764 23.9932H25.7832C24.7936 23.9932 23.9913 23.1898 23.9922 22.2002L23.9961 18.2266C23.9982 15.8143 21.5076 14.2056 19.3096 15.1992L19.0176 15.3301C20.4847 14.4851 22.1854 14 24 14Z" fill="url(#pp6)"/>
+            <path d="M24 14C29.5228 14 34 18.4777 34 24.001C34 25.83 33.5058 27.5425 32.6484 29.0176L32.8027 28.6748C33.792 26.4783 32.1854 23.9932 29.7764 23.9932H25.7832C24.7936 23.9932 23.9913 23.1898 23.9922 22.2002L23.9961 18.2266C23.9982 15.8143 21.5076 14.2056 19.3096 15.1992L19.0176 15.3301C20.4847 14.4851 22.1854 14 24 14Z" fill="url(#pp7)"/>
+            <rect x="3" y="25" width="20" height="20" rx="4.5" fill="url(#pp8)"/>
+            <rect x="3" y="25" width="20" height="20" rx="4.5" fill="url(#pp9)" fill-opacity="0.3"/>
+            <path d="M11.6364 37.0921V41H8.93945V29H13.1059C14.5977 29 15.7332 29.3264 16.5125 29.9791C17.2974 30.6318 17.6898 31.5997 17.6898 32.8828C17.6898 34.205 17.2501 35.2371 16.3706 35.9791C15.4967 36.7211 14.3222 37.0921 12.8471 37.0921H11.6364ZM11.6364 31.0753V35.0167H12.7636C13.4315 35.0167 13.9464 34.841 14.3083 34.4895C14.6701 34.1381 14.851 33.6332 14.851 32.9749C14.851 32.3668 14.6728 31.8982 14.3166 31.569C13.9659 31.2399 13.4622 31.0753 12.8053 31.0753H11.6364Z" fill="white"/>
+            <defs>
+              <linearGradient id="pp0" x1="16.9167" y1="9" x2="19.9695" y2="39.5281" gradientUnits="userSpaceOnUse"><stop stop-color="#BBBBBB"/><stop offset="1" stop-color="#888888"/></linearGradient>
+              <linearGradient id="pp1" x1="15.5556" y1="10" x2="18.1838" y2="38.5357" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="#EBEBEB"/></linearGradient>
+              <radialGradient id="pp2" cx="0" cy="0" r="1" gradientTransform="matrix(20.0556 22.1667 -30.0833 8.3125 17.1389 17.2917)" gradientUnits="userSpaceOnUse"><stop offset="0.177083" stop-color="white"/><stop offset="1" stop-color="#EFEFEF"/></radialGradient>
+              <linearGradient id="pp3" x1="22.1938" y1="13.3633" x2="9.93259" y2="25.9359" gradientUnits="userSpaceOnUse"><stop offset="0.0582736" stop-color="#FF7F48"/><stop offset="1" stop-color="#E5495B"/></linearGradient>
+              <radialGradient id="pp4" cx="0" cy="0" r="1" gradientTransform="matrix(-15.2185 14.1982 -25.6147 -23.8975 27.5184 19.8036)" gradientUnits="userSpaceOnUse"><stop offset="0.151523" stop-color="#AA1D2D"/><stop offset="0.380855" stop-color="#D12B18" stop-opacity="0.44"/><stop offset="0.601996" stop-color="#FF3C00" stop-opacity="0"/></radialGradient>
+              <radialGradient id="pp5" cx="0" cy="0" r="1" gradientTransform="matrix(18.4476 -8.12936 15.7858 31.18 8.82151 32.1303)" gradientUnits="userSpaceOnUse"><stop offset="0.4067" stop-color="#FF66FB"/><stop offset="1" stop-color="#EA3D01" stop-opacity="0"/></radialGradient>
+              <radialGradient id="pp6" cx="0" cy="0" r="1" gradientTransform="matrix(9.12928 -10.4535 9.74361 8.11201 22.8994 25.3616)" gradientUnits="userSpaceOnUse"><stop stop-color="#FD6EF9"/><stop offset="0.637205" stop-color="#FF9944"/><stop offset="0.85186" stop-color="#FCC479"/></radialGradient>
+              <radialGradient id="pp7" cx="0" cy="0" r="1" gradientTransform="matrix(-1.03121 6.98874 -15.808 -2.22362 21.9912 15.3198)" gradientUnits="userSpaceOnUse"><stop offset="0.144283" stop-color="#FF8D13"/><stop offset="0.537266" stop-color="#FF7F29" stop-opacity="0"/></radialGradient>
+              <radialGradient id="pp8" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.99756 25) rotate(45) scale(28.2843)"><stop stop-color="#F8193E"/><stop offset="0.939062" stop-color="#920616"/></radialGradient>
+              <radialGradient id="pp9" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(12.9976 37) rotate(90) scale(14 15.9375)"><stop offset="0.575893" stop-color="#FFB055" stop-opacity="0"/><stop offset="0.973806" stop-color="#FFF2BE"/></radialGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Book Report Presentation</div>
+          <div class="uc-zero-row-sub">Recently opened • PowerPoint</div>
+        </div>
+      </div>
+
+    </div><!-- /uc-zero-state -->
+
+    <!-- Variation 1 zero state -->
+    <div class="uc-zero-state" id="uc-zero-v1">
+
+      <div class="uc-zero-accordion" onclick="toggleZeroAccordion(this)">
+        <div class="uc-zero-row" style="cursor:pointer;">
+          <div class="uc-zero-row-icon" style="background:none;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C10.3817 22 8.81782 21.6146 7.41286 20.888L3.58704 21.9553C2.92212 22.141 2.23258 21.7525 2.04691 21.0876C1.98546 20.8676 1.98549 20.6349 2.04695 20.4151L3.11461 16.5922C2.38637 15.186 2 13.6203 2 12C2 6.47715 6.47715 2 12 2ZM12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 13.4696 3.87277 14.8834 4.57303 16.1375L4.72368 16.4072L3.61096 20.3914L7.59755 19.2792L7.86709 19.4295C9.12006 20.1281 10.5322 20.5 12 20.5C16.6944 20.5 20.5 16.6944 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM8.75 13H13.2483C13.6625 13 13.9983 13.3358 13.9983 13.75C13.9983 14.1297 13.7161 14.4435 13.35 14.4932L13.2483 14.5H8.75C8.33579 14.5 8 14.1642 8 13.75C8 13.3703 8.28215 13.0565 8.64823 13.0068L8.75 13ZM8.75 9.5H15.2545C15.6687 9.5 16.0045 9.83579 16.0045 10.25C16.0045 10.6297 15.7223 10.9435 15.3563 10.9932L15.2545 11H8.75C8.33579 11 8 10.6642 8 10.25C8 9.8703 8.28215 9.55651 8.64823 9.50685L8.75 9.5Z" fill="black" fill-opacity="0.8956"/></svg>
+          </div>
+          <div class="uc-zero-row-text">
+            <div class="uc-zero-row-title">What did I miss while I was away</div>
+            <div class="uc-zero-row-sub">Copilot · Recent activity</div>
+          </div>
+          <svg class="uc-zero-row-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#bbb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="uc-zero-accordion-body">
+          <div class="uc-missed-list">
+            <div class="uc-away-item">
+              <div class="uc-away-icon-wrap" style="background:none; width:36px; height:36px; min-width:36px; min-height:36px; overflow:hidden;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02L6.62 10.79z" fill="#e53e3e"/></svg>
+              </div>
+              <div class="uc-away-text">
+                <div class="uc-away-label"><strong>Mom</strong></div>
+                <div class="uc-away-sub">2 missed calls · 2h ago</div>
+              </div>
+            </div>
+            <div class="uc-away-item">
+              <div class="uc-away-icon-wrap" style="background:none; width:36px; height:36px; min-width:36px; min-height:36px; overflow:hidden; padding:6px;">
+                <img src="icons/whatsapp.png" style="width:100%;height:100%;display:block;object-fit:contain;" />
+              </div>
+              <div class="uc-away-text">
+                <div class="uc-away-label"><strong>Mom</strong> · Pick up groceries on the way home</div>
+                <div class="uc-away-sub">WhatsApp · 1h ago</div>
+              </div>
+            </div>
+            <div class="uc-away-item">
+              <div class="uc-away-icon-wrap" style="overflow:hidden; padding:0; background:#e0e0e0; width:36px; height:36px; min-width:36px; min-height:36px;">
+                <img src="Avatar-image.png" style="width:36px;height:36px;object-fit:cover;border-radius:50%;display:block;" />
+              </div>
+              <div class="uc-away-text">
+                <div class="uc-away-label"><strong>Sarah Whitman</strong> shared photos in Sunday trek!!!</div>
+                <div class="uc-away-sub">WhatsApp group · 45m ago</div>
+                <div class="uc-away-photos">
+                  <div class="uc-away-photo"><img src="1.jpg" alt="" /></div>
+                  <div class="uc-away-photo"><img src="2.jpg" alt="" /></div>
+                  <div class="uc-away-photo"><img src="3.jpg" alt="" /></div>
+                  <div class="uc-away-photo"><img src="4.jpg" alt="" /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="uc-zero-accordion" onclick="toggleZeroAccordion(this)">
+        <div class="uc-zero-row" style="cursor:pointer;">
+          <div class="uc-zero-row-icon" style="background:none;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="uc-zero-row-text">
+            <div class="uc-zero-row-title">Show my to do list</div>
+            <div class="uc-zero-row-sub">Copilot · Today's tasks</div>
+          </div>
+          <svg class="uc-zero-row-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#bbb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="uc-zero-accordion-body">
+          <div class="uc-todo-list">
+            <div class="uc-todo-item"><div class="uc-todo-check"></div>Pick up groceries</div>
+            <div class="uc-todo-item"><div class="uc-todo-check"></div>Call Mom back</div>
+            <div class="uc-todo-item"><div class="uc-todo-check"></div>Review Book Report presentation</div>
+            <div class="uc-todo-item"><div class="uc-todo-check"></div>Plan next trek with Sarah</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:none;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="18" height="18" rx="2" stroke="black" stroke-opacity="0.85" stroke-width="1.6"/>
+            <path d="M3 9h18" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M8 2v4M16 2v4" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="12" cy="15" r="1.2" fill="black" fill-opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Upcoming meeting</div>
+          <div class="uc-zero-row-sub">Chat suggestion · Copilot</div>
+        </div>
+      </div>
+
+    </div><!-- /uc-zero-v1 -->
+
+    <!-- File-drop suggestions — shown when chips are attached -->
+    <div class="uc-file-suggestions" id="uc-file-suggestions">
+
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:#25d366; border-radius:50%; overflow:hidden; padding:4px;">
+          <img src="icons/whatsapp.png" width="24" height="24" style="display:block;object-fit:contain;" />
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Share via WhatsApp</div>
+          <div class="uc-zero-row-sub">App · Send files directly</div>
+        </div>
+      </div>
+
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:#fff; border:1px solid #e0e0e0;">
+          <svg width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.276c0-.816-.067-1.636-.211-2.438H12.24v4.621h6.613a5.694 5.694 0 0 1-2.46 3.739v3.078h3.974C22.665 19.013 24 15.927 24 12.276z" fill="#4285F4"/><path d="M12.24 24c3.302 0 6.082-1.082 8.109-2.944l-3.974-3.078c-1.099.744-2.513 1.17-4.131 1.17-3.18 0-5.872-2.143-6.835-5.026H1.308v3.178A12.24 12.24 0 0 0 12.24 24z" fill="#34A853"/><path d="M5.405 14.122A7.354 7.354 0 0 1 5.02 12c0-.737.13-1.452.385-2.122V6.7H1.308A12.244 12.244 0 0 0 0 12c0 1.974.474 3.837 1.308 5.3l4.097-3.178z" fill="#FBBC05"/><path d="M12.24 4.852c1.74 0 3.302.598 4.531 1.773l3.395-3.394C18.316 1.202 15.54 0 12.24 0A12.24 12.24 0 0 0 1.308 6.7l4.097 3.178c.959-2.883 3.655-5.026 6.835-5.026z" fill="#EA4335"/></svg>
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Send via Gmail</div>
+          <div class="uc-zero-row-sub">Web · Attach and send</div>
+        </div>
+      </div>
+
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:none;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C10.3817 22 8.81782 21.6146 7.41286 20.888L3.58704 21.9553C2.92212 22.141 2.23258 21.7525 2.04691 21.0876C1.98546 20.8676 1.98549 20.6349 2.04695 20.4151L3.11461 16.5922C2.38637 15.186 2 13.6203 2 12C2 6.47715 6.47715 2 12 2ZM12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 13.4696 3.87277 14.8834 4.57303 16.1375L4.72368 16.4072L3.61096 20.3914L7.59755 19.2792L7.86709 19.4295C9.12006 20.1281 10.5322 20.5 12 20.5C16.6944 20.5 20.5 16.6944 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM8.75 13H13.2483C13.6625 13 13.9983 13.3358 13.9983 13.75C13.9983 14.1297 13.7161 14.4435 13.35 14.4932L13.2483 14.5H8.75C8.33579 14.5 8 14.1642 8 13.75C8 13.3703 8.28215 13.0565 8.64823 13.0068L8.75 13ZM8.75 9.5H15.2545C15.6687 9.5 16.0045 9.83579 16.0045 10.25C16.0045 10.6297 15.7223 10.9435 15.3563 10.9932L15.2545 11H8.75C8.33579 11 8 10.6642 8 10.25C8 9.8703 8.28215 9.55651 8.64823 9.50685L8.75 9.5Z" fill="black" fill-opacity="0.8956"/></svg>
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Summarise all medical bills</div>
+          <div class="uc-zero-row-sub">New conversation · Copilot</div>
+        </div>
+      </div>
+
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:none;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6.5C2 5.11929 3.11929 4 4.5 4H9.46482C10.0799 4 10.672 4.23616 11.1177 4.65836L12.3229 5.80548C12.5781 6.04683 12.9156 6.17 13.2618 6.17H19.5C20.8807 6.17 22 7.28929 22 8.67V17.5C22 18.8807 20.8807 20 19.5 20H4.5C3.11929 20 2 18.8807 2 17.5V6.5Z" fill="#FFC107"/><path d="M2 10C2 8.89543 2.89543 8 4 8H20C21.1046 8 22 8.89543 22 10V17.5C22 18.8807 20.8807 20 19.5 20H4.5C3.11929 20 2 18.8807 2 17.5V10Z" fill="#FFD54F"/></svg>
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Organise into a folder</div>
+          <div class="uc-zero-row-sub">File Explorer</div>
+        </div>
+      </div>
+
+    </div><!-- /uc-file-suggestions -->
+
+    <!-- Results area — appears above input when typing matches -->
+    <div class="uc-results-area" id="uc-results-area">
+
+      <!-- People section -->
+      <div class="uc-people-section" id="uc-people-section">
+
+        <div class="uc-contact-header">
+          <div class="uc-avatar" id="uc-avatar"></div>
+          <div class="uc-contact-meta">
+            <div class="uc-contact-name" id="uc-contact-name"></div>
+            <div class="uc-contact-role" id="uc-contact-role"></div>
+          </div>
+        </div>
+
+        <div class="uc-actions">
+          <button class="uc-action uc-action-msg" id="uc-action-msg">
+            <img class="uc-action-img" src="icons/whatsapp.png" alt="" />
+            <span>Message</span>
+            <span class="uc-action-caret"><svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="#888" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          </button>
+          <button class="uc-action uc-action-icon">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2.5V9.5C16 9.63542 15.974 9.76562 15.9219 9.89062C15.8698 10.0104 15.7969 10.1172 15.7031 10.2109C15.6146 10.2995 15.5078 10.3698 15.3828 10.4219C15.263 10.474 15.1354 10.5 15 10.5C14.776 10.5 14.5755 10.4323 14.3984 10.2969L12 8.5V9.55469C12 9.88281 11.9323 10.1953 11.7969 10.4922C11.6667 10.7891 11.4896 11.0495 11.2656 11.2734C11.0469 11.4922 10.7891 11.6693 10.4922 11.8047C10.1953 11.9349 9.88281 12 9.55469 12H2.44531C2.11719 12 1.80469 11.9349 1.50781 11.8047C1.21094 11.6693 0.950521 11.4922 0.726562 11.2734C0.507812 11.0495 0.330729 10.7891 0.195312 10.4922C0.0651042 10.1953 0 9.88281 0 9.55469V2.44531C0 2.11719 0.0651042 1.80469 0.195312 1.50781C0.330729 1.21094 0.507812 0.953125 0.726562 0.734375C0.950521 0.510417 1.21094 0.333333 1.50781 0.203125C1.80469 0.0677083 2.11719 0 2.44531 0H9.55469C9.89323 0 10.2083 0.0651042 10.5 0.195312C10.7917 0.325521 11.0469 0.502604 11.2656 0.726562C11.4844 0.950521 11.6562 1.21094 11.7812 1.50781C11.9115 1.80469 11.9844 2.11719 12 2.44531C12.0052 2.5026 12.0078 2.5625 12.0078 2.625C12.0078 2.68229 12.0078 2.73958 12.0078 2.79688C12.0078 2.91667 12.0052 3.03385 12 3.14844C12 3.26302 12 3.38021 12 3.5L14.3984 1.70312C14.5755 1.56771 14.776 1.5 15 1.5C15.1406 1.5 15.2708 1.52604 15.3906 1.57812C15.5156 1.63021 15.6224 1.70052 15.7109 1.78906C15.7995 1.8776 15.8698 1.98438 15.9219 2.10938C15.974 2.22917 16 2.35938 16 2.5ZM11 2.5C11 2.29688 10.9609 2.10417 10.8828 1.92188C10.8047 1.73958 10.6953 1.58073 10.5547 1.44531C10.4193 1.30469 10.2604 1.19531 10.0781 1.11719C9.89583 1.03906 9.70312 1 9.5 1H2.5C2.29688 1 2.10417 1.03906 1.92188 1.11719C1.73958 1.19531 1.57812 1.30469 1.4375 1.44531C1.30208 1.58073 1.19531 1.73958 1.11719 1.92188C1.03906 2.10417 1 2.29688 1 2.5V9.5C1 9.70312 1.03906 9.89583 1.11719 10.0781C1.19531 10.2604 1.30208 10.4219 1.4375 10.5625C1.57812 10.6979 1.73958 10.8047 1.92188 10.8828C2.10417 10.9609 2.29688 11 2.5 11H9.5C9.70312 11 9.89583 10.9609 10.0781 10.8828C10.2604 10.8047 10.4193 10.6979 10.5547 10.5625C10.6953 10.4219 10.8047 10.2604 10.8828 10.0781C10.9609 9.89583 11 9.70312 11 9.5V2.5ZM12 7.25L15 9.5V2.5L12 4.75V7.25Z" fill="black" fill-opacity="0.8956"/>
+            </svg>
+            <span class="uc-action-caret"><svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="#888" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          </button>
+          <button class="uc-action uc-action-icon">
+            <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 4.14844C0 3.70052 0.0442708 3.27604 0.132812 2.875C0.221354 2.47396 0.364583 2.10938 0.5625 1.78125C0.760417 1.44792 1.01562 1.15625 1.32812 0.90625C1.64583 0.651042 2.02865 0.450521 2.47656 0.304688C2.67969 0.236979 2.88802 0.169271 3.10156 0.101562C3.3151 0.0338542 3.53125 0 3.75 0C3.94271 0 4.13021 0.0286458 4.3125 0.0859375C4.49479 0.143229 4.66406 0.223958 4.82031 0.328125C4.97656 0.427083 5.11719 0.549479 5.24219 0.695312C5.36719 0.841146 5.46875 1.0026 5.54688 1.17969C5.65625 1.42969 5.76302 1.67448 5.86719 1.91406C5.97656 2.15365 6.08594 2.39844 6.19531 2.64844C6.34115 2.97135 6.41406 3.3125 6.41406 3.67188C6.41406 3.9375 6.38021 4.17708 6.3125 4.39062C6.24479 4.60417 6.15104 4.80469 6.03125 4.99219C5.91667 5.17448 5.77865 5.34896 5.61719 5.51562C5.46094 5.67708 5.29167 5.84115 5.10938 6.00781C5.02604 6.08594 4.9375 6.16406 4.84375 6.24219C4.75521 6.3151 4.67448 6.39323 4.60156 6.47656C4.57031 6.51302 4.54948 6.55469 4.53906 6.60156C4.53385 6.64323 4.53125 6.6849 4.53125 6.72656C4.53125 6.83594 4.5651 6.99479 4.63281 7.20312C4.70573 7.41146 4.79948 7.64062 4.91406 7.89062C5.02865 8.14062 5.15885 8.39844 5.30469 8.66406C5.45052 8.92448 5.59896 9.16146 5.75 9.375C5.90625 9.58854 6.05729 9.76302 6.20312 9.89844C6.35417 10.0339 6.48698 10.1016 6.60156 10.1016C6.61198 10.1016 6.61979 10.1016 6.625 10.1016C6.63542 10.0964 6.64583 10.0938 6.65625 10.0938L8.67188 9.46875C8.8125 9.42188 8.95573 9.39844 9.10156 9.39844C9.34115 9.39844 9.5651 9.45312 9.77344 9.5625C9.98698 9.67188 10.1615 9.82552 10.2969 10.0234L11.625 11.9062C11.875 12.2604 12 12.651 12 13.0781C12 13.3125 11.9688 13.5182 11.9062 13.6953C11.849 13.8724 11.7656 14.0365 11.6562 14.1875C11.5521 14.3385 11.4297 14.4818 11.2891 14.6172C11.1536 14.7526 11.0078 14.8932 10.8516 15.0391C10.5234 15.3464 10.1589 15.5833 9.75781 15.75C9.36198 15.9167 8.9375 16 8.48438 16C8.04167 16 7.61458 15.9167 7.20312 15.75C6.625 15.5156 6.08594 15.2057 5.58594 14.8203C5.08594 14.4297 4.61979 13.9974 4.1875 13.5234C3.75521 13.0443 3.35677 12.5391 2.99219 12.0078C2.6276 11.4714 2.29688 10.9401 2 10.4141C1.73438 9.94531 1.47917 9.45833 1.23438 8.95312C0.994792 8.44792 0.783854 7.92969 0.601562 7.39844C0.419271 6.86719 0.273438 6.33073 0.164062 5.78906C0.0546875 5.24219 0 4.69531 0 4.14844ZM11 13.0781C11 12.8542 10.9375 12.6562 10.8125 12.4844L9.47656 10.6016C9.38281 10.4661 9.25781 10.3984 9.10156 10.3984C9.0599 10.3984 9.01562 10.4062 8.96875 10.4219L6.95312 11.0469C6.83854 11.0833 6.71354 11.1016 6.57812 11.1016C6.39583 11.1016 6.21875 11.0599 6.04688 10.9766C5.88021 10.8932 5.72656 10.7943 5.58594 10.6797C5.45052 10.5755 5.30729 10.4297 5.15625 10.2422C5.00521 10.0495 4.85156 9.83594 4.69531 9.60156C4.54427 9.36198 4.39844 9.10938 4.25781 8.84375C4.11719 8.57812 3.99219 8.3151 3.88281 8.05469C3.77344 7.79427 3.6849 7.54948 3.61719 7.32031C3.55469 7.08594 3.52344 6.88281 3.52344 6.71094C3.52344 6.48177 3.57031 6.28385 3.66406 6.11719C3.75781 5.94531 3.875 5.78646 4.01562 5.64062C4.15625 5.49479 4.30729 5.35677 4.46875 5.22656C4.63021 5.09635 4.78125 4.95833 4.92188 4.8125C5.0625 4.66146 5.17969 4.49479 5.27344 4.3125C5.36719 4.13021 5.41406 3.91927 5.41406 3.67969C5.41406 3.46615 5.36979 3.25781 5.28125 3.05469L4.63281 1.58594C4.5599 1.41406 4.4401 1.27344 4.27344 1.16406C4.11198 1.05469 3.9375 1 3.75 1C3.58333 1 3.41667 1.03125 3.25 1.09375C3.08333 1.15104 2.92448 1.20573 2.77344 1.25781C2.4349 1.3724 2.15104 1.52344 1.92188 1.71094C1.69792 1.89844 1.51823 2.11719 1.38281 2.36719C1.2474 2.61719 1.14844 2.89062 1.08594 3.1875C1.02865 3.48438 1 3.79948 1 4.13281C1 4.63281 1.05208 5.13542 1.15625 5.64062C1.26042 6.14583 1.39844 6.64583 1.57031 7.14062C1.74219 7.63021 1.9401 8.10938 2.16406 8.57812C2.39323 9.04688 2.63021 9.49479 2.875 9.92188C3.14062 10.3958 3.4375 10.8776 3.76562 11.3672C4.09896 11.8568 4.46094 12.3229 4.85156 12.7656C5.24219 13.2083 5.66406 13.6094 6.11719 13.9688C6.57552 14.3281 7.0625 14.612 7.57812 14.8203C7.875 14.9401 8.17708 15 8.48438 15C8.72396 15 8.94271 14.9688 9.14062 14.9062C9.34375 14.8438 9.53385 14.7578 9.71094 14.6484C9.88802 14.5391 10.0573 14.4141 10.2188 14.2734C10.3802 14.1276 10.5391 13.9714 10.6953 13.8047C10.7943 13.7005 10.8698 13.5911 10.9219 13.4766C10.974 13.3568 11 13.224 11 13.0781Z" fill="black" fill-opacity="0.8956"/>
+            </svg>
+            <span class="uc-action-caret"><svg width="11" height="11" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="#888" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          </button>
+        </div>
+
+        <div class="uc-msg-card">
+          <div class="uc-msg-header">
+            <img class="uc-msg-icon" id="uc-msg-icon" src="icons/whatsapp.png" alt="" />
+            <span class="uc-msg-title" id="uc-msg-title"></span>
+            <span class="uc-msg-time" id="uc-msg-time"></span>
+          </div>
+          <div class="uc-msg-body" id="uc-msg-body"></div>
+          <div class="uc-msg-photos" id="uc-msg-photos"></div>
+        </div>
+
+      </div>
+
+      <!-- Generic search results card -->
+      <div class="uc-results-card">
+        <div class="uc-results" id="uc-results"></div>
+        <div class="uc-see-more" id="uc-see-more">See more search results</div>
+      </div>
+
+    </div><!-- /uc-results-area -->
+
+    <!-- Attached file chips -->
+    <!-- Search input — always at bottom, white card -->
+    <div class="uc-input-wrap">
+      <div class="uc-file-chips" id="uc-file-chips"></div>
+      <div class="uc-input-row">
+        <input type="text" class="uc-search-input" id="uc-search-input" autocomplete="off" spellcheck="false" placeholder="Ask me anything" />
+      </div>
+      <div class="uc-input-bottom">
+        <button class="uc-add-btn">+</button>
+        <div class="uc-input-right">
+          <button class="uc-icon-btn" title="Search">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#888" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="10" r="3.5"/><circle cx="14" cy="10" r="3.5"/><path d="M8.5 10h3"/></svg>
+          </button>
+          <button class="uc-icon-btn" title="Voice">
+            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="#888" stroke-width="1.4" stroke-linecap="round"><rect x="5" y="1" width="6" height="8" rx="3"/><path d="M2 8a6 6 0 0012 0"/><line x1="8" y1="14" x2="8" y2="17"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /uc-inner -->
+  </div>
+</div>
+
 <!-- ░░ Folder Window ░░ -->
 <div id="folder-window">
 
@@ -2589,7 +3291,9 @@
     // Only show drop-mode while actively dragging — not on mere selection/click
     searchBarEl.classList.toggle('drop-mode', hasSelection && !allApps && dragging);
     if (hasSelection && dragging) {
-      searchBarEl.classList.remove('thinking');
+      if (!document.getElementById('uc-search-panel')?.classList.contains('open')) {
+        searchBarEl.classList.remove('thinking');
+      }
       document.getElementById('search-composer').classList.remove('open');
     }
   };
@@ -2786,7 +3490,7 @@
     if (e.button !== 0) return;
     // Guard: must be inside the desktop area, not taskbar/popups/overlays
     const t = e.target;
-    if (t.closest('.taskbar') || t.closest('#search-composer') || t.closest('#preview-popup')
+    if (t.closest('.taskbar') || t.closest('#search-composer') || t.closest('#uc-search-panel') || t.closest('#preview-popup')
         || t.closest('#hv-switcher') || t.closest('#word-viewer') || t.closest('#folder-window')
         || t.closest('#copilot-overlay') || t.closest('.drag-ghost')) return;
     if (!t.closest('.desktop') && !t.closest('#desktop-icons')) return;
@@ -2906,7 +3610,13 @@
         const fileIcons = [...sel].filter(ic => ic.dataset.type !== 'app');
         const appIcons  = [...sel].filter(ic => ic.dataset.type === 'app');
         if (fileIcons.length) {
-          openComposerWithFiles(fileIcons);
+          openUCPanel(true);
+          fileIcons.forEach(ic => {
+            const name = ic.querySelector('span:last-child')?.textContent || 'File';
+            const imgSrc = ic.querySelector('img')?.src || '';
+            const iconHtml = imgSrc ? `<img src="${imgSrc}" style="width:16px;height:16px;object-fit:contain;flex-shrink:0;">` : null;
+            addUCFileChip(name, iconHtml);
+          });
           if (appIcons.length) showSkipNotice(appIcons.length, fileIcons.length);
         } else if (appIcons.length) {
           showSkipNotice(appIcons.length, 0);
@@ -3044,6 +3754,8 @@
   };
 
   window._openComposerWithText = function(text) {
+    // Remove any lingering drag ghost
+    document.querySelectorAll('[data-wv-ghost]').forEach(el => el.remove());
     const textSuggestions = [
       { svg: `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C8.38171 20 6.81782 19.6146 5.41286 18.888L1.58704 19.9553C0.922123 20.141 0.232581 19.7525 0.0469058 19.0876C-0.0145358 18.8676 -0.014506 18.6349 0.046948 18.4151L1.11461 14.5922C0.386366 13.186 0 11.6203 0 10C0 4.47715 4.47715 0 10 0ZM10 1.5C5.30558 1.5 1.5 5.30558 1.5 10C1.5 11.4696 1.87277 12.8834 2.57303 14.1375L2.72368 14.4072L1.61096 18.3914L5.59755 17.2792L5.86709 17.4295C7.12006 18.1281 8.53218 18.5 10 18.5C14.6944 18.5 18.5 14.6944 18.5 10C18.5 5.30558 14.6944 1.5 10 1.5ZM6.75 11H11.2483C11.6625 11 11.9983 11.3358 11.9983 11.75C11.9983 12.1297 11.7161 12.4435 11.35 12.4932L11.2483 12.5H6.75C6.33579 12.5 6 12.1642 6 11.75C6 11.3703 6.28215 11.0565 6.64823 11.0068L6.75 11ZM6.75 7.5H13.2545C13.6687 7.5 14.0045 7.83579 14.0045 8.25C14.0045 8.6297 13.7223 8.94349 13.3563 8.99315L13.2545 9H6.75C6.33579 9 6 8.66421 6 8.25C6 7.8703 6.28215 7.55651 6.64823 7.50685L6.75 7.5Z" fill="#242424"/></svg>`, bg: '#f0f4ff', title: 'Summarise this text',        sub: 'New conversation · Copilot' },
       { emoji: '✏️', bg: '#fff8e6', title: 'Rewrite professionally',    sub: 'Copilot · Edit & polish' },
@@ -3194,43 +3906,254 @@ function autoResizeTextarea(el) {
 }
 composerInput.addEventListener('input', () => autoResizeTextarea(composerInput));
 
+/* ── UC People Search Panel logic ── */
+const ucPanel          = document.getElementById('uc-search-panel');
+const ucCard           = document.getElementById('uc-card');
+const ucInput          = document.getElementById('uc-search-input');
+const ucResultsArea    = document.getElementById('uc-results-area');
+const ucPeople         = document.getElementById('uc-people-section');
+const ucResults        = document.getElementById('uc-results');
+const ucSeeMore        = document.getElementById('uc-see-more');
+const ucFileChips       = document.getElementById('uc-file-chips');
+const ucFileSuggestions = document.getElementById('uc-file-suggestions');
+const ucZeroState       = document.getElementById('uc-zero-state');
+const ucZeroV1          = document.getElementById('uc-zero-v1');
+
+let ucVariant = 0;
+
+let UC_CONTACTS = [
+  {
+    "name": "Sarah Whitman",
+    "sub": "Contact",
+    "gender": "female",
+    "recentMsg": {
+      "sender": "Sarah Whitman",
+      "group": "Sunday trek!!!",
+      "time": "Sun, 10:00 PM",
+      "body": "Guys, this trip was super fun, lets plan one more next weeked!!",
+      "photos": ["1.jpg", "2.jpg", "3.jpg", "4.jpg"]
+    },
+    "results": [
+      { "type": "chat", "label": "Sarah W", "context": "in files", "sub": "New conversation · Copilot" },
+      { "type": "pdf",  "label": "Sarah Whitman resume", "context": "", "sub": "File explorer · Downloads" }
+    ]
+  }
+];
+let UC_PHOTOS = { female: ["Avatar-image.png"], male: [] };
+
+function pickPhoto(name, gender) {
+  const pool = UC_PHOTOS[gender] || UC_PHOTOS.male;
+  if (!pool.length) return null;
+  const idx = [...name].reduce((acc, c) => acc + c.charCodeAt(0), 0) % pool.length;
+  return pool[idx];
+}
+
+// Attempt to load from JSON files; overrides inline defaults if available
+Promise.all([
+  fetch('contacts.json').then(r => r.json()),
+  fetch('photos.json').then(r => r.json())
+]).then(([contacts, photos]) => {
+  UC_CONTACTS = contacts;
+  UC_PHOTOS   = photos;
+}).catch(() => {});
+
+function ucHighlight(text, query) {
+  if (!query) return text;
+  const i = text.toLowerCase().indexOf(query.toLowerCase());
+  if (i === -1) return text;
+  return text.slice(0,i) + '<em>' + text.slice(i, i+query.length) + '</em>' + text.slice(i+query.length);
+}
+
+
+function toggleZeroAccordion(el) {
+  el.classList.toggle('open');
+}
+
+function showCorrectZeroState() {
+  if (ucVariant === 1) {
+    ucZeroState.classList.remove('visible');
+    ucZeroV1.classList.add('visible');
+  } else {
+    ucZeroV1.classList.remove('visible');
+    ucZeroState.classList.add('visible');
+  }
+}
+
+function setUCVariant(v) {
+  ucVariant = (ucVariant === v) ? 0 : v;
+  document.querySelectorAll('.var-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.variant) === ucVariant);
+  });
+  if (ucPanel.classList.contains('open')) {
+    const q = ucInput.value.trim();
+    const hasChips = !!ucFileChips?.querySelector('.uc-file-chip');
+    if (!q && !hasChips) showCorrectZeroState();
+  }
+}
+
+function renderUCPanel(rawQuery) {
+  const q = rawQuery.trim();
+  const hasChips = !!ucFileChips?.querySelector('.uc-file-chip');
+  ucResultsArea.classList.remove('visible');
+  ucCard.classList.remove('has-results');
+  ucResults.innerHTML = '';
+  ucSeeMore.classList.remove('visible');
+  ucPeople.style.display = '';
+  if (q) {
+    ucZeroState.classList.remove('visible');
+    ucZeroV1.classList.remove('visible');
+    ucFileSuggestions.classList.remove('visible');
+  } else {
+    if (!hasChips) {
+      showCorrectZeroState();
+    } else {
+      ucZeroState.classList.remove('visible');
+      ucZeroV1.classList.remove('visible');
+    }
+    ucFileSuggestions.classList.toggle('visible', hasChips);
+  }
+  if (!q) return;
+  if (q.length < 2) return;
+
+  const contact = UC_CONTACTS.find(c => c.name.toLowerCase().includes(q.toLowerCase()));
+  if (!contact) return;
+
+  // Full contact card only at 3+ characters
+  if (q.length >= 3) {
+    const avatarEl = document.getElementById('uc-avatar');
+    const photo = pickPhoto(contact.name, contact.gender);
+    avatarEl.style.background = 'none';
+    avatarEl.style.padding = '0';
+    avatarEl.innerHTML = photo
+      ? `<img src="${photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;display:block;" />`
+      : `<span style="font-size:15px;font-weight:600;color:#fff;">${contact.name.split(' ').map(w=>w[0]).join('')}</span>`;
+    document.getElementById('uc-contact-name').innerHTML = ucHighlight(contact.name, q);
+    document.getElementById('uc-contact-role').textContent = contact.sub;
+
+    // Message card
+    const msg = contact.recentMsg;
+    document.getElementById('uc-msg-title').innerHTML =
+      ucHighlight(msg.sender, q) + ' to ' + msg.group;
+    document.getElementById('uc-msg-time').textContent = msg.time;
+    document.getElementById('uc-msg-body').textContent = msg.body;
+    const photosEl = document.getElementById('uc-msg-photos');
+    photosEl.innerHTML = '';
+    msg.photos.forEach(src => {
+      const d = document.createElement('div');
+      d.className = 'uc-msg-photo';
+      const img = document.createElement('img');
+      img.src = src;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      d.appendChild(img);
+      photosEl.appendChild(d);
+    });
+    ucPeople.style.display = '';
+  } else {
+    ucPeople.style.display = 'none';
+  }
+
+  ucResultsArea.classList.add('visible');
+  ucCard.classList.add('has-results');
+
+  // Generic results
+  contact.results.forEach(r => {
+    const row = document.createElement('div');
+    row.className = 'uc-result-row';
+    const iconHtml = r.type === 'chat'
+      ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C10.3817 22 8.81782 21.6146 7.41286 20.888L3.58704 21.9553C2.92212 22.141 2.23258 21.7525 2.04691 21.0876C1.98546 20.8676 1.98549 20.6349 2.04695 20.4151L3.11461 16.5922C2.38637 15.186 2 13.6203 2 12C2 6.47715 6.47715 2 12 2ZM12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 13.4696 3.87277 14.8834 4.57303 16.1375L4.72368 16.4072L3.61096 20.3914L7.59755 19.2792L7.86709 19.4295C9.12006 20.1281 10.5322 20.5 12 20.5C16.6944 20.5 20.5 16.6944 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM8.75 13H13.2483C13.6625 13 13.9983 13.3358 13.9983 13.75C13.9983 14.1297 13.7161 14.4435 13.35 14.4932L13.2483 14.5H8.75C8.33579 14.5 8 14.1642 8 13.75C8 13.3703 8.28215 13.0565 8.64823 13.0068L8.75 13ZM8.75 9.5H15.2545C15.6687 9.5 16.0045 9.83579 16.0045 10.25C16.0045 10.6297 15.7223 10.9435 15.3563 10.9932L15.2545 11H8.75C8.33579 11 8 10.6642 8 10.25C8 9.8703 8.28215 9.55651 8.64823 9.50685L8.75 9.5Z" fill="black" fill-opacity="0.8956"/></svg>`
+      : `<div style="width:20px;height:20px;background:#c0392b;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;letter-spacing:0">PDF</div>`;
+    const labelHtml = r.type === 'chat'
+      ? (r.context ? `${q} <span style="color:#888;font-weight:400">${r.context}</span>` : q)
+      : (r.context ? `${ucHighlight(r.label, q)} <span style="color:#888;font-weight:400">${r.context}</span>` : ucHighlight(r.label, q));
+    row.innerHTML = `
+      <div class="uc-result-icon">${iconHtml}</div>
+      <div class="uc-result-text">
+        <div class="uc-result-label">${labelHtml}</div>
+        <div class="uc-result-sub">${r.sub}</div>
+      </div>`;
+    ucResults.appendChild(row);
+  });
+  ucSeeMore.classList.add('visible');
+}
+
+ucInput.addEventListener('input', () => renderUCPanel(ucInput.value));
+
+function openUCPanel(fromFileDrop) {
+  if (fromFileDrop) {
+    ucFileSuggestions.classList.add('visible');
+  } else {
+    showCorrectZeroState();
+  }
+  searchBar.classList.remove('drop-mode', 'holding', 'drag-over', 'no-drop', 'chips-attached');
+  searchBar.classList.add('thinking');
+  ucPanel.classList.add('open');
+  setTimeout(() => ucInput.focus(), 50);
+}
+
+function addUCFileChip(name, iconHtml) {
+  if ([...ucFileChips.querySelectorAll('.uc-file-chip-name')].some(el => el.textContent === name)) return;
+  const chip = document.createElement('div');
+  chip.className = 'uc-file-chip';
+  const icon = iconHtml || `<span style="font-size:14px">📄</span>`;
+  chip.innerHTML = `${icon}<span class="uc-file-chip-name">${name}</span><button class="uc-file-chip-remove" title="Remove">✕</button>`;
+  chip.querySelector('.uc-file-chip-remove').addEventListener('click', () => {
+    chip.remove();
+    if (!ucFileChips.querySelector('.uc-file-chip')) {
+      ucFileChips.classList.remove('visible');
+      ucFileSuggestions.classList.remove('visible');
+      showCorrectZeroState();
+    }
+  });
+  ucFileChips.appendChild(chip);
+  ucFileChips.classList.add('visible');
+}
+window._addUCFileChip = addUCFileChip;
+
+function closeUCPanel() {
+  ucPanel.classList.remove('open');
+  searchBar.classList.remove('thinking');
+  setTimeout(() => {
+    ucInput.value = '';
+    renderUCPanel('');
+    ucZeroState.classList.remove('visible');
+    ucZeroV1.classList.remove('visible');
+    ucFileSuggestions.classList.remove('visible');
+    ucFileChips.innerHTML = '';
+    ucFileChips.classList.remove('visible');
+  }, 200);
+}
+
 searchBar.addEventListener('click', () => {
   if (searchBar.classList.contains('drop-mode')) return;
   if (searchBar.classList.contains('holding')) {
-    // Reopen composer with existing staged chips
-    searchComposer.classList.add('open');
-    document.getElementById('composer-divider').classList.add('visible');
-    composerInput.focus();
+    openUCPanel();
     return;
   }
-  searchBar.classList.add('thinking');
-  searchComposer.classList.add('open');
-  composerInput.focus();
+  openUCPanel();
 });
 
 function closeComposer() {
   searchComposer.classList.remove('open');
-  searchBar.classList.remove('thinking');
+  if (!ucPanel.classList.contains('open')) searchBar.classList.remove('thinking');
   const skipNotice = document.getElementById('composer-skip-notice');
   if (skipNotice) { skipNotice.classList.remove('visible'); clearTimeout(skipNotice._hideTimer); }
   setTimeout(() => {
     const hasChips = !!document.getElementById('composer-chips').querySelector('.file-chip');
     if (!hasChips) {
-      // No staged files — fully reset
       document.getElementById('composer-suggestions').classList.remove('visible');
       document.getElementById('composer-chips').classList.remove('visible');
       document.getElementById('composer-divider').classList.remove('visible');
     }
-    // If chips exist, keep suggestions + chips + divider so they reappear on reopen
   }, 200);
 }
 
 document.addEventListener('mousedown', e => {
+  if (!ucPanel.contains(e.target) && !searchBar.contains(e.target)) closeUCPanel();
   if (!searchComposer.contains(e.target) && !searchBar.contains(e.target)) closeComposer();
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeComposer();
+  if (e.key === 'Escape') { closeUCPanel(); closeComposer(); }
 });
 
 /* ── Live clock ── */
@@ -4497,7 +5420,7 @@ function openFolder(name) {
 
       if (wvDragging) {
         if (wvGhost) {
-          wvGhost.style.left = (e.clientX + 14) + 'px';
+          wvGhost.style.left = (e.clientX + 16) + 'px';
           wvGhost.style.top  = (e.clientY - 22) + 'px';
         }
         const r = searchBarEl.getBoundingClientRect();
@@ -4519,9 +5442,11 @@ function openFolder(name) {
       wvDragging = true;
       searchBarEl.classList.add('drop-mode', 'drag-over');
 
+      const snippet = sel.length > 22 ? sel.slice(0, 22) + '...' : sel;
       wvGhost = document.createElement('div');
-      wvGhost.style.cssText = `position:fixed;pointer-events:none;z-index:99999;background:#185abd;color:#fff;font-size:12px;font-weight:600;padding:4px 14px;border-radius:14px;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.28);left:${e.clientX+14}px;top:${e.clientY-22}px;`;
-      wvGhost.textContent = (sel.length > 32 ? sel.slice(0, 32) + '…' : sel);
+      wvGhost.dataset.wvGhost = '1';
+      wvGhost.style.cssText = `position:fixed;pointer-events:none;z-index:99999;left:${e.clientX + 16}px;top:${e.clientY - 22}px;background:#fff;border:1px solid rgba(0,0,0,0.10);border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,0.18);padding:7px 12px;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;font-weight:400;color:#1a1a1a;white-space:nowrap;line-height:1.4;`;
+      wvGhost.textContent = snippet;
       document.body.appendChild(wvGhost);
     });
 
@@ -4534,7 +5459,7 @@ function openFolder(name) {
       wvGhost = null;
       wvDragging = false;
       if (dropped && wvDragText) {
-        window._openComposerWithText?.(wvDragText);
+        openUCPanel();
       }
       wvDragText = '';
     });
@@ -4741,8 +5666,7 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
         e.clientX >= cdzFwUpR.left && e.clientX <= cdzFwUpR.right &&
         e.clientY >= cdzFwUpR.top  && e.clientY <= cdzFwUpR.bottom;
       if (dropped || droppedCDZ) {
-        fwDragItems.forEach(f => addFileChipToComposer(f.name, f.iconHtml));
-        window._openComposerWithFiles?.([]);
+        openUCPanel();
       }
       cdzFwUp?.classList.remove('visible', 'file-over');
     }
@@ -4817,15 +5741,10 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
     e.preventDefault();
     _osDrag = false;
     bar.classList.remove('drag-over', 'drop-mode');
-    if (isWordText) {
-      const txt = (e.dataTransfer.getData('text/plain') || '').trim();
-      if (txt) window._openComposerWithText?.(txt);
-      return;
-    }
-    [...e.dataTransfer.files].forEach(file => addFileChipToComposer(file.name, null));
-    window._openComposerWithFiles?.([]);
+    openUCPanel(true);
+    return;
   });
-  window._addFileChipToComposer = addFileChipToComposer;
+  window._addFileChipToComposer = (name, iconHtml) => window._addUCFileChip?.(name, iconHtml);
 })();
 
 /* ── Composer: dynamic suggestions while typing ── */
@@ -5155,7 +6074,11 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
     [...chipsEl.querySelectorAll('.file-chip')].forEach(c => c.remove());
     document.getElementById('composer-divider')?.classList.remove('visible');
     chipsEl.classList.remove('visible');
-    document.querySelector('.search-bar')?.classList.remove('drop-mode', 'thinking');
+    const _sb = document.querySelector('.search-bar');
+    if (_sb) {
+      _sb.classList.remove('drop-mode');
+      if (!document.getElementById('uc-search-panel')?.classList.contains('open')) _sb.classList.remove('thinking');
+    }
 
     // Build recent list
     const recentEl = overlay.querySelector('#cop-recent-list');
@@ -5274,9 +6197,16 @@ function resetUCState() {
   divider?.classList.remove('visible');
   sugEl?.classList.remove('visible');
 
+  // Close UC search panel too
+  document.getElementById('uc-search-panel')?.classList.remove('open');
+  const ucSearchInput = document.getElementById('uc-search-input');
+  if (ucSearchInput) { ucSearchInput.value = ''; }
+
   // Now safe to close composer and strip all state classes
   composer?.classList.remove('open');
-  bar?.classList.remove('drop-mode', 'thinking', 'holding', 'drag-over', 'no-drop');
+  const _ucOpen = document.getElementById('uc-search-panel')?.classList.contains('open');
+  bar?.classList.remove('drop-mode', 'holding', 'drag-over', 'no-drop');
+  if (!_ucOpen) bar?.classList.remove('thinking');
 
   if (input) {
     input.value = '';
@@ -5294,5 +6224,12 @@ document.querySelectorAll('.hv-btn').forEach(btn => {
   });
 });
 </script>
+<!-- ░░ Variant Switcher ░░ -->
+<div id="variant-switcher">
+  <button class="var-btn" data-variant="1" onclick="setUCVariant(1)">1</button>
+  <button class="var-btn" data-variant="2" onclick="setUCVariant(2)">2</button>
+  <button class="var-btn" data-variant="3" onclick="setUCVariant(3)">3</button>
+</div>
+
 </body>
 </html>
