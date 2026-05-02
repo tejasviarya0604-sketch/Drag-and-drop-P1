@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -2120,6 +2120,44 @@
   }
 
   /* Input wrapper — white card, equal padding on all sides */
+  /* @ People suggestions panel */
+  .uc-people-suggestions {
+    display: none;
+    background: transparent;
+    border-radius: 14px;
+    margin: 0 5px 4px;
+    padding: 10px 0 4px;
+    overflow: hidden;
+  }
+  .uc-people-suggestions.visible { display: block; }
+  .uc-ps-header {
+    font-size: 11.5px; color: rgba(0,0,0,0.45);
+    padding: 0 16px 6px; font-weight: 500;
+  }
+  .uc-ps-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 14px 7px 16px; cursor: pointer;
+    transition: background 0.1s;
+  }
+  .uc-ps-row:hover { background: rgba(0,0,0,0.06); }
+  .uc-ps-avatar { position: relative; width: 35px; height: 35px; flex-shrink: 0; }
+  .uc-ps-avatar img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; display: block; }
+  .uc-ps-avatar .uc-ps-badge {
+    position: absolute; bottom: -1px; right: -1px;
+    width: 16px; height: 16px; border-radius: 50%; display: block;
+  }
+  .uc-ps-text { flex: 1; min-width: 0; }
+  .uc-ps-name { font-size: 13px; font-weight: 500; color: #1a1a1a; }
+  .uc-ps-app { font-size: 11.5px; color: rgba(0,0,0,0.5); margin-top: 1px; }
+  .uc-ps-add {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: none; background: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: rgba(0,0,0,0.4); font-size: 20px; line-height: 1; flex-shrink: 0;
+    transition: color 0.1s;
+  }
+  .uc-ps-add:hover { color: rgba(0,0,0,0.7); }
+
   .uc-input-wrap {
     background: #fff;
     border-radius: 14px;
@@ -2131,8 +2169,8 @@
   .uc-input-row {
     display: flex;
     flex-direction: column;
-    padding: 14px 16px 10px 16px;
-    min-height: 80px;
+    padding: 12px 16px 10px 16px;
+    min-height: 48px;
   }
   .uc-search-input {
     width: 100%;
@@ -2147,7 +2185,7 @@
     flex: 1;
     align-self: stretch;
   }
-  .uc-search-input::placeholder { color: #aaa; font-size: 13px; }
+  .uc-search-input:empty::before { content: attr(data-placeholder); color: #aaa; font-size: 13px; pointer-events: none; }
 
   /* Bottom row: + on the left */
   .uc-input-bottom {
@@ -2258,6 +2296,19 @@
     background: #fff;
     border-radius: 14px;
     overflow: hidden;
+    position: relative;
+  }
+  .uc-people-section::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 32px;
+    background: #0078d4;
+    border-radius: 2px;
+    z-index: 1;
   }
   .uc-contact-header {
     display: flex;
@@ -2917,17 +2968,23 @@
         <div class="uc-zero-accordion-body">
           <div class="uc-missed-list">
             <div class="uc-away-item">
-              <div class="uc-away-icon-wrap" style="background:none; width:36px; height:36px; min-width:36px; min-height:36px; overflow:hidden;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02L6.62 10.79z" fill="#e53e3e"/></svg>
+              <div style="position:relative; width:36px; height:36px; min-width:36px; min-height:36px; flex-shrink:0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#c8c8c8;overflow:hidden;">
+                  <img src="Ananya.jpg" style="width:36px;height:36px;object-fit:cover;display:block;" />
+                </div>
+                <img src="icons/whatsapp.png" style="position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-radius:50%;display:block;" />
               </div>
               <div class="uc-away-text">
-                <div class="uc-away-label"><strong>Mom</strong></div>
-                <div class="uc-away-sub">2 missed calls · 2h ago</div>
+                <div class="uc-away-label"><strong style="color:#e53e3e;">Ananya</strong></div>
+                <div class="uc-away-sub">WhatsApp (2) · 2h ago</div>
               </div>
             </div>
             <div class="uc-away-item">
-              <div class="uc-away-icon-wrap" style="background:none; width:36px; height:36px; min-width:36px; min-height:36px; overflow:hidden; padding:6px;">
-                <img src="icons/whatsapp.png" style="width:100%;height:100%;display:block;object-fit:contain;" />
+              <div style="position:relative; width:36px; height:36px; min-width:36px; min-height:36px; flex-shrink:0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#c8c8c8;overflow:hidden;">
+                  <img src="Mom.jpg" style="width:36px;height:36px;object-fit:cover;display:block;" />
+                </div>
+                <img src="icons/whatsapp.png" style="position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-radius:50%;display:block;" />
               </div>
               <div class="uc-away-text">
                 <div class="uc-away-label"><strong>Mom</strong> · Pick up groceries on the way home</div>
@@ -2935,8 +2992,11 @@
               </div>
             </div>
             <div class="uc-away-item">
-              <div class="uc-away-icon-wrap" style="overflow:hidden; padding:0; background:#e0e0e0; width:36px; height:36px; min-width:36px; min-height:36px;">
-                <img src="Avatar-image.png" style="width:36px;height:36px;object-fit:cover;border-radius:50%;display:block;" />
+              <div style="position:relative; width:36px; height:36px; min-width:36px; min-height:36px; flex-shrink:0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#e0e0e0;overflow:hidden;">
+                  <img src="Avatar-image.png" style="width:36px;height:36px;object-fit:cover;display:block;" />
+                </div>
+                <img src="icons/whatsapp.png" style="position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-radius:50%;display:block;" />
               </div>
               <div class="uc-away-text">
                 <div class="uc-away-label"><strong>Sarah Whitman</strong> shared photos in Sunday trek!!!</div>
@@ -2956,7 +3016,7 @@
       <div class="uc-zero-accordion" onclick="toggleZeroAccordion(this)">
         <div class="uc-zero-row" style="cursor:pointer;">
           <div class="uc-zero-row-icon" style="background:none;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
@@ -2978,7 +3038,7 @@
 
       <div class="uc-zero-row">
         <div class="uc-zero-row-icon" style="background:none;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="3" y="4" width="18" height="18" rx="2" stroke="black" stroke-opacity="0.85" stroke-width="1.6"/>
             <path d="M3 9h18" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/>
             <path d="M8 2v4M16 2v4" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/>
@@ -2992,6 +3052,90 @@
       </div>
 
     </div><!-- /uc-zero-v1 -->
+
+    <!-- Variation 2 zero state — same as v1 without Sarah's message -->
+    <div class="uc-zero-state" id="uc-zero-v2">
+
+      <div class="uc-zero-accordion" onclick="toggleZeroAccordion(this)">
+        <div class="uc-zero-row" style="cursor:pointer;">
+          <div class="uc-zero-row-icon" style="background:none;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C10.3817 22 8.81782 21.6146 7.41286 20.888L3.58704 21.9553C2.92212 22.141 2.23258 21.7525 2.04691 21.0876C1.98546 20.8676 1.98549 20.6349 2.04695 20.4151L3.11461 16.5922C2.38637 15.186 2 13.6203 2 12C2 6.47715 6.47715 2 12 2ZM12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 13.4696 3.87277 14.8834 4.57303 16.1375L4.72368 16.4072L3.61096 20.3914L7.59755 19.2792L7.86709 19.4295C9.12006 20.1281 10.5322 20.5 12 20.5C16.6944 20.5 20.5 16.6944 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM8.75 13H13.2483C13.6625 13 13.9983 13.3358 13.9983 13.75C13.9983 14.1297 13.7161 14.4435 13.35 14.4932L13.2483 14.5H8.75C8.33579 14.5 8 14.1642 8 13.75C8 13.3703 8.28215 13.0565 8.64823 13.0068L8.75 13ZM8.75 9.5H15.2545C15.6687 9.5 16.0045 9.83579 16.0045 10.25C16.0045 10.6297 15.7223 10.9435 15.3563 10.9932L15.2545 11H8.75C8.33579 11 8 10.6642 8 10.25C8 9.8703 8.28215 9.55651 8.64823 9.50685L8.75 9.5Z" fill="black" fill-opacity="0.8956"/></svg>
+          </div>
+          <div class="uc-zero-row-text">
+            <div class="uc-zero-row-title">What did I miss while I was away</div>
+            <div class="uc-zero-row-sub">Copilot · Recent activity</div>
+          </div>
+          <svg class="uc-zero-row-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#bbb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="uc-zero-accordion-body">
+          <div class="uc-missed-list">
+            <div class="uc-away-item">
+              <div style="position:relative; width:36px; height:36px; min-width:36px; min-height:36px; flex-shrink:0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#c8c8c8;overflow:hidden;">
+                  <img src="Ananya.jpg" style="width:36px;height:36px;object-fit:cover;display:block;" />
+                </div>
+                <img src="icons/whatsapp.png" style="position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-radius:50%;display:block;" />
+              </div>
+              <div class="uc-away-text">
+                <div class="uc-away-label"><strong style="color:#e53e3e;">Ananya</strong></div>
+                <div class="uc-away-sub">WhatsApp (2) · 2h ago</div>
+              </div>
+            </div>
+            <div class="uc-away-item">
+              <div style="position:relative; width:36px; height:36px; min-width:36px; min-height:36px; flex-shrink:0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#c8c8c8;overflow:hidden;">
+                  <img src="Mom.jpg" style="width:36px;height:36px;object-fit:cover;display:block;" />
+                </div>
+                <img src="icons/whatsapp.png" style="position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-radius:50%;display:block;" />
+              </div>
+              <div class="uc-away-text">
+                <div class="uc-away-label"><strong>Mom</strong> · Pick up groceries on the way home</div>
+                <div class="uc-away-sub">WhatsApp · 1h ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="uc-zero-accordion" onclick="toggleZeroAccordion(this)">
+        <div class="uc-zero-row" style="cursor:pointer;">
+          <div class="uc-zero-row-icon" style="background:none;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="uc-zero-row-text">
+            <div class="uc-zero-row-title">Show my to do list</div>
+            <div class="uc-zero-row-sub">Copilot · Today's tasks</div>
+          </div>
+          <svg class="uc-zero-row-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#bbb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="uc-zero-accordion-body">
+          <div class="uc-todo-list">
+            <div class="uc-todo-item"><div class="uc-todo-check"></div>Pick up groceries</div>
+            <div class="uc-todo-item"><div class="uc-todo-check"></div>Call Mom back</div>
+            <div class="uc-todo-item"><div class="uc-todo-check"></div>Review Book Report presentation</div>
+            <div class="uc-todo-item"><div class="uc-todo-check"></div>Plan next trek with Sarah</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="uc-zero-row">
+        <div class="uc-zero-row-icon" style="background:none;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="18" height="18" rx="2" stroke="black" stroke-opacity="0.85" stroke-width="1.6"/>
+            <path d="M3 9h18" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M8 2v4M16 2v4" stroke="black" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="12" cy="15" r="1.2" fill="black" fill-opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="uc-zero-row-text">
+          <div class="uc-zero-row-title">Upcoming meeting</div>
+          <div class="uc-zero-row-sub">Chat suggestion · Copilot</div>
+        </div>
+      </div>
+
+    </div><!-- /uc-zero-v2 -->
 
     <!-- File-drop suggestions — shown when chips are attached -->
     <div class="uc-file-suggestions" id="uc-file-suggestions">
@@ -3092,12 +3236,18 @@
 
     </div><!-- /uc-results-area -->
 
+    <!-- @ People suggestions -->
+    <div class="uc-people-suggestions" id="uc-people-suggestions">
+      <div class="uc-ps-header">People suggestions</div>
+      <div id="uc-ps-list"></div>
+    </div>
+
     <!-- Attached file chips -->
     <!-- Search input — always at bottom, white card -->
     <div class="uc-input-wrap">
       <div class="uc-file-chips" id="uc-file-chips"></div>
       <div class="uc-input-row">
-        <input type="text" class="uc-search-input" id="uc-search-input" autocomplete="off" spellcheck="false" placeholder="Ask me anything" />
+        <div contenteditable="true" class="uc-search-input" id="uc-search-input" spellcheck="false" data-placeholder="Ask me anything"></div>
       </div>
       <div class="uc-input-bottom">
         <button class="uc-add-btn">+</button>
@@ -3918,8 +4068,108 @@ const ucFileChips       = document.getElementById('uc-file-chips');
 const ucFileSuggestions = document.getElementById('uc-file-suggestions');
 const ucZeroState       = document.getElementById('uc-zero-state');
 const ucZeroV1          = document.getElementById('uc-zero-v1');
+const ucZeroV2          = document.getElementById('uc-zero-v2');
+const ucPeopleSugg      = document.getElementById('uc-people-suggestions');
+const ucPsList          = document.getElementById('uc-ps-list');
 
-let ucVariant = 0;
+const UC_PEOPLE_SUGGESTIONS = [
+  { name: 'Priyesh Malhotra', app: 'WhatsApp', avatar: 'Male21.jpg',   badge: 'icons/whatsapp.png', color: '#e0a87c' },
+  { name: 'Rohit Kapoor',    app: 'WhatsApp', avatar: null,           badge: 'icons/whatsapp.png', color: '#7ec8e3' },
+  { name: 'Priyanka Nair',   app: 'Gmail',    avatar: null,           badge: 'gmail',                 color: '#b5c4e8' },
+  { name: 'Sarah Whitman',   app: 'WhatsApp', avatar: 'Avatar-image.png', badge: 'icons/whatsapp.png', color: '#a8d8a8' },
+  { name: 'Priya Sharma',    app: 'WhatsApp', avatar: 'female1.jpg',  badge: 'icons/whatsapp.png', color: '#c7aeea' },
+  { name: 'Arjun Mehta',     app: 'Outlook',  avatar: 'male12.jpg',   badge: 'icons/outlook.png',  color: '#f0c8a0' },
+  { name: 'Neha Gupta',      app: 'WhatsApp', avatar: 'female7.jpg',  badge: 'icons/whatsapp.png', color: '#a8d8c8' },
+  { name: 'Vikram Nair',     app: 'Teams',    avatar: 'male16.jpg',   badge: null,                 color: '#8aafd4' },
+  { name: 'Aditi Joshi',     app: 'Gmail',    avatar: 'female2.jpg',  badge: 'gmail',                 color: '#e8a4b8' },
+  { name: 'Siddharth Roy',   app: 'WhatsApp', avatar: 'male14.jpg',   badge: 'icons/whatsapp.png', color: '#a4c8a4' },
+  { name: 'Nehal Joshi',     app: 'Outlook',  avatar: null,           badge: 'icons/outlook.png',  color: '#e8c88c' },
+  { name: 'Rohan Kapoor',    app: 'WhatsApp', avatar: 'male13.jpg',   badge: 'icons/whatsapp.png', color: '#90bcd4' },
+  { name: 'Kavya Reddy',     app: 'Gmail',    avatar: 'female5.jpg',  badge: 'gmail',                 color: '#e8b4a0' },
+  { name: 'Aditya Singh',    app: 'Teams',    avatar: 'male1.jpg',    badge: null,                 color: '#b8a8e0' },
+  { name: 'Pooja Verma',     app: 'WhatsApp', avatar: 'female4.jpg',  badge: 'icons/whatsapp.png', color: '#a0d4b8' },
+  { name: 'Nehali Verma',    app: 'Outlook',  avatar: 'Female22.jpg', badge: 'icons/outlook.png',  color: '#e8c4a0' },
+  { name: 'Ananya Krishnan', app: 'WhatsApp', avatar: 'Ananya.jpg',   badge: 'icons/whatsapp.png', color: '#d4a0c8' },
+  { name: 'Dev Patel',       app: 'Teams',    avatar: 'male15.jpg',   badge: null,                 color: '#a0b8e0' },
+  { name: 'Simran Kaur',     app: 'WhatsApp', avatar: 'female3.jpg',  badge: 'icons/whatsapp.png', color: '#f0b8c8' },
+  { name: 'Rohini Patel',    app: 'Outlook',  avatar: 'Female21.jpg', badge: 'icons/outlook.png',  color: '#b0c8e8' },
+  { name: 'Emma Wilson',     app: 'WhatsApp', avatar: 'Female23.jpg', badge: 'icons/whatsapp.png', color: '#f4a0a0' },
+  { name: 'Emily Clarke',    app: 'Gmail',    avatar: 'Female31.jpg', badge: 'gmail',                 color: '#f4b8b8' },
+  { name: 'Emilia Stone',    app: 'Outlook',  avatar: 'Female32.jpg', badge: 'icons/outlook.png',  color: '#f4ccc8' },
+  { name: 'James Carter',    app: 'Teams',    avatar: 'Male23.jpg',   badge: null,                 color: '#a0c4f4' },
+  { name: 'Jake Thompson',   app: 'WhatsApp', avatar: null,           badge: 'icons/whatsapp.png', color: '#b8d4f4' },
+  { name: 'Jamie Lee',       app: 'Gmail',    avatar: 'Male22.jpg',   badge: 'gmail',                 color: '#c8e0f4' },
+];
+
+function ucPsAvatarHtml(p) {
+  if (p.avatar) {
+    return `<img src="${p.avatar}" style="width:35px;height:35px;border-radius:50%;object-fit:cover;display:block;" onerror="this.style.display='none'" />`;
+  }
+  const initials = p.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  return `<div style="width:35px;height:35px;border-radius:50%;background:${p.color};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff;flex-shrink:0;">${initials}</div>`;
+}
+
+function renderPeopleSuggestions(filtered, query) {
+  const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  ucPsList.innerHTML = filtered.map(p => {
+    const nameHtml = query
+      ? p.name.replace(new RegExp(`(${esc(query)})`, 'gi'), '<strong>$1</strong>')
+      : p.name;
+    return `
+      <div class="uc-ps-row" onclick="insertMention('${p.name}')">
+        <div class="uc-ps-avatar">
+          ${ucPsAvatarHtml(p)}
+          ${p.badge === 'gmail' ? `<span class="uc-ps-badge" style="background:none;display:flex;align-items:center;justify-content:center;"><svg width="10" height="10" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.66297 11.375H3.5V6.82328L0.875 4.8125V10.5711C0.874941 10.6767 0.895282 10.7813 0.93486 10.8788C0.974439 10.9764 1.03248 11.065 1.10566 11.1397C1.17884 11.2143 1.26573 11.2736 1.36136 11.3139C1.45699 11.3543 1.55948 11.3751 1.66297 11.375V11.375Z" fill="#4285F4"/><path d="M10.5 11.375H12.337C12.5459 11.3745 12.746 11.2897 12.8937 11.139C13.0414 10.9884 13.1245 10.7842 13.125 10.5711V4.8125L10.5 6.82075V11.375Z" fill="#34A853"/><path d="M10.5 3.44799V7L13.125 4.95109V3.85688C13.125 2.8444 12.0137 2.26477 11.2349 2.87329L10.5 3.44799Z" fill="#FBBC04"/><path d="M3.5 6.86251V3.5L7 5.82743L10.5 3.5V6.86251L7 9.1875L3.5 6.86251Z" fill="#EA4335"/><path d="M0.875 3.85694V4.95074L3.5 7V3.44568L2.76505 2.8733C1.98633 2.26475 0.875 2.84441 0.875 3.85694Z" fill="#C5221F"/></svg></span>` : p.badge ? `<img class="uc-ps-badge" src="${p.badge}" />` : ''}
+        </div>
+        <div class="uc-ps-text">
+          <div class="uc-ps-name">${nameHtml}</div>
+          <div class="uc-ps-app">${p.app}</div>
+        </div>
+        <button class="uc-ps-add" onclick="event.stopPropagation();insertMention('${p.name}')">+</button>
+      </div>`;
+  }).join('');
+}
+
+function insertMention(name) {
+  const text = ucInput.textContent;
+  const atPos = text.lastIndexOf('@');
+  const before = atPos !== -1 ? text.slice(0, atPos) : text;
+  ucInput.innerHTML = '';
+  if (before) ucInput.appendChild(document.createTextNode(before));
+  const span = document.createElement('span');
+  span.style.color = '#0078d4';
+  span.textContent = name;
+  ucInput.appendChild(span);
+  const reset = document.createElement('span');
+  reset.style.color = '#1a1a1a';
+  reset.textContent = '​';
+  ucInput.appendChild(reset);
+  const range = document.createRange();
+  range.setStart(reset.firstChild, 1);
+  range.collapse(true);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  ucPeopleSugg.classList.remove('visible');
+  ucInput.focus();
+  renderUCPanel(ucInput.textContent);
+}
+
+function updatePeopleSuggestions() {
+  const val = ucInput.textContent;
+  const atPos = val.lastIndexOf('@');
+  if (atPos === -1) { ucPeopleSugg.classList.remove('visible'); return; }
+  const query = val.slice(atPos + 1).split(' ')[0];
+  const filtered = UC_PEOPLE_SUGGESTIONS.filter(p =>
+    p.name.split(' ').some(w => w.toLowerCase().startsWith(query.toLowerCase()))
+  );
+  if (filtered.length === 0) { ucPeopleSugg.classList.remove('visible'); return; }
+  const sorted = filtered.slice().sort((a, b) => (b.avatar ? 1 : 0) - (a.avatar ? 1 : 0));
+  renderPeopleSuggestions(sorted.slice(0, 3), query);
+  ucPeopleSugg.classList.add('visible');
+}
+
+let ucVariant = 1;
 
 let UC_CONTACTS = [
   {
@@ -3970,13 +4220,13 @@ function toggleZeroAccordion(el) {
 }
 
 function showCorrectZeroState() {
-  if (ucVariant === 1) {
-    ucZeroState.classList.remove('visible');
-    ucZeroV1.classList.add('visible');
-  } else {
-    ucZeroV1.classList.remove('visible');
-    ucZeroState.classList.add('visible');
-  }
+  ucZeroState.classList.remove('visible');
+  ucZeroV1.classList.remove('visible');
+  ucZeroV2.classList.remove('visible');
+  ucZeroV2.classList.remove('visible');
+  if (ucVariant === 1) ucZeroV1.classList.add('visible');
+  else if (ucVariant === 2) ucZeroV2.classList.add('visible');
+  else ucZeroState.classList.add('visible');
 }
 
 function setUCVariant(v) {
@@ -3985,7 +4235,7 @@ function setUCVariant(v) {
     btn.classList.toggle('active', parseInt(btn.dataset.variant) === ucVariant);
   });
   if (ucPanel.classList.contains('open')) {
-    const q = ucInput.value.trim();
+    const q = ucInput.textContent.trim();
     const hasChips = !!ucFileChips?.querySelector('.uc-file-chip');
     if (!q && !hasChips) showCorrectZeroState();
   }
@@ -4002,6 +4252,7 @@ function renderUCPanel(rawQuery) {
   if (q) {
     ucZeroState.classList.remove('visible');
     ucZeroV1.classList.remove('visible');
+  ucZeroV2.classList.remove('visible');
     ucFileSuggestions.classList.remove('visible');
   } else {
     if (!hasChips) {
@@ -4009,16 +4260,34 @@ function renderUCPanel(rawQuery) {
     } else {
       ucZeroState.classList.remove('visible');
       ucZeroV1.classList.remove('visible');
+  ucZeroV2.classList.remove('visible');
     }
     ucFileSuggestions.classList.toggle('visible', hasChips);
   }
   if (!q) return;
+
+  // Always show the compose preview row
+  const previewRow = document.createElement('div');
+  previewRow.className = 'uc-result-row';
+  const previewText = q.length > 42 ? q.slice(0, 42) + '…' : q;
+  previewRow.innerHTML = `
+    <div class="uc-result-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C10.3817 22 8.81782 21.6146 7.41286 20.888L3.58704 21.9553C2.92212 22.141 2.23258 21.7525 2.04691 21.0876C1.98546 20.8676 1.98549 20.6349 2.04695 20.4151L3.11461 16.5922C2.38637 15.186 2 13.6203 2 12C2 6.47715 6.47715 2 12 2ZM12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 13.4696 3.87277 14.8834 4.57303 16.1375L4.72368 16.4072L3.61096 20.3914L7.59755 19.2792L7.86709 19.4295C9.12006 20.1281 10.5322 20.5 12 20.5C16.6944 20.5 20.5 16.6944 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM8.75 13H13.2483C13.6625 13 13.9983 13.3358 13.9983 13.75C13.9983 14.1297 13.7161 14.4435 13.35 14.4932L13.2483 14.5H8.75C8.33579 14.5 8 14.1642 8 13.75C8 13.3703 8.28215 13.0565 8.64823 13.0068L8.75 13ZM8.75 9.5H15.2545C15.6687 9.5 16.0045 9.83579 16.0045 10.25C16.0045 10.6297 15.7223 10.9435 15.3563 10.9932L15.2545 11H8.75C8.33579 11 8 10.6642 8 10.25C8 9.8703 8.28215 9.55651 8.64823 9.50685L8.75 9.5Z" fill="black" fill-opacity="0.8956"/></svg></div>
+    <div class="uc-result-text">
+      <div class="uc-result-label">${previewText}</div>
+      <div class="uc-result-sub">New message · Compose</div>
+    </div>`;
+  ucResults.appendChild(previewRow);
+  ucResultsArea.classList.add('visible');
+  ucCard.classList.add('has-results');
+  ucPeople.style.display = 'none';
+
   if (q.length < 2) return;
 
   const contact = UC_CONTACTS.find(c => c.name.toLowerCase().includes(q.toLowerCase()));
   if (!contact) return;
 
   // Full contact card only at 3+ characters
+  ucPeople.style.display = '';
   if (q.length >= 3) {
     const avatarEl = document.getElementById('uc-avatar');
     const photo = pickPhoto(contact.name, contact.gender);
@@ -4052,9 +4321,6 @@ function renderUCPanel(rawQuery) {
     ucPeople.style.display = 'none';
   }
 
-  ucResultsArea.classList.add('visible');
-  ucCard.classList.add('has-results');
-
   // Generic results
   contact.results.forEach(r => {
     const row = document.createElement('div');
@@ -4076,7 +4342,7 @@ function renderUCPanel(rawQuery) {
   ucSeeMore.classList.add('visible');
 }
 
-ucInput.addEventListener('input', () => renderUCPanel(ucInput.value));
+ucInput.addEventListener('input', () => { renderUCPanel(ucInput.textContent); updatePeopleSuggestions(); });
 
 function openUCPanel(fromFileDrop) {
   if (fromFileDrop) {
@@ -4113,11 +4379,13 @@ function closeUCPanel() {
   ucPanel.classList.remove('open');
   searchBar.classList.remove('thinking');
   setTimeout(() => {
-    ucInput.value = '';
+    ucInput.innerHTML = '';
     renderUCPanel('');
     ucZeroState.classList.remove('visible');
     ucZeroV1.classList.remove('visible');
+  ucZeroV2.classList.remove('visible');
     ucFileSuggestions.classList.remove('visible');
+    ucPeopleSugg.classList.remove('visible');
     ucFileChips.innerHTML = '';
     ucFileChips.classList.remove('visible');
   }, 200);
@@ -6226,7 +6494,7 @@ document.querySelectorAll('.hv-btn').forEach(btn => {
 </script>
 <!-- ░░ Variant Switcher ░░ -->
 <div id="variant-switcher">
-  <button class="var-btn" data-variant="1" onclick="setUCVariant(1)">1</button>
+  <button class="var-btn active" data-variant="1" onclick="setUCVariant(1)">1</button>
   <button class="var-btn" data-variant="2" onclick="setUCVariant(2)">2</button>
   <button class="var-btn" data-variant="3" onclick="setUCVariant(3)">3</button>
 </div>
