@@ -2586,13 +2586,16 @@
   const syncDropZone = () => {
     const hasSelection = sel.size > 0;
     const allApps = hasSelection && [...sel].every(ic => ic.dataset.type === 'app');
-    // Only show drop-mode while actively dragging — not on mere selection/click
-    searchBarEl.classList.toggle('drop-mode', hasSelection && !allApps && dragging);
-    if (hasSelection && dragging) {
+    // Variant A: show on mere selection. Other variants: only while dragging.
+    const isVariantA = document.body.dataset.hv === 'a';
+    const show = hasSelection && !allApps && (dragging || isVariantA);
+    searchBarEl.classList.toggle('drop-mode', show);
+    if (show) {
       searchBarEl.classList.remove('thinking');
       document.getElementById('search-composer').classList.remove('open');
     }
   };
+  window.__syncDropZone = syncDropZone;
 
   const selAdd   = ic => { sel.add(ic);    ic.classList.add('selected');    syncDropZone(); };
   const selRem   = ic => { sel.delete(ic); ic.classList.remove('selected'); syncDropZone(); };
@@ -5295,6 +5298,7 @@ document.querySelectorAll('.hv-btn').forEach(btn => {
     document.body.dataset.hv = btn.dataset.v;
     hvDesc.textContent = HV_DESCS[btn.dataset.v] || '';
     resetUCState();
+    window.__syncDropZone?.();
   });
 });
 </script>
