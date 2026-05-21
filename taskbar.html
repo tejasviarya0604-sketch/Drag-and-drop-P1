@@ -1487,6 +1487,426 @@
       max-width: 148px;
       line-height: 1.4;
     }
+    .hv-divider {
+      height: 1px;
+      background: rgba(0,0,0,0.08);
+      margin: 3px -4px 1px;
+    }
+
+    /* ═══════════════════════════════════════════════════════ */
+    /*  V1 DESIGNS                                             */
+    /*  Shared via body[data-v1] — applies to all V1 variants.   */
+    /*  Variant-specific overrides: body[data-v1="N"] { ... }    */
+    /* ═══════════════════════════════════════════════════════ */
+    /* ── V1-1 / V1-2: thin solid blue stroke + blue text, sparse blue dashes on hover / drag-over ── */
+    body[data-v1] .search-bar.drop-mode {
+      background: rgba(255,255,255,0.78);
+      border: none;
+      outline: 1px solid #0078d4;
+      outline-offset: 0;
+      box-shadow: none;
+    }
+    body[data-v1] .search-bar.drop-mode .drop-mode-label {
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      -webkit-text-fill-color: #0078d4;
+      color: #0078d4;
+    }
+    body[data-v1] .search-bar.drop-mode .drop-mode-plus {
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      -webkit-text-fill-color: #0078d4;
+      color: #0078d4;
+    }
+    /* Drag-over (drop-mode or holding): blue dashed SVG affordance */
+    body[data-v1] .search-bar.drop-mode.drag-over,
+    body[data-v1] .search-bar.holding.drag-over {
+      outline: none !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    body[data-v1] .search-bar.drop-mode.drag-over {
+      background: rgba(240,247,255,0.85);
+    }
+    body[data-v1] .search-bar.drop-mode.drag-over::after,
+    body[data-v1] .search-bar.holding.drag-over::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='4 2.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    }
+    /* Holding (committed): solid blue outline, no dashes */
+    body[data-v1] .search-bar.holding {
+      background: rgba(240,247,255,0.88) !important;
+      outline: 1px solid #0078d4 !important;
+      outline-offset: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    @media (hover: hover) {
+      /* Hover: same sparse blue dotted affordance */
+      body[data-v1] .search-bar.drop-mode:hover {
+        outline: none;
+        border: none;
+        background: rgba(240,247,255,0.65);
+        box-shadow: none;
+      }
+      body[data-v1] .search-bar.drop-mode:hover::after {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 22px;
+        pointer-events: none;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='4 2.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+      }
+    }
+    body[data-v1] .search-bar.holding .holding-label {
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      -webkit-text-fill-color: #0078d4;
+      color: #0078d4;
+    }
+    body[data-v1] .search-bar.holding .holding-label svg {
+      stroke: #0078d4;
+    }
+
+    /* ── V1-4: glow + dotted blue line on hover / drag-over ── */
+    @media (hover: hover) {
+      body[data-v1="4"] .search-bar.drop-mode:hover {
+        outline: 1.5px dotted #0078d4 !important;
+        outline-offset: 0 !important;
+        background: rgba(240,247,255,0.85) !important;
+        box-shadow:
+          0 0 12px rgba(0,120,212,0.28),
+          0 0 24px rgba(0,120,212,0.16) !important;
+      }
+      body[data-v1="4"] .search-bar.drop-mode:hover::after {
+        content: none !important;
+      }
+    }
+    body[data-v1="4"] .search-bar.drop-mode.drag-over {
+      outline: 1.5px dotted #0078d4 !important;
+      outline-offset: 0 !important;
+      background: rgba(240,247,255,0.85) !important;
+      box-shadow:
+        0 0 12px rgba(0,120,212,0.32),
+        0 0 26px rgba(0,120,212,0.20) !important;
+    }
+    body[data-v1="4"] .search-bar.drop-mode.drag-over::after {
+      content: none !important;
+    }
+
+    /* ═══════════════════════════════════════════════════════ */
+    /*  FOLDER PICKER (V1-2 "Organise into a folder")          */
+    /* ═══════════════════════════════════════════════════════ */
+    #folder-picker {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.20);
+      backdrop-filter: blur(2px);
+      z-index: 99000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+    }
+    #folder-picker.open { display: flex; }
+    .fp-window {
+      width: 720px;
+      height: 480px;
+      background: #fbfbfb;
+      border: 1px solid rgba(0,0,0,0.18);
+      border-radius: 8px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.28), 0 4px 12px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .fp-titlebar {
+      height: 36px;
+      background: #f3f3f3;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 8px 0 14px;
+    }
+    .fp-title {
+      font-size: 12px;
+      color: #1a1a1a;
+      flex: 1;
+    }
+    .fp-close {
+      width: 32px; height: 28px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #555;
+      font-size: 12px;
+      border-radius: 4px;
+    }
+    .fp-close:hover { background: #e81123; color: #fff; }
+    .fp-toolbar {
+      height: 40px;
+      background: #fbfbfb;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 6px;
+    }
+    .fp-tb-btn {
+      width: 26px; height: 26px;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #444;
+      font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fp-tb-btn:hover { background: rgba(0,0,0,0.06); }
+    .fp-breadcrumb {
+      flex: 1;
+      height: 26px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 6px;
+      font-size: 12px;
+      color: #444;
+    }
+    .fp-bc-sep { color: rgba(0,0,0,0.35); }
+    .fp-bc-current { color: #1a1a1a; }
+    .fp-search {
+      width: 200px;
+      height: 26px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 3px;
+      padding: 0 8px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+    }
+    .fp-search:focus { border-color: #0078d4; }
+    .fp-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    .fp-sidebar {
+      width: 200px;
+      background: #f9f9f9;
+      border-right: 1px solid rgba(0,0,0,0.08);
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+    .fp-sb-section {
+      font-size: 11px;
+      color: #666;
+      padding: 6px 14px 4px;
+      font-weight: 500;
+    }
+    .fp-sb-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      font-size: 12.5px;
+      color: #1a1a1a;
+      cursor: pointer;
+    }
+    .fp-sb-item:hover { background: rgba(0,0,0,0.05); }
+    .fp-sb-item.active {
+      background: rgba(0,120,212,0.10);
+    }
+    .fp-sb-icon {
+      width: 16px;
+      display: inline-flex;
+      justify-content: center;
+      font-size: 13px;
+    }
+    .fp-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #fff;
+    }
+    .fp-content-header {
+      display: flex;
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-size: 11.5px;
+      color: #444;
+      font-weight: 500;
+    }
+    .fp-col-name { flex: 2; }
+    .fp-col-date { flex: 1.2; }
+    .fp-col-type { flex: 1; }
+    .fp-content-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .fp-row {
+      display: flex;
+      align-items: center;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      color: #1a1a1a;
+      cursor: pointer;
+      gap: 4px;
+    }
+    .fp-row:hover { background: rgba(0,120,212,0.06); }
+    .fp-row.selected { background: rgba(0,120,212,0.14); }
+    .fp-row-icon {
+      width: 16px;
+      margin-right: 8px;
+      font-size: 14px;
+      color: #f9c23c;
+      flex-shrink: 0;
+    }
+    .fp-footer {
+      height: 60px;
+      background: #fbfbfb;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 10px;
+    }
+    .fp-folder-label {
+      font-size: 12.5px;
+      color: #1a1a1a;
+    }
+    .fp-folder-input {
+      flex: 1;
+      height: 28px;
+      border: 1px solid rgba(0,0,0,0.18);
+      border-bottom-color: #0078d4;
+      border-radius: 0;
+      padding: 0 8px;
+      font-size: 12.5px;
+      font-family: inherit;
+      outline: none;
+    }
+    .fp-btn {
+      height: 30px;
+      min-width: 100px;
+      padding: 0 14px;
+      background: #fbfbfb;
+      border: 1px solid rgba(0,0,0,0.18);
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+    .fp-btn:hover { background: #f0f0f0; }
+    .fp-btn-primary {
+      background: #fbfbfb;
+      color: #1a1a1a;
+    }
+    .fp-btn-primary:hover { background: #e6f1ff; border-color: #0078d4; }
+
+    /* ── Move toast (after folder selected) ── */
+    #move-toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(34,34,34,0.92);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+      z-index: 99500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    #move-toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── V1-3: taskbar empty-area drop-target highlight ── */
+    .taskbar.v1-3-drop-target {
+      background: rgba(255,255,255,0.80) !important;
+      outline: 1.5px dashed #0078d4;
+      outline-offset: -4px;
+    }
+    .taskbar.v1-3-drop-target > * {
+      opacity: 0.12;
+      transition: opacity 0.12s ease;
+    }
+    .taskbar.v1-3-drop-target::before {
+      content: 'Drop to attach in composer';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0078d4;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ── V1-2: drop-target hints during drag preview ── */
+    #search-composer.v1-preview .suggestion-row:hover {
+      background: rgba(0,120,212,0.10);
+    }
+    .composer-chat-area {
+      position: relative;
+    }
+    .composer-chat-area > * {
+      position: relative;
+      z-index: 1;
+    }
+    /* V1-2 preview: light-blue filled rectangle + dashed border behind chat content */
+    #search-composer.v1-preview .composer-chat-area:hover::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border: 1.5px dashed #0078d4;
+      border-radius: 10px;
+      background: rgba(207,226,255,0.55);
+      pointer-events: none;
+      z-index: 0;
+    }
+    #search-composer.v1-preview .composer-chat-area:hover .composer-bottom-row,
+    #search-composer.v1-preview .composer-chat-area:hover .composer-footer {
+      opacity: 0.3;
+    }
+    #search-composer.v1-preview .composer-chat-area:hover::before {
+      content: '+ Drop here to do more';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0078d4;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 2;
+    }
 
     /* ── Variant D: purple glow pulse ───────────────────────── */
     @keyframes glowPulse {
@@ -1962,19 +2382,30 @@
   .cop-icon-btn:hover { background: rgba(0,0,0,0.06); color: #444; }
   </style>
 </head>
-<body data-hv="a">
+<body data-v1="1">
 
 <!-- ░░ Hover Variant Switcher (desktop only) ░░ -->
 <div id="hv-switcher">
-  <span class="hv-label">Hover variant</span>
+  <span class="hv-label">V2 designs</span>
   <div class="hv-btns">
-    <button class="hv-btn active" data-v="a" title="Subtle (current)">A</button>
+    <button class="hv-btn" data-v="a" title="Subtle (current)">A</button>
     <button class="hv-btn" data-v="d" title="Purple glow pulse">D</button>
 <button class="hv-btn" data-v="f" title="Minimal – blue dashed on hover">F</button>
     <button class="hv-btn" data-v="i" title="Pulsating dashed border on hover">I</button>
     <button class="hv-btn" data-v="j" title="Cop drop zone appears on drag">J</button>
   </div>
-  <span class="hv-desc" id="hv-desc">Subtle – slight fill lift</span>
+  <span class="hv-desc" id="hv-desc">—</span>
+
+  <div class="hv-divider"></div>
+
+  <span class="hv-label">V1 designs</span>
+  <div class="hv-btns" id="v1-btns">
+    <button class="hv-btn active" data-v1="1" title="V1-1">1</button>
+    <button class="hv-btn" data-v1="2" title="V1-2 – UC opens on drag-hover">2</button>
+    <button class="hv-btn" data-v1="3" title="V1-3 – drop on empty taskbar to attach">3</button>
+    <button class="hv-btn" data-v1="4" title="V1-4 – glow + dotted line on hover">4</button>
+  </div>
+  <span class="hv-desc" id="v1-desc">V1-1</span>
 </div>
 
 <!-- ░░ Desktop ░░ -->
@@ -2389,26 +2820,28 @@
     <!-- Skip notice (shown when apps are excluded) -->
     <div class="composer-skip-notice" id="composer-skip-notice"></div>
 
-    <!-- Input row -->
-    <div class="composer-bottom-row">
-      <textarea class="composer-input" id="composer-input" rows="1" placeholder="Ask Copilot anything" autocomplete="off"></textarea>
-    </div>
+    <!-- Chat area (input + footer) -->
+    <div class="composer-chat-area">
+      <div class="composer-bottom-row">
+        <textarea class="composer-input" id="composer-input" rows="1" placeholder="Ask Copilot anything" autocomplete="off"></textarea>
+      </div>
 
-    <div class="composer-footer">
-      <div class="composer-add-btn">+</div>
-      <div class="composer-footer-right">
-        <svg viewBox="0 0 20 20" fill="none" stroke="#555" stroke-width="1.3" stroke-linecap="round">
-          <ellipse cx="6"  cy="13" rx="4" ry="3.5"/>
-          <ellipse cx="14" cy="13" rx="4" ry="3.5"/>
-          <path d="M10 13h0"/>
-          <path d="M6 9.5V7.5A1.5 1.5 0 017.5 6h0A1.5 1.5 0 019 7.5V13"/>
-          <path d="M14 9.5V7.5A1.5 1.5 0 0012.5 6h0A1.5 1.5 0 0011 7.5V13"/>
-        </svg>
-        <svg viewBox="0 0 20 20" fill="none" stroke="#555" stroke-width="1.3" stroke-linecap="round">
-          <rect x="7" y="3" width="6" height="8" rx="3"/>
-          <path d="M4 10a6 6 0 0012 0"/>
-          <line x1="10" y1="16" x2="10" y2="18"/>
-        </svg>
+      <div class="composer-footer">
+        <div class="composer-add-btn">+</div>
+        <div class="composer-footer-right">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#555" stroke-width="1.3" stroke-linecap="round">
+            <ellipse cx="6"  cy="13" rx="4" ry="3.5"/>
+            <ellipse cx="14" cy="13" rx="4" ry="3.5"/>
+            <path d="M10 13h0"/>
+            <path d="M6 9.5V7.5A1.5 1.5 0 017.5 6h0A1.5 1.5 0 019 7.5V13"/>
+            <path d="M14 9.5V7.5A1.5 1.5 0 0012.5 6h0A1.5 1.5 0 0011 7.5V13"/>
+          </svg>
+          <svg viewBox="0 0 20 20" fill="none" stroke="#555" stroke-width="1.3" stroke-linecap="round">
+            <rect x="7" y="3" width="6" height="8" rx="3"/>
+            <path d="M4 10a6 6 0 0012 0"/>
+            <line x1="10" y1="16" x2="10" y2="18"/>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -2550,6 +2983,61 @@
   <div class="fw-statusbar"><span id="fw-status-text">0 items</span></div>
 </div>
 
+<!-- ░░ Folder picker (used by V1-2 "Organise into a folder") ░░ -->
+<div id="folder-picker">
+  <div class="fp-window">
+    <div class="fp-titlebar">
+      <span class="fp-title">Select folder to move <span id="fp-count">1</span> item</span>
+      <button class="fp-close" id="fp-close" title="Close">&#10005;</button>
+    </div>
+    <div class="fp-toolbar">
+      <button class="fp-tb-btn" title="Back">&#8592;</button>
+      <button class="fp-tb-btn" title="Forward">&#8594;</button>
+      <button class="fp-tb-btn" title="Up">&#8593;</button>
+      <div class="fp-breadcrumb">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="#f9c23c" style="flex-shrink:0;"><path d="M1 3.5A1.5 1.5 0 012.5 2H6l1.5 2H13.5A1.5 1.5 0 0115 5.5v7A1.5 1.5 0 0113.5 14h-11A1.5 1.5 0 011 12.5z"/></svg>
+        <span>This PC</span>
+        <span class="fp-bc-sep">&rsaquo;</span>
+        <span class="fp-bc-current">Quick access</span>
+      </div>
+      <input class="fp-search" type="text" placeholder="Search Quick access">
+    </div>
+    <div class="fp-body">
+      <div class="fp-sidebar">
+        <div class="fp-sb-section">Quick access</div>
+        <div class="fp-sb-item"><span class="fp-sb-icon">&#127968;</span>Home</div>
+        <div class="fp-sb-item active"><span class="fp-sb-icon" style="color:#0078d4;">&#9729;</span>Tejasvi - Microsoft</div>
+        <div class="fp-sb-section">This PC</div>
+        <div class="fp-sb-item" data-folder="Desktop"><span class="fp-sb-icon">&#128421;</span>Desktop</div>
+        <div class="fp-sb-item" data-folder="Downloads"><span class="fp-sb-icon">&#11015;</span>Downloads</div>
+        <div class="fp-sb-item" data-folder="Documents"><span class="fp-sb-icon">&#128196;</span>Documents</div>
+        <div class="fp-sb-item" data-folder="Pictures"><span class="fp-sb-icon">&#128247;</span>Pictures</div>
+        <div class="fp-sb-item" data-folder="Music"><span class="fp-sb-icon">&#127925;</span>Music</div>
+        <div class="fp-sb-item" data-folder="Videos"><span class="fp-sb-icon">&#127910;</span>Videos</div>
+      </div>
+      <div class="fp-content">
+        <div class="fp-content-header">
+          <span class="fp-col fp-col-name">Name</span>
+          <span class="fp-col fp-col-date">Date modified</span>
+          <span class="fp-col fp-col-type">Type</span>
+        </div>
+        <div class="fp-content-list" id="fp-content-list">
+          <!-- folder rows injected here -->
+        </div>
+      </div>
+    </div>
+    <div class="fp-footer">
+      <label class="fp-folder-label">Folder:</label>
+      <input class="fp-folder-input" id="fp-folder-input" type="text" value="">
+      <button class="fp-btn fp-btn-primary" id="fp-select-btn">Select Folder</button>
+      <button class="fp-btn" id="fp-cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ░░ Move toast ░░ -->
+<div id="move-toast"></div>
+
 <!-- ░░ Preview popup ░░ -->
 <div id="preview-popup">
   <div class="preview-card">
@@ -2586,9 +3074,10 @@
   const syncDropZone = () => {
     const hasSelection = sel.size > 0;
     const allApps = hasSelection && [...sel].every(ic => ic.dataset.type === 'app');
-    // Variant A: show on mere selection. Other variants: only while dragging.
+    // Variant A and V1-1: show on mere selection. Other variants: only while dragging.
     const isVariantA = document.body.dataset.hv === 'a';
-    const show = hasSelection && !allApps && (dragging || isVariantA);
+    const isV1 = !!document.body.dataset.v1;
+    const show = hasSelection && !allApps && (dragging || isVariantA || isV1);
     searchBarEl.classList.toggle('drop-mode', show);
     if (show) {
       searchBarEl.classList.remove('thinking');
@@ -2607,6 +3096,38 @@
   let dragGhost     = null;
   let dragGhostGox  = 0, dragGhostGoy = 0;
   let hoveredBtn    = null;   // taskbar button being hovered during drag
+
+  /* ── V1-2: composer preview state ── */
+  let v1_2_preview_open = false;
+
+  function openComposerPreviewV1_2(icons) {
+    // Preview: render suggestions only (no chips — file isn't attached until drop).
+    const savedSel = new Set(sel);
+    openComposerWithFiles([]); // suggestions, no chips
+    // Reverse what would break the in-flight drag:
+    searchBarEl.classList.remove('thinking');
+    searchBarEl.classList.add('drop-mode', 'drag-over');
+    savedSel.forEach(ic => { sel.add(ic); ic.classList.add('selected'); });
+    document.getElementById('composer-input').blur();
+    // Hide empty-chips artifacts that openComposerWithFiles enabled
+    document.getElementById('composer-chips').classList.remove('visible');
+    document.getElementById('composer-divider').classList.remove('visible');
+    document.getElementById('search-composer').classList.add('v1-preview');
+    v1_2_preview_open = true;
+  }
+
+  function closeV1_2Preview() {
+    const composer = document.getElementById('search-composer');
+    composer.classList.remove('open', 'v1-preview');
+    const chipsEl = document.getElementById('composer-chips');
+    chipsEl.innerHTML = '';
+    chipsEl.classList.remove('visible');
+    document.getElementById('composer-divider').classList.remove('visible');
+    const sugEl = document.getElementById('composer-suggestions');
+    sugEl.classList.remove('visible');
+    sugEl.innerHTML = '';
+    v1_2_preview_open = false;
+  }
 
   /* ── Rubber-band state ── */
   let rbOn    = false;
@@ -2832,6 +3353,23 @@
         const overSB = e.clientX >= sr.left && e.clientX <= sr.right &&
                        e.clientY >= sr.top  && e.clientY <= sr.bottom;
         searchBarEl.classList.toggle('drag-over', overSB);
+
+        // V1-2: pre-open composer when drag hovers the search bar
+        if (document.body.dataset.v1 === '2' && overSB && !v1_2_preview_open) {
+          const fileIcons = [...sel].filter(ic => ic.dataset.type !== 'app');
+          if (fileIcons.length) openComposerPreviewV1_2(fileIcons);
+        }
+      }
+
+      // V1-3: highlight taskbar empty area when dragging over it
+      const taskbarEl = document.querySelector('.taskbar');
+      if (taskbarEl && document.body.dataset.v1 === '3') {
+        const t = document.elementFromPoint(e.clientX, e.clientY);
+        const inTaskbar = !!t?.closest('.taskbar');
+        const onClickable = !!t?.closest('.tb-btn, .tb-trigger, .search-bar');
+        const overEmpty = inTaskbar && !onClickable &&
+          [...sel].some(ic => ic.dataset.type !== 'app');
+        taskbarEl.classList.toggle('v1-3-drop-target', overEmpty);
       }
       // No-drop indicator when dragging app-only selection over search bar
       if ([...sel].every(ic => ic.dataset.type === 'app')) {
@@ -2893,6 +3431,23 @@
         e.clientX >= cdzR.left && e.clientX <= cdzR.right &&
         e.clientY >= cdzR.top  && e.clientY <= cdzR.bottom;
 
+      // V1-2: detect drop on suggestion row / composer area (preview must be open)
+      let droppedOnSuggestion = null;
+      let droppedInsideComposer = false;
+      if (v1_2_preview_open) {
+        const t = document.elementFromPoint(e.clientX, e.clientY);
+        droppedOnSuggestion = t?.closest('.suggestion-row') || null;
+        droppedInsideComposer = !!t?.closest('#search-composer');
+      }
+
+      // V1-3: detect drop on empty taskbar background (not on any clickable item)
+      let droppedOnTaskbarEmpty = false;
+      if (document.body.dataset.v1 === '3' && !btn) {
+        const t = document.elementFromPoint(e.clientX, e.clientY);
+        droppedOnTaskbarEmpty = !!t?.closest('.taskbar') &&
+          !t?.closest('.tb-btn, .tb-trigger, .search-bar');
+      }
+
       if (btn) {
         // Dropped on taskbar app — ghost flies into button, original snaps back
         showDropEffect(btn, [...sel]);
@@ -2900,8 +3455,29 @@
           s.style.left = origX + 'px';
           s.style.top  = origY + 'px';
         });
-      } else if (droppedOnSearchBar || droppedOnCDZ) {
-        // Dropped on search bar or cop-drop-zone — restore originals
+      } else if (droppedOnSuggestion) {
+        // V1-2: dropped on a suggestion row during drag preview
+        dragOffsets.forEach(({ s, origX, origY }) => {
+          s.style.left = origX + 'px';
+          s.style.top  = origY + 'px';
+        });
+        const fileIconEls = [...sel].filter(ic => ic.dataset.type !== 'app');
+        const fileNames = fileIconEls
+          .map(ic => ic.querySelector('span:last-child')?.textContent || '')
+          .filter(Boolean);
+        const title = droppedOnSuggestion.querySelector('.suggestion-title')?.textContent || '';
+        closeV1_2Preview();
+        if (/move/i.test(title) && /folder/i.test(title)) {
+          // Open folder picker; on confirm, move files into the chosen folder and open it
+          window._openFolderPicker?.(fileNames, (folder) => {
+            window._moveFilesToFolder?.(fileNames, fileIconEls, folder);
+          });
+        } else {
+          window._openCopilot?.(title, fileNames);
+        }
+        selClear();
+      } else if (droppedOnSearchBar || droppedOnCDZ || droppedInsideComposer || droppedOnTaskbarEmpty) {
+        // Dropped on search bar, cop-drop-zone, or anywhere in composer — restore originals
         dragOffsets.forEach(({ s, origX, origY }) => {
           s.style.left = origX + 'px';
           s.style.top  = origY + 'px';
@@ -2914,8 +3490,12 @@
         } else if (appIcons.length) {
           showSkipNotice(appIcons.length, 0);
         }
+        document.getElementById('search-composer').classList.remove('v1-preview');
+        v1_2_preview_open = false;
       } else {
-        // Dropped on desktop — move originals to where ghosts landed
+        // Dropped on desktop — cancel V1-2 preview if it was open
+        if (v1_2_preview_open) closeV1_2Preview();
+        // Move originals to where ghosts landed
         dragOffsets.forEach(({ s, ox, oy }) => {
           const x = Math.max(0, Math.min(e.clientX - dr.left - ox, dr.width - ICON_W));
           const y = Math.max(0, Math.min(e.clientY - dr.top  - oy, dr.height - ICON_H));
@@ -2930,6 +3510,7 @@
 
       if (hoveredBtn) { hoveredBtn.classList.remove('drop-target'); hoveredBtn = null; }
       cdzEl?.classList.remove('visible', 'file-over');
+      document.querySelector('.taskbar')?.classList.remove('v1-3-drop-target');
       searchBarEl.classList.remove('drag-over', 'no-drop');
       sel.forEach(s => { s.classList.remove('dragging'); s.style.zIndex = ''; });
       dragging    = false;
@@ -2965,7 +3546,7 @@
       { img: 'icons/whatsapp.png', bg: '#e8fdf0', title: 'Share via WhatsApp',                      sub: 'App · Send files directly' },
       { svg: `<svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.80108 26H8V15.5961L2 11V24.1626C1.99986 24.4039 2.04636 24.6429 2.13682 24.8659C2.22729 25.0889 2.35995 25.2915 2.52722 25.4622C2.6945 25.6328 2.8931 25.7681 3.11168 25.8604C3.33026 25.9527 3.56452 26.0001 3.80108 26V26Z" fill="#4285F4"/><path d="M24 26H28.1989C28.6763 25.9989 29.1337 25.805 29.4713 25.4606C29.8088 25.1163 29.9989 24.6496 30 24.1626V11L24 15.5903V26Z" fill="#34A853"/><path d="M24 7.88112V16L30 11.3168V8.81572C30 6.50149 27.4598 5.17661 25.6799 6.56752L24 7.88112Z" fill="#FBBC04"/><path d="M8 15.6857V8L16 13.3198L24 8V15.6857L16 21L8 15.6857Z" fill="#EA4335"/><path d="M2 8.81587V11.316L8 16V7.87585L6.32012 6.56755C4.54019 5.17657 2 6.50151 2 8.81587Z" fill="#C5221F"/></svg>`, bg: '#eef3fb', title: 'Send via Gmail', sub: 'Web · Attach and send' },
       { svg: `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C8.38171 20 6.81782 19.6146 5.41286 18.888L1.58704 19.9553C0.922123 20.141 0.232581 19.7525 0.0469058 19.0876C-0.0145358 18.8676 -0.014506 18.6349 0.046948 18.4151L1.11461 14.5922C0.386366 13.186 0 11.6203 0 10C0 4.47715 4.47715 0 10 0ZM10 1.5C5.30558 1.5 1.5 5.30558 1.5 10C1.5 11.4696 1.87277 12.8834 2.57303 14.1375L2.72368 14.4072L1.61096 18.3914L5.59755 17.2792L5.86709 17.4295C7.12006 18.1281 8.53218 18.5 10 18.5C14.6944 18.5 18.5 14.6944 18.5 10C18.5 5.30558 14.6944 1.5 10 1.5ZM6.75 11H11.2483C11.6625 11 11.9983 11.3358 11.9983 11.75C11.9983 12.1297 11.7161 12.4435 11.35 12.4932L11.2483 12.5H6.75C6.33579 12.5 6 12.1642 6 11.75C6 11.3703 6.28215 11.0565 6.64823 11.0068L6.75 11H11.2483H6.75ZM6.75 7.5H13.2545C13.6687 7.5 14.0045 7.83579 14.0045 8.25C14.0045 8.6297 13.7223 8.94349 13.3563 8.99315L13.2545 9H6.75C6.33579 9 6 8.66421 6 8.25C6 7.8703 6.28215 7.55651 6.64823 7.50685L6.75 7.5H13.2545H6.75Z" fill="#242424"/></svg>`, bg: '#f0f4ff', title: 'Summarise all medical bills', sub: 'New conversation · Copilot' },
-      { emoji: '📁',               bg: '#fff8e6', title: 'Organise into a folder',                   sub: 'File Explorer' },
+      { emoji: '📁',               bg: '#fff8e6', title: 'Move to folder',                           sub: 'File Explorer' },
     ];
 
     // Build suggestions
@@ -4591,6 +5172,39 @@ document.getElementById('fw-sb-downloads')?.addEventListener('click', () => open
 document.getElementById('fw-sb-documents')?.addEventListener('click', () => openFolder('Documents'));
 document.getElementById('fw-sb-design')?.addEventListener('click', () => openFolder('Design Assets'));
 
+/* ── Move files to folder (V1-2 "Organise into a folder" follow-through) ── */
+function _inferFolderItemFromName(name) {
+  const lower = name.toLowerCase();
+  let icon = 'text', type = 'File';
+  if (lower.endsWith('.pdf'))             { icon = 'pdf';   type = 'Adobe PDF Document'; }
+  else if (/\.docx?$/i.test(lower))       { icon = 'word';  type = 'Microsoft Word Document'; }
+  else if (/\.xlsx?$/i.test(lower))       { icon = 'excel'; type = 'Microsoft Excel Sheet'; }
+  else if (/\.pptx?$/i.test(lower))       { icon = 'ppt';   type = 'Microsoft PowerPoint'; }
+  else if (/\.jpe?g$/i.test(lower))       { icon = 'image'; type = 'JPEG Image'; }
+  else if (/\.png$/i.test(lower))         { icon = 'image'; type = 'PNG Image'; }
+  else if (/\.(gif|webp|bmp|heic)$/i.test(lower)) { icon = 'image'; type = 'Image File'; }
+  else if (/\.fig$/i.test(lower))         { icon = 'figma'; type = 'Figma File'; }
+  else if (/\.(exe|msi)$/i.test(lower))   { icon = 'app';   type = 'Application'; }
+  else if (/\.(txt|md)$/i.test(lower))    { icon = 'text';  type = 'Text Document'; }
+  const now = new Date();
+  const date = `${now.getMonth()+1}/${now.getDate()}/${now.getFullYear()} ${now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`;
+  return { name, date, type, size: '—', icon };
+}
+
+window._moveFilesToFolder = function (fileNames, fileIconEls, folderPath) {
+  const target = folderPath.split('\\').pop();
+  if (!FOLDER_DATA[target]) FOLDER_DATA[target] = [];
+  fileNames.forEach(name => {
+    if (FOLDER_DATA[target].some(x => x.name === name)) return; // dedup
+    FOLDER_DATA[target].unshift(_inferFolderItemFromName(name));
+  });
+  // Remove the source icons from the desktop
+  fileIconEls.forEach(el => el.remove());
+  // Show toast and open the destination
+  window._showMoveToast?.(fileNames, folderPath);
+  openFolder(target);
+};
+
 // File Explorer taskbar button: toggle minimize/restore
 explorerTbBtn?.addEventListener('click', () => {
   if (folderWin.classList.contains('open')) {
@@ -5214,6 +5828,104 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
 
   window._openCopilot = openCopilot;
 
+  /* ── Folder picker (V1-2 "Organise into a folder") ── */
+  (function () {
+    const picker = document.getElementById('folder-picker');
+    if (!picker) return;
+    const countEl  = document.getElementById('fp-count');
+    const inputEl  = document.getElementById('fp-folder-input');
+    const listEl   = document.getElementById('fp-content-list');
+    const bcEl     = picker.querySelector('.fp-bc-current');
+    const sbItems  = picker.querySelectorAll('.fp-sb-item[data-folder]');
+    const closeBtn = document.getElementById('fp-close');
+    const cancelBtn = document.getElementById('fp-cancel-btn');
+    const selectBtn = document.getElementById('fp-select-btn');
+
+    const SAMPLE_SUBFOLDERS = {
+      Desktop:   [{ name: 'Screenshots', date: '3/2/2026 8:14 AM' }, { name: 'Old Projects', date: '1/12/2026 11:02 AM' }],
+      Downloads: [{ name: 'Alphabets',    date: '2/18/2026 9:15 PM' }, { name: 'New folder (2)', date: '3/04/2026 4:21 PM' }],
+      Documents: [{ name: 'Work',          date: '2/28/2026 6:00 PM' }, { name: 'Personal',     date: '12/03/2025 2:45 PM' }, { name: 'Receipts', date: '1/22/2026 9:33 AM' }],
+      Pictures:  [{ name: 'Travel',        date: '11/15/2025 7:10 AM' }, { name: 'Family',      date: '2/01/2026 10:25 AM' }],
+      Music:     [{ name: 'Playlists',     date: '10/04/2025 1:08 PM' }],
+      Videos:    [{ name: 'Recordings',    date: '12/19/2025 3:48 PM' }],
+    };
+
+    let currentRoot = 'Documents'; // default
+    let pendingCallback = null;
+
+    function renderFolderRows(root) {
+      const list = SAMPLE_SUBFOLDERS[root] || [];
+      listEl.innerHTML = list.map(f => `
+        <div class="fp-row" data-folder-name="${f.name}">
+          <span class="fp-row-icon">&#128193;</span>
+          <span class="fp-col fp-col-name">${f.name}</span>
+          <span class="fp-col fp-col-date">${f.date}</span>
+          <span class="fp-col fp-col-type">File folder</span>
+        </div>
+      `).join('');
+      listEl.querySelectorAll('.fp-row').forEach(row => {
+        row.addEventListener('click', () => {
+          listEl.querySelectorAll('.fp-row').forEach(r => r.classList.remove('selected'));
+          row.classList.add('selected');
+          inputEl.value = `${root}\\${row.dataset.folderName}`;
+        });
+        row.addEventListener('dblclick', () => {
+          inputEl.value = `${root}\\${row.dataset.folderName}`;
+          finishSelect();
+        });
+      });
+    }
+
+    function setActiveSidebarRoot(root) {
+      currentRoot = root;
+      sbItems.forEach(it => it.classList.toggle('active', it.dataset.folder === root));
+      bcEl.textContent = root;
+      inputEl.value = root;
+      renderFolderRows(root);
+    }
+
+    sbItems.forEach(it => {
+      it.addEventListener('click', () => setActiveSidebarRoot(it.dataset.folder));
+    });
+
+    function finishSelect() {
+      const folder = inputEl.value.trim();
+      if (!folder) return;
+      closeFolderPicker();
+      pendingCallback?.(folder);
+      pendingCallback = null;
+    }
+
+    function closeFolderPicker() {
+      picker.classList.remove('open');
+    }
+
+    closeBtn.addEventListener('click', () => { closeFolderPicker(); pendingCallback = null; });
+    cancelBtn.addEventListener('click', () => { closeFolderPicker(); pendingCallback = null; });
+    selectBtn.addEventListener('click', finishSelect);
+
+    window._openFolderPicker = function (fileNames, onSelect) {
+      const n = fileNames?.length || 1;
+      countEl.textContent = n;
+      // Default to Documents on open
+      setActiveSidebarRoot('Documents');
+      pendingCallback = onSelect;
+      picker.classList.add('open');
+    };
+  })();
+
+  /* ── Move toast ── */
+  window._showMoveToast = function (fileNames, folder) {
+    const el = document.getElementById('move-toast');
+    if (!el) return;
+    const n = fileNames?.length || 0;
+    const fileLabel = n === 1 ? `"${fileNames[0]}"` : `${n} items`;
+    el.textContent = `Moved ${fileLabel} to ${folder}`;
+    el.classList.add('visible');
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => el.classList.remove('visible'), 2800);
+  };
+
   const tbCopilotBtn = document.querySelector('.tb-btn[data-app="copilot"]');
   const tbCopilotDot = tbCopilotBtn?.querySelector('.run-dot');
 
@@ -5282,7 +5994,7 @@ function resetUCState() {
   sugEl?.classList.remove('visible');
 
   // Now safe to close composer and strip all state classes
-  composer?.classList.remove('open');
+  composer?.classList.remove('open', 'v1-preview');
   bar?.classList.remove('drop-mode', 'thinking', 'holding', 'drag-over', 'no-drop');
 
   if (input) {
@@ -5291,12 +6003,40 @@ function resetUCState() {
   }
 }
 
-document.querySelectorAll('.hv-btn').forEach(btn => {
+/* ── V1 Designs Switcher ── */
+const V1_DESCS = {
+  '1': 'V1-1',
+  '2': 'V1-2 – UC opens on drag-hover',
+  '3': 'V1-3 – drop on empty taskbar',
+  '4': 'V1-4 – glow + dotted on hover',
+};
+const v1Desc = document.getElementById('v1-desc');
+
+function clearAllSwitcherActive() {
+  document.querySelectorAll('#hv-switcher .hv-btn').forEach(b => b.classList.remove('active'));
+}
+
+document.querySelectorAll('#hv-switcher .hv-btn[data-v]').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.hv-btn').forEach(b => b.classList.remove('active'));
+    clearAllSwitcherActive();
     btn.classList.add('active');
     document.body.dataset.hv = btn.dataset.v;
+    delete document.body.dataset.v1;
     hvDesc.textContent = HV_DESCS[btn.dataset.v] || '';
+    v1Desc.textContent = '—';
+    resetUCState();
+    window.__syncDropZone?.();
+  });
+});
+
+document.querySelectorAll('#v1-btns .hv-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    clearAllSwitcherActive();
+    btn.classList.add('active');
+    document.body.dataset.v1 = btn.dataset.v1;
+    delete document.body.dataset.hv;
+    v1Desc.textContent = V1_DESCS[btn.dataset.v1] || '';
+    hvDesc.textContent = '—';
     resetUCState();
     window.__syncDropZone?.();
   });
