@@ -550,7 +550,7 @@
       line-height: 1;
     }
     .thinking-dot {
-      width: 7px; height: 7px;
+      width: 5px; height: 5px;
       border-radius: 50%;
       background: #888;
       animation: thinkPulse 1.2s ease-in-out infinite;
@@ -1570,7 +1570,7 @@
       inset: -2px;
       border-radius: 22px;
       pointer-events: none;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='4 2.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38' preserveAspectRatio='none'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='4 2.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
     }
     /* Holding (committed): solid blue outline, no dashes */
     body[data-v1] .search-bar.holding {
@@ -1594,7 +1594,7 @@
         inset: -2px;
         border-radius: 22px;
         pointer-events: none;
-        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='4 2.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38' preserveAspectRatio='none'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='4 2.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
       }
     }
     body[data-v1] .search-bar.holding .holding-label {
@@ -1882,19 +1882,19 @@
       transition: opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .search-bar.holding.h1-fading .holding-label { opacity: 0; }
-    body[data-holding-var="1"] .search-bar.holding .holding-label,
-    body[data-holding-var="1"] .search-bar.holding .holding-label #holding-count {
+    body[data-holding-var="2"] .search-bar.holding .holding-label,
+    body[data-holding-var="2"] .search-bar.holding .holding-label #holding-count {
       color: #555 !important;
       -webkit-text-fill-color: #555 !important;
       background: none !important;
       font-weight: 400 !important;
     }
-    body[data-holding-var="1"] .search-bar.holding .holding-label > svg {
+    body[data-holding-var="2"] .search-bar.holding .holding-label > svg {
       stroke: #555 !important;
     }
     .search-bar.holding.h1-alt .holding-label > svg { display: none; }
     /* H1: search bar uses normal appearance (no blue holding stroke) */
-    body[data-holding-var="1"] .search-bar.holding {
+    body[data-holding-var="2"] .search-bar.holding {
       background: rgba(255,255,255,0.85) !important;
       outline: 1px solid rgba(0,0,0,0.10) !important;
       outline-offset: 0 !important;
@@ -1948,12 +1948,12 @@
     .holding-pill:hover .holding-pill-tip { opacity: 1; }
 
     /* H2 active: hide holding-label, show pill, restore normal search bar look */
-    body[data-holding-var="2"] .search-bar.holding .holding-label { display: none !important; }
-    body[data-holding-var="2"] .search-bar.holding .holding-pill { display: inline-flex !important; }
-    body[data-holding-var="2"] .search-bar.holding .search-placeholder { display: inline !important; }
-    body[data-holding-var="2"] .search-bar.holding .search-icons { display: flex !important; }
-    body[data-holding-var="2"] .search-bar.holding .search-divider { display: block !important; }
-    body[data-holding-var="2"] .search-bar.holding {
+    body[data-holding-var="1"] .search-bar.holding .holding-label { display: none !important; }
+    body[data-holding-var="1"] .search-bar.holding .holding-pill { display: inline-flex !important; }
+    body[data-holding-var="1"] .search-bar.holding .search-placeholder { display: inline !important; }
+    body[data-holding-var="1"] .search-bar.holding .search-icons { display: flex !important; }
+    body[data-holding-var="1"] .search-bar.holding .search-divider { display: block !important; }
+    body[data-holding-var="1"] .search-bar.holding {
       background: rgba(255,255,255,0.85) !important;
       outline: 1px solid rgba(0,0,0,0.10) !important;
       outline-offset: 0 !important;
@@ -1961,6 +1961,34 @@
       box-shadow: none !important;
       overflow: visible !important;
       width: 240px !important;
+    }
+    /* H1 + holding + drop-mode: show "Drop here to do more" with the pill still on the right */
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .drop-mode-label { display: flex !important; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .holding-label { display: none !important; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .search-placeholder { display: none !important; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .search-icons { display: none !important; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .holding-pill {
+      display: inline-flex !important;
+      margin-left: auto;
+    }
+
+    /* H3: blue holding text + blue stroke around search bar */
+    body[data-holding-var="3"] .search-bar.holding {
+      background: rgba(240,247,255,0.88) !important;
+      outline: 1px solid #0078d4 !important;
+      outline-offset: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    body[data-holding-var="3"] .search-bar.holding .holding-label,
+    body[data-holding-var="3"] .search-bar.holding .holding-label #holding-count {
+      color: #0078d4 !important;
+      -webkit-text-fill-color: #0078d4 !important;
+      background: none !important;
+      font-weight: 500 !important;
+    }
+    body[data-holding-var="3"] .search-bar.holding .holding-label > svg {
+      stroke: #0078d4 !important;
     }
 
     /* ── V1-3: taskbar empty-area drop-target highlight ── */
@@ -2539,10 +2567,11 @@
 
   <span class="hv-label">Holding Variation</span>
   <div class="hv-btns" id="holding-var-btns">
-    <button class="hv-btn active" data-holding="1" title="H1 – holding text alternates every 2s">H1</button>
-    <button class="hv-btn" data-holding="2" title="H2 – small file pill in search bar">H2</button>
+    <button class="hv-btn active" data-holding="1" title="H1 – small file pill in search bar">H1</button>
+    <button class="hv-btn" data-holding="2" title="H2 – holding text alternates every 2s">H2</button>
+    <button class="hv-btn" data-holding="3" title="H3 – blue holding text + blue stroke">H3</button>
   </div>
-  <span class="hv-desc" id="holding-var-desc">H1 – text alternates every 2s</span>
+  <span class="hv-desc" id="holding-var-desc">H1 – file pill in search bar</span>
 </div>
 
 <!-- ░░ Desktop ░░ -->
@@ -3725,17 +3754,22 @@
     icons.forEach(ic => {
       const label = ic.querySelector('span:last-child')?.textContent || 'File';
       const imgSrc = ic.querySelector('img')?.src || '';
+      const isFolder = !!ic.querySelector('.folder-thumb');
       // Deduplicate
       if ([...chipsEl.querySelectorAll('.file-chip-name')].some(el => el.textContent === label)) return;
       const chip = document.createElement('div');
       chip.className = 'file-chip';
+      chip.dataset.kind = isFolder ? 'folder' : 'file';
       const WORD_ICON_HTML = `<div style="width:20px;height:20px;background:#185abd;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">W</div>`;
+      const FOLDER_ICON_HTML = `<span style="font-size:14px;flex-shrink:0">📁</span>`;
       const isWordDoc = /\.(docx?|doc)$/i.test(label);
-      const chipIcon = IMAGE_EXTS_RE.test(label)
-        ? PHOTO_ICON_HTML
-        : isWordDoc
-          ? WORD_ICON_HTML
-          : (imgSrc ? `<img src="${imgSrc}" />` : `<span style="font-size:14px;flex-shrink:0">📄</span>`);
+      const chipIcon = isFolder
+        ? FOLDER_ICON_HTML
+        : IMAGE_EXTS_RE.test(label)
+          ? PHOTO_ICON_HTML
+          : isWordDoc
+            ? WORD_ICON_HTML
+            : (imgSrc ? `<img src="${imgSrc}" />` : `<span style="font-size:14px;flex-shrink:0">📄</span>`);
       chip.innerHTML = chipIcon
         + `<span class="file-chip-name">${label}</span>`
         + `<button class="file-chip-remove" title="Remove">✕</button>`;
@@ -5433,11 +5467,12 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
     const countEl   = document.getElementById('holding-count');
     const bannerEl  = document.getElementById('fw-held-banner');
     const bannerTxt = document.getElementById('fw-held-banner-text');
-    const label     = `${count} file${count !== 1 ? 's' : ''}`;
+    const labelText = (typeof _holdingLabelText === 'function') ? _holdingLabelText() : `Holding ${count} file${count !== 1 ? 's' : ''}`;
+    const bannerLabel = labelText.replace(/^Holding\s+/, '');
 
     if (holding) {
-      if (countEl)   countEl.textContent   = `Holding ${label}`;
-      if (bannerTxt) bannerTxt.textContent = `${label} in Copilot`;
+      if (countEl)   countEl.textContent   = labelText;
+      if (bannerTxt) bannerTxt.textContent = `${bannerLabel} in Copilot`;
       bannerEl?.classList.add('visible');
     } else {
       bannerEl?.classList.remove('visible');
@@ -6197,17 +6232,28 @@ document.querySelectorAll('#v1-btns .hv-btn').forEach(btn => {
 
 /* ── Holding Variation Switcher (independent axis) ── */
 const HOLDING_DESCS = {
-  '1': 'H1 – text alternates every 2s',
-  '2': 'H2 – file pill in search bar',
+  '1': 'H1 – file pill in search bar',
+  '2': 'H2 – text alternates every 2s',
+  '3': 'H3 – blue text + blue stroke',
 };
 const holdingVarDesc = document.getElementById('holding-var-desc');
+
+function _holdingLabelText(chipsRoot) {
+  const chips = [...(chipsRoot || document).querySelectorAll('#composer-chips .file-chip')];
+  const folders = chips.filter(c => c.dataset.kind === 'folder').length;
+  const files = chips.length - folders;
+  if (folders && files) {
+    return `Holding ${files} file${files !== 1 ? 's' : ''} and ${folders} folder${folders !== 1 ? 's' : ''}`;
+  }
+  if (folders) return `Holding ${folders} folder${folders !== 1 ? 's' : ''}`;
+  return `Holding ${files} file${files !== 1 ? 's' : ''}`;
+}
 
 function _refreshHoldingCountText() {
   const bar = document.querySelector('.search-bar');
   if (!bar?.classList.contains('holding')) return;
-  const c = document.querySelectorAll('#composer-chips .file-chip').length;
   const countEl = document.getElementById('holding-count');
-  if (countEl) countEl.textContent = `Holding ${c} file${c !== 1 ? 's' : ''}`;
+  if (countEl) countEl.textContent = _holdingLabelText();
 }
 
 document.querySelectorAll('#holding-var-btns .hv-btn').forEach(btn => {
@@ -6230,13 +6276,13 @@ document.querySelectorAll('#holding-var-btns .hv-btn').forEach(btn => {
   });
 });
 
-/* ── H1: alternate holding-label text every 2s, with smooth fade ── */
+/* ── H2: alternate holding-label text every 2s, with smooth fade ── */
 setInterval(() => {
   const bar = document.querySelector('.search-bar');
   if (!bar) return;
   const isHolding = bar.classList.contains('holding');
-  const isH1 = document.body.dataset.holdingVar === '1';
-  if (!isHolding || !isH1) {
+  const isAltH = document.body.dataset.holdingVar === '2';
+  if (!isHolding || !isAltH) {
     if (bar.classList.contains('h1-alt') || bar.classList.contains('h1-fading')) {
       bar.classList.remove('h1-alt', 'h1-fading');
       _refreshHoldingCountText();
@@ -6246,7 +6292,7 @@ setInterval(() => {
   // Fade out current text
   bar.classList.add('h1-fading');
   setTimeout(() => {
-    if (!bar.classList.contains('holding') || document.body.dataset.holdingVar !== '1') {
+    if (!bar.classList.contains('holding') || document.body.dataset.holdingVar !== '2') {
       bar.classList.remove('h1-fading', 'h1-alt');
       return;
     }
@@ -6271,7 +6317,7 @@ setInterval(() => {
   function update() {
     const c = chipsEl.querySelectorAll('.file-chip').length;
     pillCount.textContent = c;
-    pillTip.textContent = `Holding ${c} file${c !== 1 ? 's' : ''}`;
+    pillTip.textContent = _holdingLabelText();
   }
   new MutationObserver(update).observe(chipsEl, { childList: true });
   update();
