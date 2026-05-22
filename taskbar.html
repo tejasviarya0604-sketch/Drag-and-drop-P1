@@ -1493,6 +1493,39 @@
       margin: 3px -4px 1px;
     }
 
+    /* Collapsible switcher section */
+    .hv-section {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .hv-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+    .hv-chevron {
+      width: 8px;
+      height: 8px;
+      border-right: 1.5px solid rgba(0,0,0,0.45);
+      border-bottom: 1.5px solid rgba(0,0,0,0.45);
+      transform: rotate(45deg);
+      transition: transform 0.18s ease;
+      margin-right: 4px;
+      margin-bottom: 2px;
+    }
+    .hv-section.collapsed .hv-chevron {
+      transform: rotate(-45deg);
+      margin-bottom: 0;
+      margin-top: 2px;
+    }
+    .hv-section.collapsed .hv-btns,
+    .hv-section.collapsed .hv-desc {
+      display: none;
+    }
+
     /* ═══════════════════════════════════════════════════════ */
     /*  V1 DESIGNS                                             */
     /*  Shared via body[data-v1] — applies to all V1 variants.   */
@@ -1838,6 +1871,96 @@
     #move-toast.visible {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+
+    /* ═══════════════════════════════════════════════════════ */
+    /*  HOLDING VARIATION                                      */
+    /* ═══════════════════════════════════════════════════════ */
+    /* H1: holding text alternates with "Ask Copilot anything" every 2s.
+       Smooth fade-out → swap → fade-in. Both states share placeholder color. */
+    .search-bar.holding .holding-label {
+      transition: opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .search-bar.holding.h1-fading .holding-label { opacity: 0; }
+    body[data-holding-var="1"] .search-bar.holding .holding-label,
+    body[data-holding-var="1"] .search-bar.holding .holding-label #holding-count {
+      color: #555 !important;
+      -webkit-text-fill-color: #555 !important;
+      background: none !important;
+      font-weight: 400 !important;
+    }
+    body[data-holding-var="1"] .search-bar.holding .holding-label > svg {
+      stroke: #555 !important;
+    }
+    .search-bar.holding.h1-alt .holding-label > svg { display: none; }
+    /* H1: search bar uses normal appearance (no blue holding stroke) */
+    body[data-holding-var="1"] .search-bar.holding {
+      background: rgba(255,255,255,0.85) !important;
+      outline: 1px solid rgba(0,0,0,0.10) !important;
+      outline-offset: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* H2: small file pill in the search bar with hover tooltip */
+    .holding-pill {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+      background: #0078d4;
+      color: #fff;
+      padding: 3px 9px 3px 7px;
+      border-radius: 11px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: default;
+      flex-shrink: 0;
+    }
+    .holding-pill svg { width: 11px; height: 11px; }
+    .holding-pill-tip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(34,34,34,0.92);
+      color: #fff;
+      padding: 5px 9px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+    .holding-pill-tip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: rgba(34,34,34,0.92);
+    }
+    .holding-pill:hover .holding-pill-tip { opacity: 1; }
+
+    /* H2 active: hide holding-label, show pill, restore normal search bar look */
+    body[data-holding-var="2"] .search-bar.holding .holding-label { display: none !important; }
+    body[data-holding-var="2"] .search-bar.holding .holding-pill { display: inline-flex !important; }
+    body[data-holding-var="2"] .search-bar.holding .search-placeholder { display: inline !important; }
+    body[data-holding-var="2"] .search-bar.holding .search-icons { display: flex !important; }
+    body[data-holding-var="2"] .search-bar.holding .search-divider { display: block !important; }
+    body[data-holding-var="2"] .search-bar.holding {
+      background: rgba(255,255,255,0.85) !important;
+      outline: 1px solid rgba(0,0,0,0.10) !important;
+      outline-offset: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      width: 240px !important;
     }
 
     /* ── V1-3: taskbar empty-area drop-target highlight ── */
@@ -2382,19 +2505,24 @@
   .cop-icon-btn:hover { background: rgba(0,0,0,0.06); color: #444; }
   </style>
 </head>
-<body data-v1="1">
+<body data-v1="1" data-holding-var="1">
 
 <!-- ░░ Hover Variant Switcher (desktop only) ░░ -->
 <div id="hv-switcher">
-  <span class="hv-label">V2 designs</span>
-  <div class="hv-btns">
-    <button class="hv-btn" data-v="a" title="Subtle (current)">A</button>
-    <button class="hv-btn" data-v="d" title="Purple glow pulse">D</button>
-<button class="hv-btn" data-v="f" title="Minimal – blue dashed on hover">F</button>
-    <button class="hv-btn" data-v="i" title="Pulsating dashed border on hover">I</button>
-    <button class="hv-btn" data-v="j" title="Cop drop zone appears on drag">J</button>
+  <div class="hv-section collapsed">
+    <span class="hv-label hv-section-header">
+      V2 designs
+      <span class="hv-chevron"></span>
+    </span>
+    <div class="hv-btns">
+      <button class="hv-btn" data-v="a" title="Subtle (current)">A</button>
+      <button class="hv-btn" data-v="d" title="Purple glow pulse">D</button>
+      <button class="hv-btn" data-v="f" title="Minimal – blue dashed on hover">F</button>
+      <button class="hv-btn" data-v="i" title="Pulsating dashed border on hover">I</button>
+      <button class="hv-btn" data-v="j" title="Cop drop zone appears on drag">J</button>
+    </div>
+    <span class="hv-desc" id="hv-desc">—</span>
   </div>
-  <span class="hv-desc" id="hv-desc">—</span>
 
   <div class="hv-divider"></div>
 
@@ -2406,6 +2534,15 @@
     <button class="hv-btn" data-v1="4" title="V1-4 – glow + dotted line on hover">4</button>
   </div>
   <span class="hv-desc" id="v1-desc">V1-1</span>
+
+  <div class="hv-divider"></div>
+
+  <span class="hv-label">Holding Variation</span>
+  <div class="hv-btns" id="holding-var-btns">
+    <button class="hv-btn active" data-holding="1" title="H1 – holding text alternates every 2s">H1</button>
+    <button class="hv-btn" data-holding="2" title="H2 – small file pill in search bar">H2</button>
+  </div>
+  <span class="hv-desc" id="holding-var-desc">H1 – text alternates every 2s</span>
 </div>
 
 <!-- ░░ Desktop ░░ -->
@@ -2622,6 +2759,13 @@
         <span id="holding-count">Holding 0 files</span>
       </div>
       <span class="search-placeholder">Ask Copilot anything</span>
+      <div class="holding-pill" id="holding-pill">
+        <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 7l-5.5 5.5a3.5 3.5 0 01-4.95-4.95L9 1a2.25 2.25 0 113.18 3.18L6.5 9.68a1 1 0 01-1.41-1.41L10 3.5"/>
+        </svg>
+        <span id="holding-pill-count">0</span>
+        <span class="holding-pill-tip" id="holding-pill-tip">Holding 0 files</span>
+      </div>
       <div class="search-icons">
         <!-- Binoculars icon -->
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
@@ -5969,6 +6113,13 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
   });
 })();
 
+/* ── Collapsible section toggle ── */
+document.querySelectorAll('.hv-section-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.closest('.hv-section')?.classList.toggle('collapsed');
+  });
+});
+
 /* ── Hover Variant Switcher ── */
 const HV_DESCS = {
   a: 'Subtle – slight fill lift',
@@ -6013,7 +6164,9 @@ const V1_DESCS = {
 const v1Desc = document.getElementById('v1-desc');
 
 function clearAllSwitcherActive() {
-  document.querySelectorAll('#hv-switcher .hv-btn').forEach(b => b.classList.remove('active'));
+  // Only clears V1/V2 active state; Holding Variation is an independent axis.
+  document.querySelectorAll('#hv-switcher .hv-btn[data-v], #hv-switcher .hv-btn[data-v1]')
+    .forEach(b => b.classList.remove('active'));
 }
 
 document.querySelectorAll('#hv-switcher .hv-btn[data-v]').forEach(btn => {
@@ -6041,6 +6194,88 @@ document.querySelectorAll('#v1-btns .hv-btn').forEach(btn => {
     window.__syncDropZone?.();
   });
 });
+
+/* ── Holding Variation Switcher (independent axis) ── */
+const HOLDING_DESCS = {
+  '1': 'H1 – text alternates every 2s',
+  '2': 'H2 – file pill in search bar',
+};
+const holdingVarDesc = document.getElementById('holding-var-desc');
+
+function _refreshHoldingCountText() {
+  const bar = document.querySelector('.search-bar');
+  if (!bar?.classList.contains('holding')) return;
+  const c = document.querySelectorAll('#composer-chips .file-chip').length;
+  const countEl = document.getElementById('holding-count');
+  if (countEl) countEl.textContent = `Holding ${c} file${c !== 1 ? 's' : ''}`;
+}
+
+document.querySelectorAll('#holding-var-btns .hv-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const value = btn.dataset.holding;
+    if (btn.classList.contains('active')) {
+      // Toggle off
+      btn.classList.remove('active');
+      delete document.body.dataset.holdingVar;
+      holdingVarDesc.textContent = '—';
+    } else {
+      document.querySelectorAll('#holding-var-btns .hv-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.body.dataset.holdingVar = value;
+      holdingVarDesc.textContent = HOLDING_DESCS[value] || '';
+    }
+    // Cleanup any in-flight H1 alternation when switching
+    document.querySelector('.search-bar')?.classList.remove('h1-alt');
+    _refreshHoldingCountText();
+  });
+});
+
+/* ── H1: alternate holding-label text every 2s, with smooth fade ── */
+setInterval(() => {
+  const bar = document.querySelector('.search-bar');
+  if (!bar) return;
+  const isHolding = bar.classList.contains('holding');
+  const isH1 = document.body.dataset.holdingVar === '1';
+  if (!isHolding || !isH1) {
+    if (bar.classList.contains('h1-alt') || bar.classList.contains('h1-fading')) {
+      bar.classList.remove('h1-alt', 'h1-fading');
+      _refreshHoldingCountText();
+    }
+    return;
+  }
+  // Fade out current text
+  bar.classList.add('h1-fading');
+  setTimeout(() => {
+    if (!bar.classList.contains('holding') || document.body.dataset.holdingVar !== '1') {
+      bar.classList.remove('h1-fading', 'h1-alt');
+      return;
+    }
+    // Swap content while invisible
+    const altOn = bar.classList.toggle('h1-alt');
+    const countEl = document.getElementById('holding-count');
+    if (countEl) {
+      if (altOn) countEl.textContent = 'Ask Copilot anything';
+      else _refreshHoldingCountText();
+    }
+    // Fade back in
+    bar.classList.remove('h1-fading');
+  }, 320);
+}, 2000);
+
+/* ── H2: keep the pill count + tooltip in sync with chip count ── */
+(function () {
+  const chipsEl = document.getElementById('composer-chips');
+  const pillCount = document.getElementById('holding-pill-count');
+  const pillTip = document.getElementById('holding-pill-tip');
+  if (!chipsEl || !pillCount || !pillTip) return;
+  function update() {
+    const c = chipsEl.querySelectorAll('.file-chip').length;
+    pillCount.textContent = c;
+    pillTip.textContent = `Holding ${c} file${c !== 1 ? 's' : ''}`;
+  }
+  new MutationObserver(update).observe(chipsEl, { childList: true });
+  update();
+})();
 </script>
 </body>
 </html>
