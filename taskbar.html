@@ -2570,7 +2570,7 @@
   </style>
   <link rel="stylesheet" href="desktop-files.css">
   <link rel="stylesheet" href="universal-composer.css">
-  <script src="universal-composer.js"></script>
+  <script src="universal-composer.js?v=20261113-zero-state"></script>
   <link rel="stylesheet" href="file-explorer.css">
   <script src="file-explorer.js" defer></script>
 </head>
@@ -3949,7 +3949,7 @@ function toggleOverflowMenu(anchor, hiddenChips, forceOpen = false) {
     chipsEl.querySelectorAll('.file-chip, .file-chip-more').forEach(el => el.remove());
     chipsEl.classList.remove('visible');
     document.getElementById('composer-divider').classList.remove('visible');
-    document.getElementById('composer-suggestions').classList.remove('visible');
+    renderComposerZeroState();
     closeOverflowMenu();
   });
   menu.appendChild(clearBtn);
@@ -4000,6 +4000,10 @@ searchBar.addEventListener('click', () => {
 function closeComposer({ preserveFiles = false } = {}) {
   searchComposer.classList.remove('open');
   resetCompletedComposer();
+  if (!document.querySelector('#composer-chips .file-chip')
+    && !['loading', 'complete', 'zero'].includes(searchComposer.dataset.composerState)) {
+    renderComposerZeroState();
+  }
   searchBar.classList.remove('thinking');
   const skipNotice = document.getElementById('composer-skip-notice');
   if (skipNotice) { skipNotice.classList.remove('visible', 'error'); clearTimeout(skipNotice._hideTimer); }
@@ -4012,11 +4016,8 @@ function closeComposer({ preserveFiles = false } = {}) {
       chipsEl.querySelectorAll('.file-chip').forEach(c => c.remove());
     }
     const hasChips = !!chipsEl.querySelector('.file-chip');
-    if (!hasChips && !['complete', 'zero'].includes(searchComposer.dataset.composerState)) {
-      // No staged files — fully reset
-      document.getElementById('composer-suggestions').classList.remove('visible');
-      chipsEl.classList.remove('visible');
-      document.getElementById('composer-divider').classList.remove('visible');
+    if (!hasChips && !['loading', 'complete', 'zero'].includes(searchComposer.dataset.composerState)) {
+      renderComposerZeroState();
     }
     // If chips exist, keep suggestions + chips + divider so they reappear on reopen
   }, 200);
@@ -6094,6 +6095,7 @@ function resetUCState() {
     input.value = '';
     input.style.height = 'auto';
   }
+  renderComposerZeroState();
 }
 
 /* ── V1 Designs Switcher ── */

@@ -193,6 +193,12 @@ function resetComposerActionState() {
 
 function renderComposerZeroState() {
   resetComposerActionState();
+  closeOverflowMenu();
+  const notice = document.getElementById('composer-skip-notice');
+  if (notice) {
+    notice.classList.remove('visible', 'error', 'info');
+    clearTimeout(notice._hideTimer);
+  }
   const composer = document.getElementById('search-composer');
   composer.dataset.composerState = 'zero';
   const input = document.getElementById('composer-input');
@@ -410,6 +416,7 @@ function runComposerFileAction() {
 }
 
 function initializeComposer() {
+  const composer = document.getElementById('search-composer');
   const input = document.getElementById('composer-input');
   const chips = document.getElementById('composer-chips');
   renderComposerZeroState();
@@ -432,10 +439,17 @@ function initializeComposer() {
     if (!changedFiles) return;
     const state = document.getElementById('search-composer').dataset.composerState;
     if (state === 'loading' || state === 'complete') return;
-    if (input.value.trim()) renderComposerQuery(input.value.trim());
-    else if (!chips.querySelector('.file-chip') && (state === 'query' || state === 'chat-query' || state === 'error')) {
+    if (!chips.querySelector('.file-chip')) {
+      renderComposerZeroState();
+    } else if (input.value.trim()) renderComposerQuery(input.value.trim());
+  }).observe(chips, { childList: true });
+  new MutationObserver(records => {
+    const opened = composer.classList.contains('open')
+      && records.some(record => !(record.oldValue || '').split(/\s+/).includes('open'));
+    if (opened && !chips.querySelector('.file-chip') && !input.value.trim()
+      && !['loading', 'complete'].includes(composer.dataset.composerState)) {
       renderComposerZeroState();
     }
-  }).observe(chips, { childList: true });
+  }).observe(composer, { attributes: true, attributeFilter: ['class'], attributeOldValue: true });
   new ResizeObserver(() => trimComposerChips()).observe(document.querySelector('.composer-chat-area'));
 }
