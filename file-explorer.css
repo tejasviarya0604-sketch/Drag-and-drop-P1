@@ -92,7 +92,8 @@ body:has(#folder-window.fw-maximized.open) #hv-switcher {
 
 #folder-window .fw-body { background: #fff; }
 #folder-window .fw-sidebar { width: 258px; background: #fff; padding: 7px 0; border-color: #f0f0f0; }
-#folder-window .fw-sb-item { position: relative; height: 32px; margin: 0 8px; padding: 0 8px 0 32px; gap: 8px; color: #242424; font-size: 14px; border-radius: 4px; }
+#folder-window .fw-sb-item { position: relative; height: 32px; margin: 0 8px; padding: 0 8px 0 32px; gap: 8px; color: #242424; font-size: 12px; line-height: 16px; border-radius: 4px; }
+#folder-window .fw-file-name { line-height: 16px; }
 #folder-window .fw-sb-item.active { background: #f3f3f3; color: #242424; }
 #folder-window .fw-sb-item.active::before { content: ''; position: absolute; left: 0; top: 8px; width: 3px; height: 16px; border-radius: 2px; background: #0078d4; }
 #folder-window .fw-sb-sep { height: 32px; margin: 0 8px; border-bottom: 1px solid #eee; background: transparent; transform: translateY(-16px); pointer-events: none; }
