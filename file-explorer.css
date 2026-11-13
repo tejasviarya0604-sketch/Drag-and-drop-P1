@@ -1,10 +1,9 @@
 /* Figma 402:189402: Downloads in File Explorer. */
 #folder-window {
-  --explorer-scale: 0.9;
   width: min(1282px, calc(100vw - 32px));
   height: min(818px, calc(100vh - 80px));
   top: calc(50% - 24px);
-  transform: translate(-50%, -50%) scale(var(--explorer-scale));
+  transform: translate(-50%, -50%);
   border: 0;
   border-radius: 8px;
   background: linear-gradient(110deg, #fce8de, #f7e3dd 55%, #dff3f1);
@@ -12,7 +11,6 @@
 }
 
 #folder-window.fw-maximized {
-  --explorer-scale: 1;
   width: 100vw;
   height: calc(100vh - 48px);
   top: 0 !important;

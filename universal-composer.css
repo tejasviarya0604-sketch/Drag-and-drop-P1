@@ -1,14 +1,8 @@
-/* Figma 398:76305, 398:76857 and 419:293846: 500px layouts displayed at 90% for this size trial. */
+/* Figma 398:76305, 398:76857 and 419:293846: shared 500px composer states. */
 #search-composer {
   bottom: 61px;
-  transform: translateX(-50%) translateY(10px) scale(0.873);
-  transform-origin: bottom center;
   max-width: calc(100vw - 24px);
   max-height: calc(100vh - 73px);
-}
-
-#search-composer.open {
-  transform: translateX(-50%) scale(0.9);
 }
 
 #search-composer .composer-card {

@@ -224,10 +224,6 @@ function createComposerDesktopFolder(query, files) {
   };
 }
 
-function explorerWindowScale() {
-  return Number(getComputedStyle(document.getElementById('folder-window')).getPropertyValue('--explorer-scale'));
-}
-
 function createExplorerSelection(list, status) {
   explorerSelections.get(list)?.dispose();
   const abort = new AbortController();
@@ -310,39 +306,36 @@ function createExplorerSelection(list, status) {
     }, options);
   }
   function bounds() {
-    const scale = explorerWindowScale();
     const rect = list.getBoundingClientRect();
     const viewport = list.closest('.fw-content-area').getBoundingClientRect();
     return {
-      left: Math.max(rect.left + list.clientLeft * scale, viewport.left),
-      right: Math.min(rect.left + (list.clientLeft + list.clientWidth) * scale, viewport.right),
-      top: Math.max(rect.top + list.clientTop * scale, viewport.top),
-      bottom: Math.min(rect.top + (list.clientTop + list.clientHeight) * scale, viewport.bottom),
+      left: Math.max(rect.left + list.clientLeft, viewport.left),
+      right: Math.min(rect.left + list.clientLeft + list.clientWidth, viewport.right),
+      top: Math.max(rect.top + list.clientTop, viewport.top),
+      bottom: Math.min(rect.top + list.clientTop + list.clientHeight, viewport.bottom),
     };
   }
   function updateMarquee() {
     if (!marquee?.active) return;
-    // Store selection offsets in list pixels; draw the overlay in viewport pixels.
-    const scale = explorerWindowScale();
     const rect = list.getBoundingClientRect();
     const clip = bounds();
-    const x = (Math.max(clip.left, Math.min(marquee.x, clip.right)) - rect.left) / scale + list.scrollLeft;
-    const y = (Math.max(clip.top, Math.min(marquee.y, clip.bottom)) - rect.top) / scale + list.scrollTop;
+    const x = Math.max(clip.left, Math.min(marquee.x, clip.right)) - rect.left + list.scrollLeft;
+    const y = Math.max(clip.top, Math.min(marquee.y, clip.bottom)) - rect.top + list.scrollTop;
     const left = Math.min(marquee.startX, x), right = Math.max(marquee.startX, x);
     const top = Math.min(marquee.startY, y), bottom = Math.max(marquee.startY, y);
-    const screenLeft = Math.max(clip.left, rect.left + (left - list.scrollLeft) * scale);
-    const screenTop = Math.max(clip.top, rect.top + (top - list.scrollTop) * scale);
+    const screenLeft = Math.max(clip.left, rect.left + left - list.scrollLeft);
+    const screenTop = Math.max(clip.top, rect.top + top - list.scrollTop);
     box.hidden = false;
     box.style.left = `${screenLeft}px`;
     box.style.top = `${screenTop}px`;
-    box.style.width = `${Math.max(0, Math.min(clip.right, rect.left + (right - list.scrollLeft) * scale) - screenLeft)}px`;
-    box.style.height = `${Math.max(0, Math.min(clip.bottom, rect.top + (bottom - list.scrollTop) * scale) - screenTop)}px`;
+    box.style.width = `${Math.max(0, Math.min(clip.right, rect.left + right - list.scrollLeft) - screenLeft)}px`;
+    box.style.height = `${Math.max(0, Math.min(clip.bottom, rect.top + bottom - list.scrollTop) - screenTop)}px`;
     entries.forEach(entry => {
       const row = entry.element.getBoundingClientRect();
-      const rowLeft = (row.left - rect.left) / scale + list.scrollLeft;
-      const rowTop = (row.top - rect.top) / scale + list.scrollTop;
-      const hit = !entry.element.hidden && row.width > 0 && rowLeft < right && rowLeft + row.width / scale > left &&
-        rowTop < bottom && rowTop + row.height / scale > top;
+      const rowLeft = row.left - rect.left + list.scrollLeft;
+      const rowTop = row.top - rect.top + list.scrollTop;
+      const hit = !entry.element.hidden && row.width > 0 && rowLeft < right && rowLeft + row.width > left &&
+        rowTop < bottom && rowTop + row.height > top;
       setSelected(entry, hit || (marquee.additive && marquee.before.has(entry.item)));
     });
     updateStatus();
@@ -377,16 +370,15 @@ function createExplorerSelection(list, status) {
     if (event.target.closest('.fw-col-name') && event.target.closest('.fw-file-icon, .fw-file-name')) return;
     const clip = bounds();
     const viewport = content.getBoundingClientRect();
-    const scale = explorerWindowScale();
-    if (event.clientX >= viewport.left + content.clientWidth * scale || event.clientY >= clip.bottom ||
+    if (event.clientX >= viewport.left + content.clientWidth || event.clientY >= clip.bottom ||
         event.clientY < clip.top) return;
     event.preventDefault();
     event.stopPropagation();
     list.focus({ preventScroll: true });
     const rect = list.getBoundingClientRect();
     marquee = {
-      startX: (Math.max(clip.left, Math.min(event.clientX, clip.right)) - rect.left) / scale + list.scrollLeft,
-      startY: (event.clientY - rect.top) / scale + list.scrollTop,
+      startX: Math.max(clip.left, Math.min(event.clientX, clip.right)) - rect.left + list.scrollLeft,
+      startY: event.clientY - rect.top + list.scrollTop,
       pressX: event.clientX, pressY: event.clientY, x: event.clientX, y: event.clientY,
       before: new Set(selectedItems), additive: event.ctrlKey || event.metaKey || event.shiftKey, active: false,
     };
