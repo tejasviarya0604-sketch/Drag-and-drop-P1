@@ -1,6 +1,9 @@
 function fitPrototypeDesktop() {
   const desktop = document.getElementById('prototype-desktop');
-  const scale = Math.min(window.innerWidth / desktop.clientWidth, window.innerHeight / desktop.clientHeight);
+  const { width, height } = document.documentElement.getBoundingClientRect();
+  const scale = Math.min(width / Number(desktop.width), height / Number(desktop.height));
+  desktop.style.width = `${width / scale}px`;
+  desktop.style.height = `${height / scale}px`;
   desktop.style.setProperty('--desktop-scale', scale);
 }
 
