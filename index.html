@@ -1965,10 +1965,10 @@
   .cop-icon-btn:hover { background: rgba(0,0,0,0.06); color: #444; }
   </style>
   <link rel="stylesheet" href="desktop-files.css">
-  <link rel="stylesheet" href="universal-composer.css">
+  <link rel="stylesheet" href="universal-composer.css?v=20261113-surface90">
   <script src="universal-composer.js?v=20261113-zero-state"></script>
-  <link rel="stylesheet" href="file-explorer.css">
-  <script src="file-explorer.js" defer></script>
+  <link rel="stylesheet" href="file-explorer.css?v=20261113-surface90">
+  <script src="file-explorer.js?v=20261113-surface90" defer></script>
 </head>
 <body data-hv="a">
 
@@ -4468,9 +4468,10 @@ let fwDrag = false, fwDragOx = 0, fwDragOy = 0;
 document.getElementById('fw-tabs')?.addEventListener('mousedown', e => {
   if (e.target.closest('button')) return;
   const r = folderWin.getBoundingClientRect();
-  folderWin.style.transform = 'none';
+  folderWin.style.transformOrigin = 'top left';
+  folderWin.style.transform = 'scale(var(--explorer-scale))';
   folderWin.style.left = r.left + 'px';
-  folderWin.style.top  = r.top  + 'px';
+  folderWin.style.top  = r.top + 'px';
   fwDragOx = e.clientX - r.left;
   fwDragOy = e.clientY - r.top;
   fwDrag = true;
