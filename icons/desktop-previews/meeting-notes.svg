@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#fff" stroke="#cdd4db" stroke-width="2"/>
+  <rect x="15" y="17" width="146" height="35" rx="3" fill="#ece8f7"/>
+  <text x="24" y="40" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#715b9b">Meeting notes</text>
+  <g font-family="Arial, sans-serif" font-size="7" fill="#77658e">
+    <text x="17" y="70">PROJECT SYNC / 10 FEBRUARY</text>
+    <text x="17" y="94" font-weight="700">Discussion</text>
+    <text x="17" y="156" font-weight="700">Action items</text>
+  </g>
+  <g fill="#9b84ba"><circle cx="20" cy="108" r="3"/><circle cx="20" cy="123" r="3"/><circle cx="20" cy="138" r="3"/></g>
+  <path d="M31 108h123m-123 15h104m-104 15h116M32 174h122m-122 17h103m-103 17h114" stroke="#b9b2c5" stroke-width="3"/>
+  <path d="M17 169h8v8h-8zm0 17h8v8h-8zm0 17h8v8h-8z" fill="none" stroke="#b2c6bc"/>
+  <path d="m17 172 3 3 7-8m-10 22 3 3 7-8" fill="none" stroke="#5d9c7d" stroke-width="2"/>
+  <path d="M17 224h66" stroke="#dfd5ec" stroke-width="4"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#fff" stroke="#cdd4db" stroke-width="2"/>
+  <rect x="15" y="15" width="146" height="32" fill="#c46e55"/>
+  <text x="88" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">PAYMENT RECEIPT</text>
+  <g font-family="Arial, sans-serif" text-anchor="middle" fill="#624e46">
+    <text x="88" y="67" font-size="7">VISA APPLICATION SERVICES</text>
+    <text x="88" y="97" font-size="26" font-weight="700">$185.00</text>
+    <text x="88" y="113" font-size="7" fill="#6a9876">PAID / DEMO RECEIPT</text>
+  </g>
+  <path d="M19 129h138m-138 49h138" stroke="#cbb4a8" stroke-dasharray="3 3"/>
+  <g font-family="Arial, sans-serif" font-size="7" fill="#796459">
+    <text x="20" y="145">Application fee</text><text x="128" y="145">160.00</text>
+    <text x="20" y="162">Service charge</text><text x="133" y="162">25.00</text>
+  </g>
+  <path d="M30 193v26m5-26v26m6-26v26m4-26v26m9-26v26m6-26v26m4-26v26m9-26v26m5-26v26m6-26v26m8-26v26m5-26v26m5-26v26m8-26v26m5-26v26m9-26v26m4-26v26" stroke="#6e6964" stroke-width="2"/>
+</svg>

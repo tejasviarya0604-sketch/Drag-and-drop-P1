@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#fff" stroke="#cdd4db" stroke-width="2"/>
+  <text x="16" y="24" font-family="Arial, sans-serif" font-size="7" fill="#788ca2">CHAPTER 01</text>
+  <g font-family="Georgia, serif" font-size="17" font-weight="700" fill="#294965">
+    <text x="16" y="48">The power of</text><text x="16" y="69">prototyping</text>
+  </g>
+  <path d="M16 84h144" stroke="#597fa1" stroke-width="3"/>
+  <g stroke="#a8b5c1" stroke-width="2">
+    <path d="M16 99h144m-144 7h144m-144 7h144m-144 7h107M16 173h144m-144 7h144m-144 7h144m-144 7h130M16 210h144m-144 7h144m-144 7h89"/>
+  </g>
+  <rect x="16" y="133" width="144" height="27" fill="#e5eff8"/>
+  <path d="M27 146h31m8 0h31m8 0h42" stroke="#6997bd" stroke-width="8"/>
+  <text x="24" y="156" font-family="Arial, sans-serif" font-size="5" fill="#537995">IDEATE                  BUILD                  LEARN</text>
+</svg>

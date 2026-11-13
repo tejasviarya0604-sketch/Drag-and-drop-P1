@@ -1,0 +1,414 @@
+/* Figma 398:76305, 398:76857 and 419:293846: shared 500px composer states. */
+#search-composer {
+  bottom: 61px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 73px);
+}
+
+#search-composer .composer-card {
+  width: 500px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 73px);
+  overflow-y: auto;
+  padding: 8px;
+  gap: 0;
+  border: 0;
+  border-radius: 24px;
+  background: rgba(243, 243, 243, 0.78);
+  backdrop-filter: blur(40px) saturate(125%);
+  -webkit-backdrop-filter: blur(40px) saturate(125%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65), 0 8px 16px rgba(0, 0, 0, 0.22), 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .composer-suggestions.visible {
+  height: 288px;
+  flex-shrink: 0;
+  padding: 4px 4px 12px;
+  gap: 4px;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-row {
+  position: relative;
+  min-height: 56px;
+  padding: 6px 4px 6px 12px;
+  gap: 12px;
+  border-radius: 12px;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-row:first-child {
+  background: #fff;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-row:first-child::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20px;
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+  background: #0078d4;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-icon {
+  width: 24px;
+  height: 44px;
+  border-radius: 0;
+  background: transparent !important;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-icon > * {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-text {
+  flex: 1;
+  min-width: 0;
+  gap: 0;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-title,
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-sub {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-sub {
+  color: #858585;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .suggestion-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.composer-chat-area-legacy {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.composer-suggestion-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0;
+}
+
+.composer-suggestion-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #242424;
+  cursor: pointer;
+  font: inherit;
+}
+
+.composer-suggestion-actions button:hover,
+.composer-see-more:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.composer-asset-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.composer-suggestion-actions .composer-asset-icon {
+  vertical-align: middle;
+}
+
+.composer-control-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.cof-item > .composer-asset-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.composer-see-more {
+  flex-shrink: 0;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #606060;
+  cursor: pointer;
+  text-align: left;
+  font: 14px/20px 'Segoe UI', sans-serif;
+}
+
+#search-composer:where(:has(.file-chip, .composer-see-more), [data-composer-state]) .composer-divider {
+  display: none;
+}
+
+#search-composer .composer-divider {
+  margin: 0;
+}
+
+#search-composer[data-composer-state="chat-query"]:not(:has(.file-chip)) .composer-suggestions.visible {
+  height: auto;
+}
+
+#search-composer[data-composer-state="zero"] .composer-suggestions.visible {
+  height: 252px;
+}
+
+#search-composer[data-composer-state="zero"] .suggestion-row:first-child {
+  background: transparent;
+}
+
+#search-composer[data-composer-state="zero"] .suggestion-row:first-child::before {
+  display: none;
+}
+
+#search-composer[data-composer-state="zero"] .suggestion-icon > .composer-asset-icon {
+  width: 24px;
+  height: 24px;
+}
+
+#search-composer .composer-chat-area {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: 144px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  gap: 0;
+}
+
+#search-composer .composer-chips.visible {
+  height: 44px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 8px 8px 4px;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+#search-composer .file-chip,
+#search-composer .file-chip-more {
+  height: 32px;
+  padding: 7px 8px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  background: #fff;
+  color: #606060;
+  font: 12px/16px 'Segoe UI', sans-serif;
+  flex-shrink: 0;
+}
+
+#search-composer .file-chip {
+  max-width: 136px;
+  min-width: 0;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+#search-composer .file-chip > :first-child {
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0;
+}
+
+#search-composer .file-chip-remove {
+  width: 12px;
+  height: 16px;
+  color: #888;
+}
+
+#search-composer .file-chip-more:hover {
+  background: #f5f5f5;
+}
+
+#search-composer .composer-bottom-row,
+#search-composer .composer-chips.visible + .composer-bottom-row {
+  flex-shrink: 0;
+  margin-top: 2px;
+  min-height: 48px;
+  padding: 0 16px;
+}
+
+#search-composer .composer-input {
+  padding: 18px 0 10px;
+  min-height: 48px;
+  font-size: 14px;
+  line-height: 20px;
+  caret-color: #242424;
+}
+
+#search-composer .composer-input::placeholder {
+  font-size: 14px;
+  color: #909090;
+}
+
+#search-composer .composer-footer {
+  height: 48px;
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 8px;
+}
+
+#search-composer .composer-add-btn {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 4px;
+  color: #606060;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+#search-composer .composer-footer-right {
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+}
+
+#search-composer .composer-footer-right > svg:first-child {
+  display: none;
+}
+
+#search-composer .composer-footer-right > svg:last-child {
+  width: 20px;
+  height: 20px;
+}
+
+#search-composer .composer-skip-notice.visible {
+  flex-shrink: 0;
+  margin: 0 0 8px;
+}
+
+#search-composer .file-chip-image {
+  position: relative;
+  width: 32px;
+  min-width: 32px;
+  padding: 0;
+  overflow: hidden;
+  border-color: #e0e0e0;
+  border-radius: 8px;
+}
+
+#search-composer .file-chip-image > .composer-image-preview {
+  width: 32px !important;
+  height: 32px !important;
+  object-fit: cover;
+}
+
+#search-composer .file-chip-image .file-chip-name { display: none; }
+#search-composer .file-chip-image .file-chip-remove {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 0 0 0 4px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #242424;
+  opacity: 0;
+}
+#search-composer .file-chip-image:hover .file-chip-remove,
+#search-composer .file-chip-image:focus-within .file-chip-remove { opacity: 1; }
+
+#search-composer[data-composer-state="query"] .composer-suggestions.visible { height: 188px; }
+#search-composer[data-composer-state="query"] .composer-footer { margin-top: 2px; }
+#search-composer:has(.file-chip) .composer-footer-right { visibility: hidden; }
+#search-composer[data-composer-state="query"] .composer-query-primary { min-height: 76px; }
+#search-composer[data-composer-state="query"] .composer-query-primary .suggestion-icon { height: 64px; }
+#search-composer[data-composer-state="query"] .composer-query-primary .suggestion-title,
+#search-composer .composer-action-status .suggestion-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  max-height: 40px;
+}
+#search-composer[data-composer-state="query"] .composer-query-primary .composer-suggestion-actions {
+  align-self: flex-start;
+  margin-top: 2px;
+}
+#search-composer[data-composer-state="loading"] .suggestion-title {
+  width: 356px;
+  max-width: 100%;
+}
+#search-composer:has(#composer-run) .composer-footer-right { display: none; }
+#composer-run {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-left: auto;
+  width: 73px;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: #0067c0;
+  color: #fff;
+  font: 14px/20px 'Segoe UI', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.12);
+}
+#composer-run .composer-control-icon { width: 16px; height: 16px; }
+#composer-run .composer-control-image { filter: brightness(0) invert(1); }
+#composer-run:hover { background: #005a9e; }
+
+#search-composer[data-composer-state="loading"] .composer-suggestions.visible { height: 92px; }
+#search-composer[data-composer-state="complete"] .composer-suggestions.visible,
+#search-composer[data-composer-state="error"] .composer-suggestions.visible { height: 88px; }
+#search-composer .composer-action-status {
+  min-height: 76px;
+  cursor: default;
+}
+#search-composer .composer-action-status:first-child { background: transparent; }
+#search-composer .composer-action-status:first-child::before { display: none; }
+#search-composer .composer-action-status .suggestion-icon {
+  height: 64px;
+  align-items: flex-start;
+  padding-top: 10px;
+}
+#search-composer .composer-action-status .suggestion-text { align-self: flex-start; margin-top: 2px; }
+#search-composer .composer-action-status .suggestion-sub { white-space: normal; }
+#search-composer .composer-action-status .composer-suggestion-actions { margin-left: auto; }
+#search-composer[data-composer-state="complete"] .composer-action-status .suggestion-icon { color: #107c10; }
+#search-composer[data-composer-state="error"] .composer-action-status .suggestion-icon { color: #c42b1c; }
+#search-composer[data-composer-state="loading"] .composer-chat-area,
+#search-composer[data-composer-state="zero"] .composer-chat-area,
+#search-composer[data-composer-state="complete"] .composer-chat-area,
+#search-composer[data-composer-state="error"] .composer-chat-area { min-height: 98px; }
+#search-composer[data-composer-state="loading"] .composer-chat-area { background: transparent; }
+#search-composer[data-composer-state="loading"] .composer-chips,
+#search-composer[data-composer-state="loading"] .composer-footer-right { display: none; }
+#search-composer[data-composer-state="loading"] .composer-add-btn { opacity: 0.45; }
+.composer-action-spinner {
+  border: 2px solid transparent;
+  border-top-color: #0067c0;
+  border-left-color: #0067c0;
+  border-radius: 50%;
+  animation: composer-action-spin 0.9s linear infinite;
+}
+@keyframes composer-action-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .composer-action-spinner { animation-duration: 2s; }
+}

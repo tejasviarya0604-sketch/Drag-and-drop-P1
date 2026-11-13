@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#fff" stroke="#cdd4db" stroke-width="2"/>
+  <path d="M16 24h18m-9-9v18" stroke="#168c88" stroke-width="6"/>
+  <g font-family="Arial, sans-serif">
+    <text x="43" y="24" font-size="10" font-weight="700" fill="#176c71">ACME HEALTH</text>
+    <text x="16" y="53" font-size="15" font-weight="700" fill="#263544">Medical bill</text>
+    <text x="16" y="69" font-size="6" fill="#647585">PATIENT COPY / SAMPLE BILL</text>
+    <text x="16" y="91" font-size="7" fill="#455566">Statement date: 06 Jan 2026</text>
+  </g>
+  <path d="M16 101h94m-94 9h70" stroke="#c3cdd5" stroke-width="3"/>
+  <path d="M16 127h144" stroke="#d7efed" stroke-width="15"/>
+  <g font-family="Arial, sans-serif" font-size="6" fill="#476475">
+    <text x="21" y="129">SERVICE</text><text x="130" y="129">AMOUNT</text>
+    <text x="21" y="150">Consultation</text><text x="132" y="150">125.00</text>
+    <text x="21" y="170">Lab services</text><text x="136" y="170">84.00</text>
+    <text x="21" y="190">Medication</text><text x="136" y="190">32.00</text>
+  </g>
+  <path d="M16 157h144m-144 20h144m-144 20h144" stroke="#dbe4e9"/>
+  <rect x="16" y="207" width="144" height="18" rx="2" fill="#168c88"/>
+  <text x="23" y="219" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#fff">TOTAL DUE                 $241.00</text>
+</svg>

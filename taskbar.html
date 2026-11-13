@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jack's Android</title>
+  <title>Downloads</title>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -21,7 +21,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      background: url('wallpaper.jpg') center/cover no-repeat;
+      background: url('Wallpaper-New.png') center/cover no-repeat;
     }
 
     /* ── Desktop icons ─────────────────────────────────────── */
@@ -47,7 +47,7 @@
       justify-content: flex-start;
       gap: 5px;
       width: 76px;
-      padding: 8px 4px;
+      padding: 8px 4px 3px;
       border-radius: 4px;
       cursor: grab;
       transition: background 0.12s, opacity 0.12s;
@@ -245,6 +245,7 @@
       position: relative; z-index: 1;
     }
     .drag-icon-item .word-file-thumb { width: 64px !important; height: 64px !important; background: none !important; border: none !important; border-radius: 0 !important; overflow: visible !important; box-shadow: none !important; }
+
     .drag-icon-item .word-file-thumb::before { display: none !important; }
 
     /* ═══════════════════════════════════════════════════════ */
@@ -436,12 +437,13 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      width: 232px;
+      width: 192px;
       height: 34px;
       background: rgba(255,255,255,0.72);
       border: 1px solid rgba(0,0,0,0.10);
       border-radius: 20px;
-      padding: 0 10px 0 14px;
+      padding: 0 4px 0 12px;
+      margin: 0 8px;
       cursor: text;
       transition: background 0.2s, box-shadow 0.2s, width 0.25s ease;
       flex-shrink: 0;
@@ -453,7 +455,7 @@
     }
     /* Active/thinking state */
     .search-bar.thinking {
-      width: 58px;
+      width: 72px;
       background: #f5f0e8;
       border-color: rgba(0,0,0,0.13);
       box-shadow: inset 0 0 0 1.5px rgba(0,0,0,0.10);
@@ -471,11 +473,13 @@
     .search-icons {
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      width: 28px;
+      height: 26px;
       flex-shrink: 0;
     }
     .search-icons svg {
-      width: 18px; height: 18px;
+      width: 16px; height: 16px;
       color: #555;
       display: block;
     }
@@ -488,7 +492,7 @@
     .thinking-dots {
       display: none;
       align-items: center;
-      gap: 5px;
+      gap: 2px;
     }
     .search-bar.thinking .thinking-dots { display: flex; }
     .search-bar.thinking .search-placeholder,
@@ -550,7 +554,7 @@
       line-height: 1;
     }
     .thinking-dot {
-      width: 5px; height: 5px;
+      width: 4px; height: 4px;
       border-radius: 50%;
       background: #888;
       animation: thinkPulse 1.2s ease-in-out infinite;
@@ -559,7 +563,7 @@
     .thinking-dot:nth-child(3) { animation-delay: 0.4s; background: #bbb; }
     @keyframes thinkPulse {
       0%, 80%, 100% { transform: scale(1);   opacity: 0.5; }
-      40%            { transform: scale(1.3); opacity: 1;   }
+      40%            { transform: scale(1); opacity: 1;   }
     }
 
     /* No-drop: app icon dragged over search bar */
@@ -1233,6 +1237,11 @@
       line-height: 1.35;
     }
     .composer-skip-notice.visible { display: flex; }
+    .composer-skip-notice.error {
+      background: #fef2f2;
+      border-color: rgba(200,40,40,0.25);
+      color: #991b1b;
+    }
     .composer-skip-notice-icon { font-size: 13px; flex-shrink: 0; }
     .composer-skip-notice-dismiss {
       margin-left: auto;
@@ -1247,6 +1256,15 @@
       transition: color 0.12s;
     }
     .composer-skip-notice-dismiss:hover { color: #8a5800; }
+    .composer-skip-notice.error .composer-skip-notice-dismiss { color: rgba(153,27,27,0.5); }
+    .composer-skip-notice.error .composer-skip-notice-dismiss:hover { color: #991b1b; }
+    .composer-skip-notice.info {
+      background: #f0f4ff;
+      border-color: rgba(0,120,212,0.25);
+      color: #0054a6;
+    }
+    .composer-skip-notice.info .composer-skip-notice-dismiss { color: rgba(0,84,166,0.5); }
+    .composer-skip-notice.info .composer-skip-notice-dismiss:hover { color: #0054a6; }
 
     /* Chip overflow menu */
     #chip-overflow-menu {
@@ -1499,12 +1517,22 @@
       flex-direction: column;
       gap: 7px;
     }
+    .hv-section-options:not([hidden]) {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
     .hv-section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
       user-select: none;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      font-family: inherit;
+      text-align: left;
     }
     .hv-chevron {
       width: 8px;
@@ -1876,7 +1904,7 @@
     /* ═══════════════════════════════════════════════════════ */
     /*  HOLDING VARIATION                                      */
     /* ═══════════════════════════════════════════════════════ */
-    /* H1: holding text alternates with "Ask Copilot anything" every 2s.
+    /* H2: holding text alternates with "Ask Copilot anything" every 2s.
        Smooth fade-out → swap → fade-in. Both states share placeholder color. */
     .search-bar.holding .holding-label {
       transition: opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1893,7 +1921,7 @@
       stroke: #555 !important;
     }
     .search-bar.holding.h1-alt .holding-label > svg { display: none; }
-    /* H1: search bar uses normal appearance (no blue holding stroke) */
+    /* H2: search bar uses normal appearance (no blue holding stroke) */
     body[data-holding-var="2"] .search-bar.holding {
       background: rgba(255,255,255,0.85) !important;
       outline: 1px solid rgba(0,0,0,0.10) !important;
@@ -1902,23 +1930,24 @@
       box-shadow: none !important;
     }
 
-    /* H2: small file pill in the search bar with hover tooltip */
+    /* H1: Figma 398:74646, compact search with an attachment-count badge. */
     .holding-pill {
       display: none;
       align-items: center;
-      gap: 5px;
+      justify-content: center;
       position: relative;
-      background: #0078d4;
+      min-width: 39px;
+      height: 20px;
+      background: #005fb8;
       color: #fff;
-      padding: 3px 9px 3px 7px;
-      border-radius: 11px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.01em;
+      padding: 0 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 400;
       cursor: default;
       flex-shrink: 0;
     }
-    .holding-pill svg { width: 11px; height: 11px; }
     .holding-pill-tip {
       position: absolute;
       bottom: calc(100% + 8px);
@@ -1947,21 +1976,24 @@
     }
     .holding-pill:hover .holding-pill-tip { opacity: 1; }
 
-    /* H2 active: hide holding-label, show pill, restore normal search bar look */
+    /* H1 active: keep the placeholder and microphone around the count badge. */
     body[data-holding-var="1"] .search-bar.holding .holding-label { display: none !important; }
     body[data-holding-var="1"] .search-bar.holding .holding-pill { display: inline-flex !important; }
-    body[data-holding-var="1"] .search-bar.holding .search-placeholder { display: inline !important; }
-    body[data-holding-var="1"] .search-bar.holding .search-icons { display: flex !important; }
-    body[data-holding-var="1"] .search-bar.holding .search-divider { display: block !important; }
+    body[data-holding-var="1"] .search-bar.holding:not(.drop-mode):not(.drag-over):not(.no-drop) .search-placeholder { display: inline !important; }
+    body[data-holding-var="1"] .search-bar.holding:not(.drop-mode):not(.drag-over):not(.no-drop) .search-icons { display: flex !important; }
+    body[data-holding-var="1"] #fw-held-banner { display: none; }
     body[data-holding-var="1"] .search-bar.holding {
-      background: rgba(255,255,255,0.85) !important;
-      outline: 1px solid rgba(0,0,0,0.10) !important;
-      outline-offset: 0 !important;
+      background: rgba(255,255,255,0.72) !important;
+      outline: none !important;
       border: none !important;
-      box-shadow: none !important;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10) !important;
       overflow: visible !important;
-      width: 240px !important;
+      gap: 8px;
+      width: 210px !important;
+      padding-right: 12px;
     }
+    body[data-holding-var="1"] .search-bar.holding.no-drop .holding-pill { display: none !important; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode { min-width: max-content; }
     /* H1 + holding + drop-mode: show "Drop here to do more" with the pill still on the right */
     body[data-holding-var="1"] .search-bar.holding.drop-mode .drop-mode-label { display: flex !important; }
     body[data-holding-var="1"] .search-bar.holding.drop-mode .holding-label { display: none !important; }
@@ -2532,41 +2564,49 @@
   }
   .cop-icon-btn:hover { background: rgba(0,0,0,0.06); color: #444; }
   </style>
+  <link rel="stylesheet" href="desktop-files.css">
+  <link rel="stylesheet" href="universal-composer.css">
+  <script src="universal-composer.js"></script>
+  <link rel="stylesheet" href="file-explorer.css">
+  <script src="file-explorer.js" defer></script>
 </head>
-<body data-v1="1" data-holding-var="1">
+<body data-hv="a" data-holding-var="1">
 
 <!-- ░░ Hover Variant Switcher (desktop only) ░░ -->
 <div id="hv-switcher">
   <div class="hv-section collapsed">
-    <span class="hv-label hv-section-header">
-      V2 designs
+    <button type="button" class="hv-label hv-section-header" aria-expanded="false" aria-controls="v1-options">
+      V1 designs
       <span class="hv-chevron"></span>
-    </span>
-    <div class="hv-btns">
-      <button class="hv-btn" data-v="a" title="Subtle (current)">A</button>
-      <button class="hv-btn" data-v="d" title="Purple glow pulse">D</button>
-      <button class="hv-btn" data-v="f" title="Minimal – blue dashed on hover">F</button>
-      <button class="hv-btn" data-v="i" title="Pulsating dashed border on hover">I</button>
-      <button class="hv-btn" data-v="j" title="Cop drop zone appears on drag">J</button>
+    </button>
+    <div id="v1-options" class="hv-section-options" hidden>
+      <div class="hv-btns" id="v1-btns">
+        <button class="hv-btn" data-v1="1" title="V1-1">1</button>
+        <button class="hv-btn" data-v1="2" title="V1-2 – UC opens on drag-hover">2</button>
+        <button class="hv-btn" data-v1="3" title="V1-3 – drop on empty taskbar to attach">3</button>
+        <button class="hv-btn" data-v1="4" title="V1-4 – glow + dotted line on hover">4</button>
+      </div>
+      <span class="hv-desc" id="v1-desc">—</span>
     </div>
-    <span class="hv-desc" id="hv-desc">—</span>
   </div>
 
   <div class="hv-divider"></div>
 
-  <span class="hv-label">V1 designs</span>
-  <div class="hv-btns" id="v1-btns">
-    <button class="hv-btn active" data-v1="1" title="V1-1">1</button>
-    <button class="hv-btn" data-v1="2" title="V1-2 – UC opens on drag-hover">2</button>
-    <button class="hv-btn" data-v1="3" title="V1-3 – drop on empty taskbar to attach">3</button>
-    <button class="hv-btn" data-v1="4" title="V1-4 – glow + dotted line on hover">4</button>
+  <span class="hv-label">V2 designs</span>
+  <div class="hv-btns">
+    <button class="hv-btn active" data-v="a" title="Subtle (current)">A</button>
+    <button class="hv-btn" data-v="d" title="Purple glow pulse">D</button>
+    <button class="hv-btn" data-v="f" title="Minimal – blue dashed on hover">F</button>
+    <button class="hv-btn" data-v="i" title="Pulsating dashed border on hover">I</button>
+    <button class="hv-btn" data-v="j" title="Cop drop zone appears on drag">J</button>
   </div>
-  <span class="hv-desc" id="v1-desc">V1-1</span>
+  <span class="hv-desc" id="hv-desc">Subtle – slight fill lift</span>
 
   <div class="hv-divider"></div>
 
   <span class="hv-label">Holding Variation</span>
   <div class="hv-btns" id="holding-var-btns">
+    <button class="hv-btn" data-holding="0" title="H0 – no holding (files not held)">H0</button>
     <button class="hv-btn active" data-holding="1" title="H1 – small file pill in search bar">H1</button>
     <button class="hv-btn" data-holding="2" title="H2 – holding text alternates every 2s">H2</button>
     <button class="hv-btn" data-holding="3" title="H3 – blue holding text + blue stroke">H3</button>
@@ -2578,26 +2618,14 @@
 <div class="desktop">
   <div class="desktop-icons" id="desktop-icons">
     <div id="rubberband"></div>
-    <!-- Col 1 — mixed -->
-    <div class="d-icon" data-x="12" data-y="16"  ><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Documents</span></div>
-    <div class="d-icon" data-x="12" data-y="116"><span class="sel-tick">✓</span><div class="pdf-file-thumb"></div><span>Acme_Medical_Bill.pdf</span></div>
-    <div class="d-icon" data-x="12" data-y="216"><span class="sel-tick">✓</span><div class="img-file-thumb landscape" style="background-image:url('https://picsum.photos/id/1036/96/60');background-size:cover;background-position:center;"></div><span>Santorini.jpg</span></div>
-    <div class="d-icon" data-x="12" data-y="316" data-type="app"><span class="sel-tick">✓</span><img src="icons/edge.png" /><span>Microsoft Edge</span></div>
-    <div class="d-icon" data-x="12" data-y="416"><span class="sel-tick">✓</span><div class="pdf-file-thumb"></div><span>Lab_Report_Feb26.pdf</span></div>
-    <div class="d-icon" data-x="12" data-y="516"><span class="sel-tick">✓</span><div class="img-file-thumb portrait" style="background-image:url('https://picsum.photos/id/29/60/88');background-size:cover;background-position:center;"></div><span>Alps_hike.jpg</span></div>
-    <div class="d-icon" data-x="12" data-y="616" data-type="app"><span class="sel-tick">✓</span><img src="icons/whatsapp.png" /><span>WhatsApp</span></div>
-    <div class="d-icon" data-x="12" data-y="716"><span class="sel-tick">✓</span><div class="pdf-file-thumb"></div><span>Insurance_Claim.pdf</span></div>
-
-    <!-- Col 2 — mixed -->
-    <div class="d-icon" data-x="100" data-y="16"  ><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Projects</span></div>
-    <div class="d-icon" data-x="100" data-y="116"><span class="sel-tick">✓</span><div class="ppt-file-thumb"><img src="icons/ppt.png" /></div><span>Presentation1.pptx</span></div>
-    <div class="d-icon" data-x="100" data-y="216" data-type="app"><span class="sel-tick">✓</span><img src="icons/outlook.png" /><span>Outlook</span></div>
-    <div class="d-icon" data-x="100" data-y="316"><span class="sel-tick">✓</span><div class="img-file-thumb landscape" style="background-image:url('https://picsum.photos/id/164/96/60');background-size:cover;background-position:center;"></div><span>Tokyo_street.jpg</span></div>
-    <div class="d-icon" data-x="100" data-y="416"><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Downloads</span></div>
-    <div class="d-icon" data-x="100" data-y="516" data-type="app"><span class="sel-tick">✓</span><img src="icons/copilot.png" /><span>Microsoft 365</span></div>
-    <div class="d-icon" data-x="100" data-y="616"><span class="sel-tick">✓</span><div class="folder-thumb"></div><span>Design Assets</span></div>
-    <div class="d-icon" data-x="100" data-y="716"><span class="sel-tick">✓</span><div class="img-file-thumb portrait" style="background-image:url('https://picsum.photos/id/417/60/88');background-size:cover;background-position:center;"></div><span>Bali_sunset.jpg</span></div>
-    <div class="d-icon" id="word-doc-icon" data-x="188" data-y="16" data-type="word-doc"><span class="sel-tick">✓</span><div class="word-file-thumb"></div><span>power_of_prototyping_mock_chapter.docx</span></div>
+    <div class="d-icon" data-x="12" data-y="16"><span class="sel-tick">✓</span><div class="pdf-file-thumb" style="--desktop-file-preview: url('icons/desktop-previews/medical-bill.svg')"></div><span>Acme_Medical_Bill.pdf</span></div>
+    <div class="d-icon" data-x="12" data-y="116"><span class="sel-tick">✓</span><div class="pdf-file-thumb" style="--desktop-file-preview: url('icons/desktop-previews/city-medical-bill.svg')"></div><span>City_Medical_Bill.pdf</span></div>
+    <div class="d-icon" data-x="12" data-y="216"><span class="sel-tick">✓</span><div class="pdf-file-thumb" style="--desktop-file-preview: url('icons/desktop-previews/lab-report.svg')"></div><span>Lab_Report_Feb26.pdf</span></div>
+    <div class="d-icon" data-x="12" data-y="316"><span class="sel-tick">✓</span><div class="img-file-thumb landscape" style="background-image:url('Photos in File explorer/unsplash_fuAkUJh5w9k.png');background-size:cover;background-position:center;"></div><span>Santorini.jpg</span></div>
+    <div class="d-icon" id="word-doc-icon" data-x="12" data-y="416" data-type="word-doc"><span class="sel-tick">✓</span><div class="word-file-thumb" style="--desktop-file-preview: url('icons/desktop-previews/prototyping-chapter.svg')"></div><span>power_of_prototyping_mock_chapter.docx</span></div>
+    <div class="d-icon" data-x="12" data-y="516"><span class="sel-tick">✓</span><div class="ppt-file-thumb"><img src="icons/ppt.png" /></div><span>Presentation1.pptx</span></div>
+    <div class="d-icon" data-x="12" data-y="616"><span class="sel-tick">✓</span><div class="img-file-thumb portrait" style="background-image:url('Photos in File explorer/unsplash_fuAkUJh5w9k-1.png');background-size:cover;background-position:center;"></div><span>Alps_hike.jpg</span></div>
+    <div class="d-icon" data-x="12" data-y="716"><span class="sel-tick">✓</span><div class="img-file-thumb landscape" style="background-image:url('Photos in File explorer/unsplash_fuAkUJh5w9k-2.png');background-size:cover;background-position:center;"></div><span>Tokyo_street.jpg</span></div>
   </div>
 </div>
 
@@ -2769,7 +2797,7 @@
     </div>
 
     <!-- Search bar — spans wide, has its own hover preview -->
-    <div class="search-bar" title="Search">
+    <div class="search-bar" aria-label="Search">
       <div class="no-drop-label">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <circle cx="8" cy="8" r="6.5" stroke="rgba(0,0,0,0.45)" stroke-width="1.5"/>
@@ -2789,24 +2817,11 @@
       </div>
       <span class="search-placeholder">Ask Copilot anything</span>
       <div class="holding-pill" id="holding-pill">
-        <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M13 7l-5.5 5.5a3.5 3.5 0 01-4.95-4.95L9 1a2.25 2.25 0 113.18 3.18L6.5 9.68a1 1 0 01-1.41-1.41L10 3.5"/>
-        </svg>
-        <span id="holding-pill-count">0</span>
+        <span id="holding-pill-count">+0</span>
         <span class="holding-pill-tip" id="holding-pill-tip">Holding 0 files</span>
       </div>
       <div class="search-icons">
-        <!-- Binoculars icon -->
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
-          <ellipse cx="5" cy="10" rx="3.5" ry="3"/>
-          <ellipse cx="11" cy="10" rx="3.5" ry="3"/>
-          <path d="M8 10H8"/>
-          <path d="M5 7V5.5A1.5 1.5 0 016.5 4h0A1.5 1.5 0 018 5.5V10"/>
-          <path d="M11 7V5.5A1.5 1.5 0 009.5 4h0A1.5 1.5 0 008 5.5V10"/>
-        </svg>
-        <div class="search-divider"></div>
-        <!-- Mic icon -->
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+        <svg role="img" aria-label="Microphone" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
           <rect x="5.5" y="2" width="5" height="7" rx="2.5"/>
           <path d="M3 8a5 5 0 0010 0"/>
           <line x1="8" y1="13" x2="8" y2="15"/>
@@ -2938,24 +2953,9 @@
 
     <!-- Quick Settings: WiFi + Volume + Battery -->
     <div class="tray-cluster tb-trigger" data-app="quicksettings" title="Quick Settings">
-      <!-- WiFi -->
-      <svg viewBox="0 0 15 12" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round">
-        <path d="M1 4C3.3 1.5 6.5 0 10 0s6.7 1.5 9 4"/><!-- scaled in viewBox -->
-        <path d="M7.5 11.5a1 1 0 100-2 1 1 0 000 2z" fill="#1a1a1a" stroke="none"/>
-        <path d="M4.5 7.5C5.5 6.3 6.9 5.5 7.5 5.5S9.5 6.3 10.5 7.5"/>
-        <path d="M2.5 5.5C4 3.8 5.7 3 7.5 3S11 3.8 12.5 5.5"/>
-      </svg>
-      <!-- Volume -->
-      <svg viewBox="0 0 16 16" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round">
-        <path d="M2 6h3l4-4v12l-4-4H2z" fill="#1a1a1a" stroke="none"/>
-        <path d="M11 5a4 4 0 010 6" />
-      </svg>
-      <!-- Battery -->
-      <svg viewBox="0 0 18 12" fill="none" stroke="#1a1a1a" stroke-width="1.2">
-        <rect x="0.6" y="1.6" width="14" height="8.8" rx="1.8"/>
-        <rect x="2" y="3" width="7" height="6" rx="0.6" fill="#1a1a1a" stroke="none"/>
-        <path d="M15 4v4" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
+      <img src="icons/wifi.png" alt="Wi-Fi">
+      <img src="icons/Volume.png" alt="Volume">
+      <img src="icons/Battery.png" alt="Battery">
     </div>
 
     <!-- Clock -->
@@ -2981,20 +2981,18 @@
 <div id="search-composer">
   <div class="composer-card">
 
-    <!-- AI Suggestions (shown when files attached) -->
+    <!-- Suggestions and action results -->
     <div class="composer-suggestions" id="composer-suggestions"></div>
+
+    <!-- Skip notice (shown when files can't be dropped) -->
+    <div class="composer-skip-notice" id="composer-skip-notice"></div>
 
     <!-- Divider -->
     <div class="composer-divider" id="composer-divider"></div>
 
-    <!-- Attached file chips -->
-    <div class="composer-chips" id="composer-chips"></div>
-
-    <!-- Skip notice (shown when apps are excluded) -->
-    <div class="composer-skip-notice" id="composer-skip-notice"></div>
-
     <!-- Chat area (input + footer) -->
     <div class="composer-chat-area">
+      <div class="composer-chips" id="composer-chips"></div>
       <div class="composer-bottom-row">
         <textarea class="composer-input" id="composer-input" rows="1" placeholder="Ask Copilot anything" autocomplete="off"></textarea>
       </div>
@@ -3125,7 +3123,7 @@
       <div class="fw-sb-section">Connected devices</div>
       <div class="fw-sb-item" id="fw-sb-phone">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="4" y="1" width="8" height="14" rx="2"/><circle cx="8" cy="12" r="0.7" fill="currentColor" stroke="none"/></svg>
-        Jack's Android
+        Susie M
       </div>
       <div class="fw-sb-sep"></div>
       <div class="fw-sb-item" id="fw-sb-projects">
@@ -3262,6 +3260,13 @@
   const selAdd   = ic => { sel.add(ic);    ic.classList.add('selected');    syncDropZone(); };
   const selRem   = ic => { sel.delete(ic); ic.classList.remove('selected'); syncDropZone(); };
   const selClear = ()  => { [...sel].forEach(selRem); };
+  window._deselectDesktopIcon = selRem;
+  window._selectDesktopIcon = icon => {
+    selClear();
+    selAdd(icon);
+    searchBarEl.classList.remove('drop-mode', 'drag-over', 'thinking');
+    icon.focus({ preventScroll: true });
+  };
 
   /* ── Drag state ── */
   let dragging      = false;
@@ -3325,7 +3330,7 @@
       const label  = ic.querySelector('span:last-child')?.textContent || '';
 
       // Clone the thumbnail node
-      const thumbSrc = ic.querySelector('.folder-thumb, .ppt-file-thumb, .img-file-thumb, img');
+      const thumbSrc = ic.querySelector('.folder-thumb, .pdf-file-thumb, .word-file-thumb, .ppt-file-thumb, .img-file-thumb, img');
       const ghost = document.createElement('div');
       ghost.className = 'drop-ghost';
       ghost.style.left = (icRect.left + icRect.width  / 2 - 18) + 'px';
@@ -3335,7 +3340,9 @@
       thumbWrap.className = 'ghost-thumb';
       if (thumbSrc) {
         const clone = thumbSrc.cloneNode(true);
-        clone.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        clone.style.width = '100%';
+        clone.style.height = '100%';
+        clone.style.objectFit = 'cover';
         thumbWrap.appendChild(clone);
       }
       const lbl = document.createElement('div');
@@ -3362,7 +3369,7 @@
      ICON mousedown  (stopPropagation keeps
      the window handler from seeing it)
   ════════════════════════════════════════ */
-  document.querySelectorAll('.d-icon').forEach(ic => {
+  function bindDesktopIcon(ic) {
     ic.addEventListener('mousedown', e => {
       if (e.button !== 0) return;
       e.preventDefault();
@@ -3426,25 +3433,10 @@
       const plate = document.createElement('div');
       plate.className = 'drag-ghost-plate';
 
-      const stack = document.createElement('div');
-      stack.className = 'drag-icon-stack';
-
-      // Show only the primary (clicked) icon — clean squircle style
-      const srcIcon = ic;
-      let thumbNode = null;
-      for (const node of srcIcon.childNodes) {
-        if (node.nodeType !== 1) continue;
-        if (node.classList.contains('sel-tick')) continue;
-        if (node.tagName === 'SPAN') continue;
-        thumbNode = node.cloneNode(true);
-        break;
-      }
-      if (thumbNode) {
-        const item = document.createElement('div');
-        item.className = 'drag-icon-item';
-        item.appendChild(thumbNode);
-        stack.appendChild(item);
-      }
+      const stack = createFileDragStack([ic, ...selArr.filter(icon => icon !== ic)].map(icon => ({
+        name: icon.querySelector('span:last-child').textContent.trim(),
+        iconHtml: [...icon.children].find(child => child.tagName !== 'SPAN').outerHTML,
+      })));
 
       plate.appendChild(stack);
 
@@ -3461,8 +3453,8 @@
       document.body.appendChild(dragGhost);
       selArr.forEach(s => s.classList.add('dragging'));
 
-      dragGhostGox = e.clientX - sr.left;
-      dragGhostGoy = e.clientY - sr.top;
+      dragGhostGox = dragGhost.offsetWidth / 2;
+      dragGhostGoy = dragGhost.offsetHeight / 2;
       dragOffsets  = selArr.map(s => ({
         s,
         origX: parseInt(s.style.left),
@@ -3473,7 +3465,9 @@
       dragging = true;
       syncDropZone(); // activate drop-mode now that drag has started
     });
-  });
+  }
+  document.querySelectorAll('.d-icon').forEach(bindDesktopIcon);
+  window._bindDesktopIcon = bindDesktopIcon;
 
   /* ════════════════════════════════════════
      WINDOW mousedown  (only fires when icon
@@ -3657,9 +3651,18 @@
         });
         const fileIcons = [...sel].filter(ic => ic.dataset.type !== 'app');
         const appIcons  = [...sel].filter(ic => ic.dataset.type === 'app');
-        if (fileIcons.length) {
+        if (fileIcons.length && hasUnsupportedFile(fileIcons)) {
+          // Block ALL files if any unsupported file is in the selection
+          openComposerWithFiles([]);
+          showUnsupportedNotice();
+        } else if (fileIcons.length > 20) {
+          // Block when more than 20 files are dropped
+          openComposerWithFiles([]);
+          showTooManyFilesNotice();
+        } else if (fileIcons.length) {
           openComposerWithFiles(fileIcons);
           if (appIcons.length) showSkipNotice(appIcons.length, fileIcons.length);
+          else if (hasSimilarFiles(fileIcons)) showDuplicateContentNotice();
         } else if (appIcons.length) {
           showSkipNotice(appIcons.length, 0);
         }
@@ -3696,6 +3699,16 @@
     }
   });
 
+  /* ── Unsupported file extensions ── */
+  const UNSUPPORTED_EXTS = /\.(avp|exe|bat|cmd|msi|dll|sys|bin|iso|vhd|vmdk)$/i;
+
+  function hasUnsupportedFile(icons) {
+    return icons.some(ic => {
+      const label = ic.querySelector('span:last-child')?.textContent || '';
+      return UNSUPPORTED_EXTS.test(label);
+    });
+  }
+
   /* ── Show skip notice when apps are excluded from a drop ── */
   function showSkipNotice(appCount, fileCount) {
     const el = document.getElementById('composer-skip-notice');
@@ -3703,6 +3716,7 @@
     const msg = fileCount > 0
       ? `${appCount} app${appCount > 1 ? 's' : ''} can't be attached — only files are supported`
       : `Apps can't be dropped here — select files instead`;
+    el.classList.remove('error');
     el.innerHTML = `<span class="composer-skip-notice-icon">⚠</span><span>${msg}</span><button class="composer-skip-notice-dismiss" title="Dismiss">✕</button>`;
     el.querySelector('.composer-skip-notice-dismiss').addEventListener('click', () => {
       el.classList.remove('visible');
@@ -3713,39 +3727,68 @@
     el._hideTimer = setTimeout(() => el.classList.remove('visible'), 4000);
   }
 
+  /* ── Show error notice when unsupported files block the entire drop ── */
+  function showUnsupportedNotice() {
+    const el = document.getElementById('composer-skip-notice');
+    if (!el) return;
+    const msg = `Some items can't be dropped here.`;
+    el.classList.add('error');
+    el.innerHTML = `<span class="composer-skip-notice-icon">⊘</span><span>${msg}</span><button class="composer-skip-notice-dismiss" title="Dismiss">✕</button>`;
+    el.querySelector('.composer-skip-notice-dismiss').addEventListener('click', () => {
+      el.classList.remove('visible', 'error');
+    });
+    el.classList.add('visible');
+  }
+
+  /* ── Show error notice when too many files are dropped ── */
+  function showTooManyFilesNotice() {
+    const el = document.getElementById('composer-skip-notice');
+    if (!el) return;
+    const msg = `Upto 20 files can be uploaded in one session.`;
+    el.classList.add('error');
+    el.innerHTML = `<span class="composer-skip-notice-icon">⊘</span><span>${msg}</span><button class="composer-skip-notice-dismiss" title="Dismiss">✕</button>`;
+    el.querySelector('.composer-skip-notice-dismiss').addEventListener('click', () => {
+      el.classList.remove('visible', 'error');
+    });
+    el.classList.add('visible');
+  }
+
+  /* ── Show info notice when dropped files have similar names (likely same content) ── */
+  function showDuplicateContentNotice() {
+    const el = document.getElementById('composer-skip-notice');
+    if (!el) return;
+    const msg = `The dropped files have the same content.`;
+    el.classList.remove('error');
+    el.classList.add('info');
+    el.innerHTML = `<span class="composer-skip-notice-icon">ⓘ</span><span>${msg}</span><button class="composer-skip-notice-dismiss" title="Dismiss">✕</button>`;
+    el.querySelector('.composer-skip-notice-dismiss').addEventListener('click', () => {
+      el.classList.remove('visible', 'info');
+    });
+    el.classList.add('visible');
+  }
+
+  function hasSimilarFiles(icons) {
+    const names = icons.map(ic => {
+      const label = ic.querySelector('span:last-child')?.textContent || '';
+      // Strip extension and normalize
+      return label.replace(/\.[^.]+$/, '').toLowerCase().replace(/[_\-\s]+/g, '');
+    });
+    // Check if any two names share a common prefix of 8+ chars
+    for (let i = 0; i < names.length; i++) {
+      for (let j = i + 1; j < names.length; j++) {
+        const a = names[i], b = names[j];
+        let common = 0;
+        while (common < a.length && common < b.length && a[common] === b[common]) common++;
+        if (common >= 8) return true;
+      }
+    }
+    return false;
+  }
+
   /* ── Open composer with attached files ── */
   function openComposerWithFiles(icons) {
-    const suggestions = [
-      { img: 'icons/whatsapp.png', bg: '#e8fdf0', title: 'Share via WhatsApp',                      sub: 'App · Send files directly' },
-      { svg: `<svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.80108 26H8V15.5961L2 11V24.1626C1.99986 24.4039 2.04636 24.6429 2.13682 24.8659C2.22729 25.0889 2.35995 25.2915 2.52722 25.4622C2.6945 25.6328 2.8931 25.7681 3.11168 25.8604C3.33026 25.9527 3.56452 26.0001 3.80108 26V26Z" fill="#4285F4"/><path d="M24 26H28.1989C28.6763 25.9989 29.1337 25.805 29.4713 25.4606C29.8088 25.1163 29.9989 24.6496 30 24.1626V11L24 15.5903V26Z" fill="#34A853"/><path d="M24 7.88112V16L30 11.3168V8.81572C30 6.50149 27.4598 5.17661 25.6799 6.56752L24 7.88112Z" fill="#FBBC04"/><path d="M8 15.6857V8L16 13.3198L24 8V15.6857L16 21L8 15.6857Z" fill="#EA4335"/><path d="M2 8.81587V11.316L8 16V7.87585L6.32012 6.56755C4.54019 5.17657 2 6.50151 2 8.81587Z" fill="#C5221F"/></svg>`, bg: '#eef3fb', title: 'Send via Gmail', sub: 'Web · Attach and send' },
-      { svg: `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C8.38171 20 6.81782 19.6146 5.41286 18.888L1.58704 19.9553C0.922123 20.141 0.232581 19.7525 0.0469058 19.0876C-0.0145358 18.8676 -0.014506 18.6349 0.046948 18.4151L1.11461 14.5922C0.386366 13.186 0 11.6203 0 10C0 4.47715 4.47715 0 10 0ZM10 1.5C5.30558 1.5 1.5 5.30558 1.5 10C1.5 11.4696 1.87277 12.8834 2.57303 14.1375L2.72368 14.4072L1.61096 18.3914L5.59755 17.2792L5.86709 17.4295C7.12006 18.1281 8.53218 18.5 10 18.5C14.6944 18.5 18.5 14.6944 18.5 10C18.5 5.30558 14.6944 1.5 10 1.5ZM6.75 11H11.2483C11.6625 11 11.9983 11.3358 11.9983 11.75C11.9983 12.1297 11.7161 12.4435 11.35 12.4932L11.2483 12.5H6.75C6.33579 12.5 6 12.1642 6 11.75C6 11.3703 6.28215 11.0565 6.64823 11.0068L6.75 11H11.2483H6.75ZM6.75 7.5H13.2545C13.6687 7.5 14.0045 7.83579 14.0045 8.25C14.0045 8.6297 13.7223 8.94349 13.3563 8.99315L13.2545 9H6.75C6.33579 9 6 8.66421 6 8.25C6 7.8703 6.28215 7.55651 6.64823 7.50685L6.75 7.5H13.2545H6.75Z" fill="#242424"/></svg>`, bg: '#f0f4ff', title: 'Summarise all medical bills', sub: 'New conversation · Copilot' },
-      { emoji: '📁',               bg: '#fff8e6', title: 'Move to folder',                           sub: 'File Explorer' },
-    ];
-
-    // Build suggestions
     const sugEl = document.getElementById('composer-suggestions');
-    sugEl.innerHTML = '';
-    suggestions.forEach(s => {
-      const row = document.createElement('div');
-      row.className = 'suggestion-row';
-      const iconContent = s.img
-        ? `<img src="${s.img}" style="width:18px;height:18px;object-fit:contain;">`
-        : s.svg || s.emoji;
-      row.innerHTML = `
-        <div class="suggestion-icon" style="background:${s.bg}">${iconContent}</div>
-        <div class="suggestion-text">
-          <div class="suggestion-title">${s.title}</div>
-          <div class="suggestion-sub">${s.sub}</div>
-        </div>`;
-      row.addEventListener('click', () => {
-        const chips = [...document.querySelectorAll('#composer-chips .file-chip')]
-          .map(c => c.querySelector('.file-chip-name')?.textContent || '').filter(Boolean);
-        document.getElementById('search-composer').classList.remove('open');
-        window._openCopilot?.(s.title, chips);
-      });
-      sugEl.appendChild(row);
-    });
-    sugEl.classList.add('visible');
+    renderComposerFileSuggestions(sugEl);
 
     // Add file chips — merge with any already-held chips (don't wipe them)
     const chipsEl = document.getElementById('composer-chips');
@@ -3760,17 +3803,10 @@
       const chip = document.createElement('div');
       chip.className = 'file-chip';
       chip.dataset.kind = isFolder ? 'folder' : 'file';
-      const WORD_ICON_HTML = `<div style="width:20px;height:20px;background:#185abd;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;">W</div>`;
-      const FOLDER_ICON_HTML = `<span style="font-size:14px;flex-shrink:0">📁</span>`;
-      const isWordDoc = /\.(docx?|doc)$/i.test(label);
-      const chipIcon = isFolder
-        ? FOLDER_ICON_HTML
-        : IMAGE_EXTS_RE.test(label)
-          ? PHOTO_ICON_HTML
-          : isWordDoc
-            ? WORD_ICON_HTML
-            : (imgSrc ? `<img src="${imgSrc}" />` : `<span style="font-size:14px;flex-shrink:0">📄</span>`);
-      chip.innerHTML = chipIcon
+      const chipIcon = IMAGE_EXTS_RE.test(label)
+        ? PHOTO_ICON_HTML
+        : (imgSrc ? `<img src="${imgSrc}" />` : `<span style="font-size:14px;flex-shrink:0">📄</span>`);
+      chip.innerHTML = composerFileIcon(label, chipIcon, chip.dataset.kind)
         + `<span class="file-chip-name">${label}</span>`
         + `<button class="file-chip-remove" title="Remove">✕</button>`;
       chip.querySelector('.file-chip-remove').addEventListener('click', () => {
@@ -3783,6 +3819,7 @@
       });
       chipsEl.appendChild(chip);
     });
+    prioritizeComposerFiles(icons.map(ic => ic.querySelector('span:last-child')?.textContent || 'File'));
     trimChips();
     chipsEl.classList.add('visible');
     document.getElementById('composer-divider').classList.add('visible');
@@ -3809,17 +3846,17 @@
     // Remove any lingering drag ghost
     document.querySelectorAll('[data-wv-ghost]').forEach(el => el.remove());
     const textSuggestions = [
-      { svg: `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C8.38171 20 6.81782 19.6146 5.41286 18.888L1.58704 19.9553C0.922123 20.141 0.232581 19.7525 0.0469058 19.0876C-0.0145358 18.8676 -0.014506 18.6349 0.046948 18.4151L1.11461 14.5922C0.386366 13.186 0 11.6203 0 10C0 4.47715 4.47715 0 10 0ZM10 1.5C5.30558 1.5 1.5 5.30558 1.5 10C1.5 11.4696 1.87277 12.8834 2.57303 14.1375L2.72368 14.4072L1.61096 18.3914L5.59755 17.2792L5.86709 17.4295C7.12006 18.1281 8.53218 18.5 10 18.5C14.6944 18.5 18.5 14.6944 18.5 10C18.5 5.30558 14.6944 1.5 10 1.5ZM6.75 11H11.2483C11.6625 11 11.9983 11.3358 11.9983 11.75C11.9983 12.1297 11.7161 12.4435 11.35 12.4932L11.2483 12.5H6.75C6.33579 12.5 6 12.1642 6 11.75C6 11.3703 6.28215 11.0565 6.64823 11.0068L6.75 11ZM6.75 7.5H13.2545C13.6687 7.5 14.0045 7.83579 14.0045 8.25C14.0045 8.6297 13.7223 8.94349 13.3563 8.99315L13.2545 9H6.75C6.33579 9 6 8.66421 6 8.25C6 7.8703 6.28215 7.55651 6.64823 7.50685L6.75 7.5Z" fill="#242424"/></svg>`, bg: '#f0f4ff', title: 'Summarise this text',        sub: 'New conversation · Copilot' },
+      { icon: composerIcon('Chat.png'), bg: '#f0f4ff', title: 'Summarise this text', sub: 'New conversation · Copilot' },
       { emoji: '✏️', bg: '#fff8e6', title: 'Rewrite professionally',    sub: 'Copilot · Edit & polish' },
       { emoji: '🔑', bg: '#eefaf3', title: 'Find key points',            sub: 'Copilot · Extract insights' },
-      { emoji: '💬', bg: '#fdf0ff', title: 'Continue writing',           sub: 'Copilot · Expand on this' },
+      { icon: composerIcon('Chat.png'), bg: '#fdf0ff', title: 'Continue writing', sub: 'Copilot · Expand on this' },
     ];
     const sugEl = document.getElementById('composer-suggestions');
     sugEl.innerHTML = '';
     textSuggestions.forEach(s => {
       const row = document.createElement('div');
       row.className = 'suggestion-row';
-      const iconContent = s.svg || s.emoji;
+      const iconContent = s.icon || s.emoji;
       row.innerHTML = `
         <div class="suggestion-icon" style="background:${s.bg}">${iconContent}</div>
         <div class="suggestion-text">
@@ -3848,25 +3885,9 @@
   };
 })();
 
-/* ── Chip trimmer: show max 3, collapse rest into +N badge ── */
+/* ── Shared attachment strip layout ── */
 function trimChips() {
-  const chipsEl = document.getElementById('composer-chips');
-  chipsEl.querySelector('.file-chip-more')?.remove();
-  const all = [...chipsEl.querySelectorAll('.file-chip')];
-  const MAX = 2;
-  all.forEach((c, i) => { c.style.display = i < MAX ? '' : 'none'; });
-  const extra = all.length - MAX;
-  if (extra > 0) {
-    const badge = document.createElement('div');
-    badge.className = 'file-chip-more';
-    badge.textContent = `+${extra}`;
-    badge.addEventListener('click', e => {
-      e.stopPropagation();
-      const hidden = [...chipsEl.querySelectorAll('.file-chip')].filter(c => c.style.display === 'none');
-      toggleOverflowMenu(badge, hidden);
-    });
-    chipsEl.appendChild(badge);
-  }
+  trimComposerChips();
 }
 
 /* ── Overflow menu for hidden chips ── */
@@ -3880,9 +3901,9 @@ function closeOverflowMenu() {
   getOrCreateOverflowMenu().classList.remove('open');
 }
 
-function toggleOverflowMenu(anchor, hiddenChips) {
+function toggleOverflowMenu(anchor, hiddenChips, forceOpen = false) {
   const menu = getOrCreateOverflowMenu();
-  if (menu.classList.contains('open')) { closeOverflowMenu(); return; }
+  if (menu.classList.contains('open') && !forceOpen) { closeOverflowMenu(); return; }
 
   menu.innerHTML = '';
 
@@ -3909,7 +3930,7 @@ function toggleOverflowMenu(anchor, hiddenChips) {
       }
       // Rebuild menu with updated hidden list
       const remaining = [...chipsEl.querySelectorAll('.file-chip')].filter(c => c.style.display === 'none');
-      remaining.length ? toggleOverflowMenu(anchor, remaining) : closeOverflowMenu();
+      remaining.length ? toggleOverflowMenu(chipsEl.querySelector('.file-chip-more'), remaining, true) : closeOverflowMenu();
     });
     menu.appendChild(item);
   });
@@ -3972,17 +3993,25 @@ searchBar.addEventListener('click', () => {
   composerInput.focus();
 });
 
-function closeComposer() {
+function closeComposer({ preserveFiles = false } = {}) {
   searchComposer.classList.remove('open');
+  resetCompletedComposer();
   searchBar.classList.remove('thinking');
   const skipNotice = document.getElementById('composer-skip-notice');
-  if (skipNotice) { skipNotice.classList.remove('visible'); clearTimeout(skipNotice._hideTimer); }
+  if (skipNotice) { skipNotice.classList.remove('visible', 'error'); clearTimeout(skipNotice._hideTimer); }
   setTimeout(() => {
-    const hasChips = !!document.getElementById('composer-chips').querySelector('.file-chip');
-    if (!hasChips) {
+    if (searchComposer.classList.contains('open')) return;
+    const chipsEl = document.getElementById('composer-chips');
+    const holdingDisabled = document.body.dataset.holdingVar === '0';
+    // Keep the draft during an Explorer handoff; other H0 dismissals discard it.
+    if (holdingDisabled && !preserveFiles) {
+      chipsEl.querySelectorAll('.file-chip').forEach(c => c.remove());
+    }
+    const hasChips = !!chipsEl.querySelector('.file-chip');
+    if (!hasChips && !['complete', 'zero'].includes(searchComposer.dataset.composerState)) {
       // No staged files — fully reset
       document.getElementById('composer-suggestions').classList.remove('visible');
-      document.getElementById('composer-chips').classList.remove('visible');
+      chipsEl.classList.remove('visible');
       document.getElementById('composer-divider').classList.remove('visible');
     }
     // If chips exist, keep suggestions + chips + divider so they reappear on reopen
@@ -3990,7 +4019,10 @@ function closeComposer() {
 }
 
 document.addEventListener('mousedown', e => {
-  if (!searchComposer.contains(e.target) && !searchBar.contains(e.target)) closeComposer();
+  if (!searchComposer.contains(e.target) && !searchBar.contains(e.target) && !e.target.closest('#chip-overflow-menu')) {
+    const fromExplorer = !!e.target.closest('#folder-window, .tb-btn[data-app="explorer"], .d-icon:has(.folder-thumb)');
+    closeComposer({ preserveFiles: fromExplorer });
+  }
 });
 
 document.addEventListener('keydown', e => {
@@ -4048,7 +4080,7 @@ const APPS = {
   },
   explorer: {
     key: 'explorer',
-    name: "Jack's Android",
+    name: 'Downloads',
     iconImg: 'icons/explorer.png',
     tbColor: 'linear-gradient(135deg,#c87d0e,#d9960f)',
     tbText: 'rgba(255,255,255,0.9)',
@@ -4969,41 +5001,7 @@ function buildFwGhost(items) {
   ghost.style.cssText = 'left:-200px;top:-200px;';
   const plate = document.createElement('div');
   plate.className = 'drag-ghost-plate';
-  const stack = document.createElement('div');
-  stack.className = 'drag-icon-stack';
-  const iconItem = document.createElement('div');
-  iconItem.className = 'drag-icon-item';
-  const first = items[0];
-  if (first.thumb && typeof first.thumb === 'string' && first.thumb.startsWith('http')) {
-    const thumbImg = document.createElement('img');
-    thumbImg.src = first.thumb;
-    thumbImg.style.cssText = 'width:64px;height:64px;object-fit:cover;border-radius:8px;';
-    iconItem.appendChild(thumbImg);
-  } else {
-    const tmpDiv = document.createElement('div');
-    tmpDiv.innerHTML = first.iconHtml || ICONS_HTML.text;
-    const srcImg = tmpDiv.querySelector('img');
-    const srcSvg = tmpDiv.querySelector('svg');
-    const srcEl  = tmpDiv.firstElementChild;
-    if (srcImg) {
-      const scaledImg = document.createElement('img');
-      scaledImg.src = srcImg.src;
-      scaledImg.style.cssText = 'width:64px;height:64px;object-fit:contain;';
-      iconItem.appendChild(scaledImg);
-    } else if (srcSvg) {
-      srcSvg.setAttribute('width', '64');
-      srcSvg.setAttribute('height', '64');
-      iconItem.appendChild(srcSvg);
-    } else if (srcEl) {
-      const wrapper = document.createElement('div');
-      wrapper.style.cssText = 'display:flex;align-items:center;justify-content:center;width:64px;height:64px;';
-      srcEl.style.transform = 'scale(3.5)';
-      srcEl.style.transformOrigin = 'center';
-      wrapper.appendChild(srcEl);
-      iconItem.appendChild(wrapper);
-    }
-  }
-  stack.appendChild(iconItem);
+  const stack = createFileDragStack(items);
   plate.appendChild(stack);
   if (items.length > 1) {
     const badge = document.createElement('div');
@@ -5027,22 +5025,19 @@ const FW_SB_MAP = {
 function openFolder(name) {
   const items = FOLDER_DATA[name];
   if (!items) return;
+  folderWin.dataset.folder = name;
+  fwSearchInput.value = '';
 
-  fwTabName.textContent = name === 'Camera' ? 'Jack\'s Android' : name;
+  fwTabName.textContent = name === 'Camera' ? 'Susie M' : name;
   fwFolderName.innerHTML = name === 'Camera'
-    ? `<span style="color:#999">Connected</span><span class="fw-breadcrumb-sep">›</span>Jack's Android<span class="fw-breadcrumb-sep">›</span>Internal storage<span class="fw-breadcrumb-sep">›</span><strong style="font-weight:500">Camera</strong>`
+    ? 'Susie M'
     : name;
   fwSearchInput.placeholder = `Search ${name}`;
   fwStatusText.textContent = `${items.length} items`;
   fwFileList.innerHTML = '';
 
-  // Track selected items across this folder open
-  const selectedItems = new Set();
-
-  function updateStatus() {
-    const n = selectedItems.size;
-    fwStatusText.textContent = n > 0 ? `${n} item${n > 1 ? 's' : ''} selected` : `${items.length} items`;
-  }
+  const selection = createExplorerSelection(fwFileList, fwStatusText);
+  const selectedItems = selection.items;
 
   if (name === 'Camera') {
     /* ── Thumbnail / gallery view ── */
@@ -5068,43 +5063,21 @@ function openFolder(name) {
 
       groupItems.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'fw-thumb-item';
+        card.className = `fw-thumb-item${item.preview === 'document' ? ' fw-thumb-document' : ''}`;
         card.innerHTML = `
           <div class="fw-thumb-check">✓</div>
           <div class="fw-thumb-preview"><img src="${item.thumb}" loading="lazy" alt="${item.name}"></div>
-          <div class="fw-thumb-name">${item.name}</div>`;
+          <div class="fw-thumb-name">${item.displayName || item.name}</div>`;
 
-        // Clicking the checkbox circle toggles selection without clearing others
-        card.querySelector('.fw-thumb-check').addEventListener('click', e => {
-          e.stopPropagation();
-          const isSelected = card.classList.toggle('selected');
-          isSelected ? selectedItems.add(item) : selectedItems.delete(item);
-          updateStatus();
-        });
-
-        card.addEventListener('click', e => {
-          if (e.ctrlKey || e.metaKey) {
-            const isSelected = card.classList.toggle('selected');
-            isSelected ? selectedItems.add(item) : selectedItems.delete(item);
-          } else if (!card.classList.contains('selected')) {
-            document.querySelectorAll('.fw-thumb-item.selected').forEach(c => c.classList.remove('selected'));
-            selectedItems.clear();
-            card.classList.add('selected');
-            selectedItems.add(item);
-          } else {
-            card.classList.remove('selected');
-            selectedItems.delete(item);
-          }
-          updateStatus();
-        });
+        selection.bind(card, item);
 
         card.addEventListener('dragstart', e => e.preventDefault());
         card.addEventListener('mousedown', e => {
           if (e.button !== 0) return;
           fwDragStartX = e.clientX; fwDragStartY = e.clientY;
           fwDragThresholdMet = false;
-          const toSend = selectedItems.size > 0 ? [...selectedItems] : [item];
-          fwDragItems = toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text, thumb: i.thumb }));
+          const toSend = selectedItems.has(item) ? [...selectedItems] : [item];
+          fwDragItems = toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text, kind: i.icon === 'folder' ? 'folder' : 'file', thumb: i.thumb }));
           fwDragOriginEl = card;
           fwDragging = true;
         });
@@ -5117,49 +5090,36 @@ function openFolder(name) {
   } else {
     /* ── List view ── */
     document.querySelector('.fw-list-header').style.display = '';
+    let currentGroup = null;
     items.forEach(item => {
+      if (item.group && item.group !== currentGroup) {
+        appendExplorerGroup(fwFileList, item.group);
+        currentGroup = item.group;
+      }
       const row = document.createElement('div');
       row.className = 'fw-file-row';
       row.innerHTML = `
         <div class="fw-row-check">✓</div>
         <div class="fw-col-name">
-          <span class="fw-file-icon">${ICONS_HTML[item.icon] || ICONS_HTML.text}</span>
-          <span class="fw-file-name">${item.name}</span>
+          <span class="fw-file-icon">${explorerFileIcon(item, ICONS_HTML[item.icon] || ICONS_HTML.text)}</span>
+          <span class="fw-file-name">${item.displayName || item.name}</span>
         </div>
         <div class="fw-col-date">${item.date}</div>
         <div class="fw-col-type">${item.type}</div>
         <div class="fw-col-size">${item.size}</div>`;
 
-      row.querySelector('.fw-row-check').addEventListener('click', e => {
-        e.stopPropagation();
-        const isSel = row.classList.toggle('selected');
-        isSel ? selectedItems.add(item) : selectedItems.delete(item);
-        updateStatus();
-      });
-
-      row.addEventListener('click', e => {
-        if (e.ctrlKey || e.metaKey) {
-          const isSel = row.classList.toggle('selected');
-          isSel ? selectedItems.add(item) : selectedItems.delete(item);
-        } else if (!row.classList.contains('selected')) {
-          document.querySelectorAll('.fw-file-row.selected').forEach(r => r.classList.remove('selected'));
-          selectedItems.clear();
-          row.classList.add('selected');
-          selectedItems.add(item);
-        } else {
-          row.classList.remove('selected');
-          selectedItems.delete(item);
-        }
-        updateStatus();
-      });
+      selection.bind(row, item);
 
       row.addEventListener('dragstart', e => e.preventDefault());
+      row.addEventListener('dblclick', () => {
+        if (item.icon === 'folder' && FOLDER_DATA[item.target || item.name]) openFolder(item.target || item.name);
+      });
       row.addEventListener('mousedown', e => {
         if (e.button !== 0) return;
         fwDragStartX = e.clientX; fwDragStartY = e.clientY;
         fwDragThresholdMet = false;
-        const toSend = selectedItems.size > 0 ? [...selectedItems] : [item];
-        fwDragItems = toSend.map(i => ({ name: i.name, iconHtml: ICONS_HTML[i.icon] || ICONS_HTML.text }));
+        const toSend = selectedItems.has(item) ? [...selectedItems] : [item];
+        fwDragItems = toSend.map(i => ({ name: i.name, iconHtml: explorerFileIcon(i, ICONS_HTML[i.icon] || ICONS_HTML.text), kind: i.icon === 'folder' ? 'folder' : 'file' }));
         fwDragOriginEl = row;
         fwDragging = true;
       });
@@ -5399,7 +5359,7 @@ explorerTbBtn?.addEventListener('click', () => {
     fwMinimized = false;
     setExplorerDot(true);
   } else {
-    openFolder('Camera');
+    openFolder('Downloads');
   }
 });
 
@@ -5429,7 +5389,7 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
   const composer = document.getElementById('search-composer');
   const chips    = document.getElementById('composer-chips');
 
-  function addFileChipToComposer(name, iconHtml) {
+  function addFileChipToComposer(name, iconHtml, kind = 'file', nativeFile = null) {
     // Deduplicate
     const dupe = [...chips.querySelectorAll('.file-chip-name')].find(el => el.textContent === name);
     if (dupe) return;
@@ -5440,7 +5400,13 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
 
     const chip = document.createElement('div');
     chip.className = 'file-chip';
-    chip.innerHTML = resolvedIcon
+    chip.dataset.kind = kind;
+    if (nativeFile) {
+      chip.dataset.fileSize = nativeFile.size;
+      chip.dataset.lastModified = nativeFile.lastModified;
+    }
+    const thumb = nativeFile && IMAGE_EXTS_RE.test(name) ? URL.createObjectURL(nativeFile) : '';
+    chip.innerHTML = composerFileIcon(name, resolvedIcon, kind, thumb)
       + `<span class="file-chip-name">${name}</span>`
       + `<button class="file-chip-remove" title="Remove">✕</button>`;
     chip.querySelector('.file-chip-remove').addEventListener('click', () => {
@@ -5460,7 +5426,8 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
   function syncHoldingState() {
     const count   = chips.querySelectorAll('.file-chip').length;
     const isOpen  = composer.classList.contains('open');
-    const holding = count > 0 && !isOpen;
+    const holdingDisabled = document.body.dataset.holdingVar === '0';
+    const holding = count > 0 && !isOpen && !holdingDisabled;
 
     bar.classList.toggle('holding', holding);
 
@@ -5482,6 +5449,7 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
   // Watch chips for add/remove and composer for open/close
   new MutationObserver(syncHoldingState).observe(chips, { childList: true });
   new MutationObserver(syncHoldingState).observe(composer, { attributes: true, attributeFilter: ['class'] });
+  new MutationObserver(syncHoldingState).observe(document.body, { attributes: true, attributeFilter: ['data-holding-var'] });
 
   // Clicking the banner re-opens the composer
   document.getElementById('fw-held-banner')?.addEventListener('click', () => {
@@ -5502,8 +5470,8 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
       }
     }
     if (fwDragThresholdMet && fwDragGhost) {
-      fwDragGhost.style.left = (e.clientX - 44) + 'px';
-      fwDragGhost.style.top  = (e.clientY - 44) + 'px';
+      fwDragGhost.style.left = (e.clientX - fwDragGhost.offsetWidth / 2) + 'px';
+      fwDragGhost.style.top  = (e.clientY - fwDragGhost.offsetHeight / 2) + 'px';
       if (bar.classList.contains('drop-mode') || bar.classList.contains('holding')) {
         const sr = bar.getBoundingClientRect();
         const overSB = e.clientX >= sr.left && e.clientX <= sr.right &&
@@ -5541,7 +5509,8 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
         e.clientX >= cdzFwUpR.left && e.clientX <= cdzFwUpR.right &&
         e.clientY >= cdzFwUpR.top  && e.clientY <= cdzFwUpR.bottom;
       if (dropped || droppedCDZ) {
-        fwDragItems.forEach(f => addFileChipToComposer(f.name, f.iconHtml));
+        fwDragItems.forEach(f => addFileChipToComposer(f.name, f.iconHtml, f.kind));
+        prioritizeComposerFiles(fwDragItems.map(file => file.name));
         window._openComposerWithFiles?.([]);
       }
       cdzFwUp?.classList.remove('visible', 'file-over');
@@ -5622,87 +5591,16 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
       if (txt) window._openComposerWithText?.(txt);
       return;
     }
-    [...e.dataTransfer.files].forEach(file => addFileChipToComposer(file.name, null));
+    const droppedFiles = [...e.dataTransfer.files];
+    droppedFiles.forEach(file => addFileChipToComposer(file.name, null, 'file', file));
+    prioritizeComposerFiles(droppedFiles.map(file => file.name));
     window._openComposerWithFiles?.([]);
   });
   window._addFileChipToComposer = addFileChipToComposer;
 })();
 
 /* ── Composer: dynamic suggestions while typing ── */
-(function () {
-  const input = document.getElementById('composer-input');
-  const sugEl = document.getElementById('composer-suggestions');
-
-  const COPILOT_SVG = `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C8.38171 20 6.81782 19.6146 5.41286 18.888L1.58704 19.9553C0.922123 20.141 0.232581 19.7525 0.0469058 19.0876C-0.0145358 18.8676 -0.014506 18.6349 0.046948 18.4151L1.11461 14.5922C0.386366 13.186 0 11.6203 0 10C0 4.47715 4.47715 0 10 0ZM10 1.5C5.30558 1.5 1.5 5.30558 1.5 10C1.5 11.4696 1.87277 12.8834 2.57303 14.1375L2.72368 14.4072L1.61096 18.3914L5.59755 17.2792L5.86709 17.4295C7.12006 18.1281 8.53218 18.5 10 18.5C14.6944 18.5 18.5 14.6944 18.5 10C18.5 5.30558 14.6944 1.5 10 1.5ZM6.75 11H11.2483C11.6625 11 11.9983 11.3358 11.9983 11.75C11.9983 12.1297 11.7161 12.4435 11.35 12.4932L11.2483 12.5H6.75C6.33579 12.5 6 12.1642 6 11.75C6 11.3703 6.28215 11.0565 6.64823 11.0068L6.75 11ZM6.75 7.5H13.2545C13.6687 7.5 14.0045 7.83579 14.0045 8.25C14.0045 8.6297 13.7223 8.94349 13.3563 8.99315L13.2545 9H6.75C6.33579 9 6 8.66421 6 8.25C6 7.8703 6.28215 7.55651 6.64823 7.50685L6.75 7.5Z" fill="#242424"/></svg>`;
-
-  let savedRows  = null;
-  let inQueryMode = false;
-
-  // Whenever openComposerWithFiles rebuilds the suggestions, snapshot them
-  new MutationObserver(() => {
-    if (inQueryMode) return;
-    const rows = sugEl.querySelectorAll('.suggestion-row');
-    if (rows.length) savedRows = [...rows].map(r => r.cloneNode(true));
-  }).observe(sugEl, { childList: true });
-
-  input.addEventListener('input', () => {
-    if (!sugEl.classList.contains('visible')) return;
-    const query = input.value.trim();
-    if (query) {
-      inQueryMode = true;
-      renderQuerySuggestions(query);
-    } else {
-      inQueryMode = false;
-      if (savedRows) {
-        sugEl.innerHTML = '';
-        savedRows.forEach(r => sugEl.appendChild(r.cloneNode(true)));
-      }
-    }
-  });
-
-  function renderQuerySuggestions(query) {
-    const label = query.length > 48 ? query.slice(0, 48) + '…' : query;
-    const items = [
-      {
-        icon: COPILOT_SVG,
-        bg: '#f0f4ff',
-        title: label,
-        sub: 'New conversation · Copilot',
-        titleStyle: 'font-weight:600;color:#1a1a1a;',
-      },
-      {
-        icon: COPILOT_SVG,
-        bg: '#f0f4ff',
-        title: 'Summarise these files',
-        sub: 'Copilot · Add to conversation',
-      },
-      {
-        emoji: '📁',
-        bg: '#fff8e6',
-        title: 'Move to a folder',
-        sub: 'File Explorer',
-      },
-    ];
-    sugEl.innerHTML = '';
-    items.forEach(s => {
-      const row = document.createElement('div');
-      row.className = 'suggestion-row';
-      row.innerHTML = `
-        <div class="suggestion-icon" style="background:${s.bg}">${s.icon || s.emoji}</div>
-        <div class="suggestion-text">
-          <div class="suggestion-title" style="${s.titleStyle || ''}">${s.title}</div>
-          <div class="suggestion-sub">${s.sub}</div>
-        </div>`;
-      row.addEventListener('click', () => {
-        const chips = [...document.querySelectorAll('#composer-chips .file-chip')]
-          .map(c => c.querySelector('.file-chip-name')?.textContent || '').filter(Boolean);
-        document.getElementById('search-composer').classList.remove('open');
-        window._openCopilot?.(s.title, chips);
-      });
-      sugEl.appendChild(row);
-    });
-  }
-})();
+initializeComposer();
 
 /* ── Copilot App Overlay ── */
 (function () {
@@ -5885,9 +5783,9 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
                 Invite
               </button>
               <button class="cop-winbtn">⌄</button>
-              <button class="cop-winbtn" id="cop-minimize">−</button>
-              <button class="cop-winbtn">⬜</button>
-              <button class="cop-winbtn cop-close" id="cop-close">✕</button>
+              <button class="cop-winbtn" id="cop-minimize" aria-label="Minimize">${windowControlIcon('minimize')}</button>
+              <button class="cop-winbtn" aria-label="Maximize">${windowControlIcon('maximize')}</button>
+              <button class="cop-winbtn cop-close" id="cop-close" aria-label="Close">${windowControlIcon('close')}</button>
             </div>
           </div>
           <div class="cop-chat" id="cop-chat">
@@ -6136,7 +6034,9 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
 
   // Listen for Enter in composer input
   document.getElementById('composer-input').addEventListener('keydown', e => {
-    if (e.key !== 'Enter') return;
+    if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+    e.preventDefault();
+    if (runComposerFileAction()) return;
     const query = e.target.value.trim();
     // Grab all file names including those hidden behind the +N badge
     const chips = [...document.querySelectorAll('#composer-chips .file-chip')]
@@ -6151,7 +6051,9 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
 /* ── Collapsible section toggle ── */
 document.querySelectorAll('.hv-section-header').forEach(header => {
   header.addEventListener('click', () => {
-    header.closest('.hv-section')?.classList.toggle('collapsed');
+    const collapsed = header.closest('.hv-section').classList.toggle('collapsed');
+    header.setAttribute('aria-expanded', String(!collapsed));
+    document.getElementById(header.getAttribute('aria-controls')).hidden = collapsed;
   });
 });
 
@@ -6165,6 +6067,7 @@ const HV_DESCS = {
 };
 const hvDesc = document.getElementById('hv-desc');
 function resetUCState() {
+  resetComposerActionState();
   const bar      = document.querySelector('.search-bar');
   const composer = document.getElementById('search-composer');
   const input    = document.getElementById('composer-input');
@@ -6232,6 +6135,7 @@ document.querySelectorAll('#v1-btns .hv-btn').forEach(btn => {
 
 /* ── Holding Variation Switcher (independent axis) ── */
 const HOLDING_DESCS = {
+  '0': 'H0 – no holding (files not held)',
   '1': 'H1 – file pill in search bar',
   '2': 'H2 – text alternates every 2s',
   '3': 'H3 – blue text + blue stroke',
@@ -6308,7 +6212,7 @@ setInterval(() => {
   }, 320);
 }, 2000);
 
-/* ── H2: keep the pill count + tooltip in sync with chip count ── */
+/* ── H1: keep the pill count + tooltip in sync with chip count ── */
 (function () {
   const chipsEl = document.getElementById('composer-chips');
   const pillCount = document.getElementById('holding-pill-count');
@@ -6316,7 +6220,7 @@ setInterval(() => {
   if (!chipsEl || !pillCount || !pillTip) return;
   function update() {
     const c = chipsEl.querySelectorAll('.file-chip').length;
-    pillCount.textContent = c;
+    pillCount.textContent = `+${c}`;
     pillTip.textContent = _holdingLabelText();
   }
   new MutationObserver(update).observe(chipsEl, { childList: true });

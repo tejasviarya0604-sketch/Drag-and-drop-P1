@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#fffdf8" stroke="#d7d1c6" stroke-width="2"/>
+  <rect x="15" y="16" width="5" height="34" fill="#b38b45"/>
+  <g font-family="Georgia, serif" fill="#584c36">
+    <text x="28" y="29" font-size="12" font-weight="700">Residential</text>
+    <text x="28" y="45" font-size="12" font-weight="700">Lease Agreement</text>
+    <text x="16" y="80" font-size="8" font-weight="700">1. Property and term</text>
+    <text x="16" y="127" font-size="8" font-weight="700">2. Rent and deposit</text>
+    <text x="16" y="174" font-size="8" font-weight="700">3. Tenant responsibilities</text>
+  </g>
+  <path d="M16 62h144" stroke="#c7ac75" stroke-width="2"/>
+  <g stroke="#c0b9ab" stroke-width="2">
+    <path d="M16 91h144m-144 8h144m-144 8h118M16 138h144m-144 8h144m-144 8h101M16 185h144m-144 8h144m-144 8h124"/>
+  </g>
+  <path d="M16 223h60m24 0h60" stroke="#8d7a58"/>
+  <path d="m21 219 9-6-3 7 11-4 8 2m62 1 7-8 5 8 11-4 8 3" fill="none" stroke="#506484" stroke-width="1.5"/>
+</svg>
