@@ -1989,8 +1989,12 @@
       box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10) !important;
       overflow: visible !important;
       gap: 8px;
-      width: 210px !important;
+      width: max-content !important;
+      min-width: 210px;
       padding-right: 12px;
+    }
+    body[data-holding-var="1"] .search-bar.holding .search-placeholder {
+      flex: 0 0 auto;
     }
     body[data-holding-var="1"] .search-bar.holding.no-drop .holding-pill { display: none !important; }
     body[data-holding-var="1"] .search-bar.holding.drop-mode { min-width: max-content; }
