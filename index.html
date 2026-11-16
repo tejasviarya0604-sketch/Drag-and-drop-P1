@@ -1491,6 +1491,217 @@
       line-height: 1.4;
     }
 
+    .hv-divider {
+      height: 1px; background: rgba(0,0,0,0.08); margin: 3px -4px 1px;
+    }
+    .hv-section, .hv-section-options:not([hidden]) {
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .hv-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; user-select: none; padding: 0; border: 0;
+      background: transparent; font-family: inherit; text-align: left;
+    }
+    .hv-chevron {
+      width: 8px; height: 8px;
+      border-right: 1.5px solid rgba(0,0,0,0.45);
+      border-bottom: 1.5px solid rgba(0,0,0,0.45);
+      transform: rotate(45deg); transition: transform 0.18s ease;
+      margin-right: 4px; margin-bottom: 2px;
+    }
+    .hv-section.collapsed .hv-chevron { transform: rotate(-45deg); margin-bottom: 0; margin-top: 2px; }
+    .hv-section.collapsed .hv-btns, .hv-section.collapsed .hv-desc { display: none; }
+
+    /* V1 designs share the blue search-bar affordance. */
+    body[data-v1] .search-bar.drop-mode {
+      background: rgba(255,255,255,0.78); border: none;
+      outline: 1px solid #0078d4; outline-offset: 0; box-shadow: none;
+    }
+    body[data-v1] .search-bar.drop-mode .drop-mode-label,
+    body[data-v1] .search-bar.drop-mode .drop-mode-plus,
+    body[data-v1] .search-bar.holding .holding-label {
+      background: none; -webkit-background-clip: unset; background-clip: unset;
+      -webkit-text-fill-color: #0078d4; color: #0078d4;
+    }
+    body[data-v1] .search-bar.holding .holding-label svg { stroke: #0078d4; }
+    body[data-v1] .search-bar.holding {
+      background: rgba(240,247,255,0.88) !important;
+      outline: 1px solid #0078d4 !important; outline-offset: 0 !important;
+      border: none !important; box-shadow: none !important;
+    }
+    body[data-v1] .search-bar.drop-mode.drag-over,
+    body[data-v1] .search-bar.holding.drag-over {
+      outline: none !important; border: none !important; box-shadow: none !important;
+    }
+    body[data-v1] .search-bar.drop-mode.drag-over { background: rgba(240,247,255,0.85); }
+    body[data-v1] .search-bar.drop-mode.drag-over::after,
+    body[data-v1] .search-bar.holding.drag-over::after {
+      content: ''; position: absolute; inset: -2px; border-radius: 22px; pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38' preserveAspectRatio='none'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='4 2.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    }
+    @media (hover: hover) {
+      body[data-v1] .search-bar.drop-mode:hover {
+        outline: none; border: none; background: rgba(240,247,255,0.65); box-shadow: none;
+      }
+      body[data-v1] .search-bar.drop-mode:hover::after {
+        content: ''; position: absolute; inset: -2px; border-radius: 22px; pointer-events: none;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='236' height='38' viewBox='0 0 236 38' preserveAspectRatio='none'%3E%3Crect x='1' y='1' width='234' height='36' rx='21' fill='none' stroke='%230078d4' stroke-width='1.5' stroke-dasharray='4 2.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+      }
+      body[data-v1="4"] .search-bar.drop-mode:hover {
+        outline: 1.5px dotted #0078d4 !important; outline-offset: 0 !important;
+        background: rgba(240,247,255,0.85) !important;
+        box-shadow: 0 0 12px rgba(0,120,212,0.28), 0 0 24px rgba(0,120,212,0.16) !important;
+      }
+      body[data-v1="4"] .search-bar.drop-mode:hover::after { content: none !important; }
+    }
+    body[data-v1="4"] .search-bar.drop-mode.drag-over {
+      outline: 1.5px dotted #0078d4 !important; outline-offset: 0 !important;
+      background: rgba(240,247,255,0.85) !important;
+      box-shadow: 0 0 12px rgba(0,120,212,0.32), 0 0 26px rgba(0,120,212,0.20) !important;
+    }
+    body[data-v1="4"] .search-bar.drop-mode.drag-over::after { content: none !important; }
+
+    /* Holding variations are independent of the selected V1/V2 design. */
+    .search-bar.holding .holding-label { transition: opacity 0.32s cubic-bezier(0.4,0,0.2,1); }
+    .search-bar.holding.h1-fading .holding-label { opacity: 0; }
+    body[data-holding-var="2"] .search-bar.holding .holding-label,
+    body[data-holding-var="2"] .search-bar.holding .holding-label #holding-count {
+      color: #555 !important; -webkit-text-fill-color: #555 !important;
+      background: none !important; font-weight: 400 !important;
+    }
+    body[data-holding-var="2"] .search-bar.holding .holding-label > svg { stroke: #555 !important; }
+    .search-bar.holding.h1-alt .holding-label > svg { display: none; }
+    body[data-holding-var="2"] .search-bar.holding {
+      background: rgba(255,255,255,0.85) !important;
+      outline: 1px solid rgba(0,0,0,0.10) !important; outline-offset: 0 !important;
+      border: none !important; box-shadow: none !important;
+    }
+    .holding-pill {
+      display: none; align-items: center; justify-content: center; position: relative;
+      min-width: 39px; height: 20px; background: #005fb8; color: #fff;
+      padding: 0 12px; border-radius: 10px; font-size: 12px; line-height: 16px;
+      font-weight: 400; cursor: default; flex-shrink: 0;
+    }
+    .holding-pill-tip {
+      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: rgba(34,34,34,0.92); color: #fff; padding: 5px 9px;
+      border-radius: 5px; font-size: 11px; font-weight: 400; letter-spacing: 0;
+      white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease;
+    }
+    .holding-pill-tip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 4px solid transparent; border-top-color: rgba(34,34,34,0.92);
+    }
+    .holding-pill:hover .holding-pill-tip { opacity: 1; }
+    body[data-holding-var="1"] .search-bar.holding .holding-label { display: none !important; }
+    body[data-holding-var="1"] .search-bar.holding .holding-pill { display: inline-flex !important; }
+    body[data-holding-var="1"] .search-bar.holding:not(.drop-mode):not(.drag-over):not(.no-drop) .search-placeholder { display: inline !important; }
+    body[data-holding-var="1"] .search-bar.holding:not(.drop-mode):not(.drag-over):not(.no-drop) .search-icons { display: flex !important; }
+    body[data-holding-var="1"] #fw-held-banner { display: none; }
+    body[data-holding-var="1"] .search-bar.holding {
+      background: rgba(255,255,255,0.72) !important; outline: none !important; border: none !important;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10) !important; overflow: visible !important;
+      gap: 8px; width: max-content !important; min-width: 210px; padding-right: 12px;
+    }
+    body[data-holding-var="1"] .search-bar.holding .search-placeholder { flex: 0 0 auto; }
+    body[data-holding-var="1"] .search-bar.holding.no-drop .holding-pill { display: none !important; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode { min-width: max-content; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .drop-mode-label { display: flex !important; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .holding-label,
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .search-placeholder,
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .search-icons { display: none !important; }
+    body[data-holding-var="1"] .search-bar.holding.drop-mode .holding-pill { display: inline-flex !important; margin-left: auto; }
+    body[data-holding-var="3"] .search-bar.holding {
+      background: rgba(240,247,255,0.88) !important; outline: 1px solid #0078d4 !important;
+      outline-offset: 0 !important; border: none !important; box-shadow: none !important;
+    }
+    body[data-holding-var="3"] .search-bar.holding .holding-label,
+    body[data-holding-var="3"] .search-bar.holding .holding-label #holding-count {
+      color: #0078d4 !important; -webkit-text-fill-color: #0078d4 !important;
+      background: none !important; font-weight: 500 !important;
+    }
+    body[data-holding-var="3"] .search-bar.holding .holding-label > svg { stroke: #0078d4 !important; }
+
+    .taskbar.v1-3-drop-target {
+      background: rgba(255,255,255,0.80) !important; outline: 1.5px dashed #0078d4; outline-offset: -4px;
+    }
+    .taskbar.v1-3-drop-target > * { opacity: 0.12; transition: opacity 0.12s ease; }
+    .taskbar.v1-3-drop-target::before {
+      content: 'Drop to attach in composer'; position: absolute; inset: 0; display: flex;
+      align-items: center; justify-content: center; color: #0078d4; font-size: 14px;
+      font-weight: 500; letter-spacing: 0.02em; white-space: nowrap; pointer-events: none; z-index: 2;
+    }
+    #search-composer.v1-preview .suggestion-row:hover { background: rgba(0,120,212,0.10); }
+    #search-composer.v1-preview .composer-chat-area { position: relative; }
+    #search-composer.v1-preview .composer-chat-area > * { position: relative; z-index: 1; }
+    #search-composer.v1-preview .composer-chat-area:hover::after {
+      content: ''; position: absolute; inset: -6px; border: 1.5px dashed #0078d4;
+      border-radius: 10px; background: rgba(207,226,255,0.55); pointer-events: none; z-index: 0;
+    }
+    #search-composer.v1-preview .composer-chat-area:hover .composer-bottom-row,
+    #search-composer.v1-preview .composer-chat-area:hover .composer-footer { opacity: 0.3; }
+    #search-composer.v1-preview .composer-chat-area:hover::before {
+      content: '+ Drop here to do more'; position: absolute; inset: 0; display: flex;
+      align-items: center; justify-content: center; color: #0078d4; font-size: 14px;
+      font-weight: 500; letter-spacing: 0.02em; white-space: nowrap; pointer-events: none; z-index: 2;
+    }
+
+    /* V1-2 destination picker and move confirmation. */
+    #folder-picker {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.20); backdrop-filter: blur(2px);
+      z-index: 99000; display: none; align-items: center; justify-content: center;
+      font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+    }
+    #folder-picker.open { display: flex; }
+    .fp-window {
+      width: 720px; height: 480px; background: #fbfbfb; border: 1px solid rgba(0,0,0,0.18);
+      border-radius: 8px; box-shadow: 0 24px 60px rgba(0,0,0,0.28), 0 4px 12px rgba(0,0,0,0.12);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .fp-titlebar { height: 36px; background: #f3f3f3; border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; padding: 0 8px 0 14px; }
+    .fp-title { font-size: 12px; color: #1a1a1a; flex: 1; }
+    .fp-close { width: 32px; height: 28px; background: transparent; border: none; cursor: pointer; color: #555; font-size: 12px; border-radius: 4px; }
+    .fp-close:hover { background: #e81123; color: #fff; }
+    .fp-toolbar { height: 40px; background: #fbfbfb; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; padding: 0 10px; gap: 6px; }
+    .fp-tb-btn { width: 26px; height: 26px; background: transparent; border: none; border-radius: 4px; cursor: pointer; color: #444; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .fp-tb-btn:hover { background: rgba(0,0,0,0.06); }
+    .fp-breadcrumb { flex: 1; height: 26px; background: #fff; border: 1px solid rgba(0,0,0,0.10); border-radius: 3px; display: flex; align-items: center; padding: 0 8px; gap: 6px; font-size: 12px; color: #444; }
+    .fp-bc-sep { color: rgba(0,0,0,0.35); }
+    .fp-bc-current { color: #1a1a1a; }
+    .fp-search { width: 200px; height: 26px; background: #fff; border: 1px solid rgba(0,0,0,0.10); border-radius: 3px; padding: 0 8px; font-size: 12px; font-family: inherit; outline: none; }
+    .fp-search:focus { border-color: #0078d4; }
+    .fp-body { flex: 1; display: flex; overflow: hidden; }
+    .fp-sidebar { width: 200px; background: #f9f9f9; border-right: 1px solid rgba(0,0,0,0.08); overflow-y: auto; padding: 6px 0; }
+    .fp-sb-section { font-size: 11px; color: #666; padding: 6px 14px 4px; font-weight: 500; }
+    .fp-sb-item { display: flex; align-items: center; gap: 8px; padding: 5px 14px; font-size: 12.5px; color: #1a1a1a; cursor: pointer; }
+    .fp-sb-item:hover { background: rgba(0,0,0,0.05); }
+    .fp-sb-item.active { background: rgba(0,120,212,0.10); }
+    .fp-sb-icon { width: 16px; display: inline-flex; justify-content: center; font-size: 13px; }
+    .fp-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #fff; }
+    .fp-content-header { display: flex; padding: 8px 14px; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 11.5px; color: #444; font-weight: 500; }
+    .fp-col-name { flex: 2; }
+    .fp-col-date { flex: 1.2; }
+    .fp-col-type { flex: 1; }
+    .fp-content-list { flex: 1; overflow-y: auto; }
+    .fp-row { display: flex; align-items: center; padding: 6px 14px; font-size: 12.5px; color: #1a1a1a; cursor: pointer; gap: 4px; }
+    .fp-row:hover { background: rgba(0,120,212,0.06); }
+    .fp-row.selected { background: rgba(0,120,212,0.14); }
+    .fp-row-icon { width: 16px; margin-right: 8px; font-size: 14px; color: #f9c23c; flex-shrink: 0; }
+    .fp-footer { height: 60px; background: #fbfbfb; border-top: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; padding: 0 14px; gap: 10px; }
+    .fp-folder-label { font-size: 12.5px; color: #1a1a1a; }
+    .fp-folder-input { flex: 1; height: 28px; border: 1px solid rgba(0,0,0,0.18); border-bottom-color: #0078d4; border-radius: 0; padding: 0 8px; font-size: 12.5px; font-family: inherit; outline: none; }
+    .fp-btn { height: 30px; min-width: 100px; padding: 0 14px; background: #fbfbfb; border: 1px solid rgba(0,0,0,0.18); border-radius: 3px; cursor: pointer; font-size: 12.5px; font-family: inherit; color: #1a1a1a; }
+    .fp-btn:hover { background: #f0f0f0; }
+    .fp-btn-primary:hover { background: #e6f1ff; border-color: #0078d4; }
+    #move-toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: rgba(34,34,34,0.92); color: #fff; padding: 10px 18px; border-radius: 8px;
+      font-size: 13px; font-family: 'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.25); z-index: 99500; opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    #move-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
     /* ── Variant D: purple glow pulse ───────────────────────── */
     @keyframes glowPulse {
       0%, 100% { box-shadow: 0 0 0 3px rgba(168,85,247,0.32), 0 0 18px rgba(168,85,247,0.18); }
@@ -1965,24 +2176,49 @@
   .cop-icon-btn:hover { background: rgba(0,0,0,0.06); color: #444; }
   </style>
   <link rel="stylesheet" href="desktop-files.css">
-  <link rel="stylesheet" href="universal-composer.css">
-  <script src="universal-composer.js?v=20261113-zero-state"></script>
+  <link rel="stylesheet" href="universal-composer.css?v=20261117-share-flow">
+  <script src="universal-composer.js?v=20261117-share-flow"></script>
   <link rel="stylesheet" href="file-explorer.css?v=20261113-sidebar-text">
-  <script src="file-explorer.js" defer></script>
+  <script src="file-explorer.js?v=20261117-share-flow" defer></script>
 </head>
-<body data-hv="a">
+<body data-hv="a" data-holding-var="1">
 
 <!-- ░░ Hover Variant Switcher (desktop only) ░░ -->
 <div id="hv-switcher">
-  <span class="hv-label">Hover variant</span>
+  <div class="hv-section collapsed">
+    <button type="button" class="hv-label hv-section-header" aria-expanded="false" aria-controls="v1-options">
+      V1 designs
+      <span class="hv-chevron"></span>
+    </button>
+    <div id="v1-options" class="hv-section-options" hidden>
+      <div class="hv-btns" id="v1-btns">
+        <button class="hv-btn" data-v1="1" title="V1-1">1</button>
+        <button class="hv-btn" data-v1="2" title="V1-2 – UC opens on drag-hover">2</button>
+        <button class="hv-btn" data-v1="3" title="V1-3 – drop on empty taskbar to attach">3</button>
+        <button class="hv-btn" data-v1="4" title="V1-4 – glow + dotted line on hover">4</button>
+      </div>
+      <span class="hv-desc" id="v1-desc">—</span>
+    </div>
+  </div>
+  <div class="hv-divider"></div>
+  <span class="hv-label">V2 designs</span>
   <div class="hv-btns">
     <button class="hv-btn active" data-v="a" title="Subtle (current)">A</button>
     <button class="hv-btn" data-v="d" title="Purple glow pulse">D</button>
-<button class="hv-btn" data-v="f" title="Minimal – blue dashed on hover">F</button>
+    <button class="hv-btn" data-v="f" title="Minimal – blue dashed on hover">F</button>
     <button class="hv-btn" data-v="i" title="Pulsating dashed border on hover">I</button>
     <button class="hv-btn" data-v="j" title="Cop drop zone appears on drag">J</button>
   </div>
   <span class="hv-desc" id="hv-desc">Subtle – slight fill lift</span>
+  <div class="hv-divider"></div>
+  <span class="hv-label">Holding Variation</span>
+  <div class="hv-btns" id="holding-var-btns">
+    <button class="hv-btn" data-holding="0" title="H0 – no holding (files not held)">H0</button>
+    <button class="hv-btn active" data-holding="1" title="H1 – small file pill in search bar">H1</button>
+    <button class="hv-btn" data-holding="2" title="H2 – holding text alternates every 2s">H2</button>
+    <button class="hv-btn" data-holding="3" title="H3 – blue holding text + blue stroke">H3</button>
+  </div>
+  <span class="hv-desc" id="holding-var-desc">H1 – file pill in search bar</span>
 </div>
 
 <!-- ░░ Desktop ░░ -->
@@ -2187,6 +2423,10 @@
         <span id="holding-count">Holding 0 files</span>
       </div>
       <span class="search-placeholder">Ask Copilot anything</span>
+      <div class="holding-pill" id="holding-pill">
+        <span id="holding-pill-count">+0</span>
+        <span class="holding-pill-tip" id="holding-pill-tip">Holding 0 files</span>
+      </div>
       <div class="search-icons">
         <svg role="img" aria-label="Microphone" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
           <rect x="5.5" y="2" width="5" height="7" rx="2.5"/>
@@ -2522,6 +2762,56 @@
   <div class="fw-statusbar"><span id="fw-status-text">0 items</span></div>
 </div>
 
+<!-- ░░ Folder picker (V1-2 "Move to folder") ░░ -->
+<div id="folder-picker">
+  <div class="fp-window">
+    <div class="fp-titlebar">
+      <span class="fp-title">Select folder to move <span id="fp-count">1</span> item</span>
+      <button class="fp-close" id="fp-close" title="Close">&#10005;</button>
+    </div>
+    <div class="fp-toolbar">
+      <button class="fp-tb-btn" title="Back">&#8592;</button>
+      <button class="fp-tb-btn" title="Forward">&#8594;</button>
+      <button class="fp-tb-btn" title="Up">&#8593;</button>
+      <div class="fp-breadcrumb">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="#f9c23c" style="flex-shrink:0;"><path d="M1 3.5A1.5 1.5 0 012.5 2H6l1.5 2H13.5A1.5 1.5 0 0115 5.5v7A1.5 1.5 0 0113.5 14h-11A1.5 1.5 0 011 12.5z"/></svg>
+        <span>This PC</span><span class="fp-bc-sep">&rsaquo;</span>
+        <span class="fp-bc-current">Quick access</span>
+      </div>
+      <input class="fp-search" type="text" placeholder="Search Quick access">
+    </div>
+    <div class="fp-body">
+      <div class="fp-sidebar">
+        <div class="fp-sb-section">Quick access</div>
+        <div class="fp-sb-item"><span class="fp-sb-icon">&#127968;</span>Home</div>
+        <div class="fp-sb-item active"><span class="fp-sb-icon" style="color:#0078d4;">&#9729;</span>Tejasvi - Microsoft</div>
+        <div class="fp-sb-section">This PC</div>
+        <div class="fp-sb-item" data-folder="Desktop"><span class="fp-sb-icon">&#128421;</span>Desktop</div>
+        <div class="fp-sb-item" data-folder="Downloads"><span class="fp-sb-icon">&#11015;</span>Downloads</div>
+        <div class="fp-sb-item" data-folder="Documents"><span class="fp-sb-icon">&#128196;</span>Documents</div>
+        <div class="fp-sb-item" data-folder="Pictures"><span class="fp-sb-icon">&#128247;</span>Pictures</div>
+        <div class="fp-sb-item" data-folder="Music"><span class="fp-sb-icon">&#127925;</span>Music</div>
+        <div class="fp-sb-item" data-folder="Videos"><span class="fp-sb-icon">&#127910;</span>Videos</div>
+      </div>
+      <div class="fp-content">
+        <div class="fp-content-header">
+          <span class="fp-col fp-col-name">Name</span>
+          <span class="fp-col fp-col-date">Date modified</span>
+          <span class="fp-col fp-col-type">Type</span>
+        </div>
+        <div class="fp-content-list" id="fp-content-list"></div>
+      </div>
+    </div>
+    <div class="fp-footer">
+      <label class="fp-folder-label" for="fp-folder-input">Folder:</label>
+      <input class="fp-folder-input" id="fp-folder-input" type="text" value="">
+      <button class="fp-btn fp-btn-primary" id="fp-select-btn">Select Folder</button>
+      <button class="fp-btn" id="fp-cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+<div id="move-toast"></div>
+
 <!-- ░░ Preview popup ░░ -->
 <div id="preview-popup">
   <div class="preview-card">
@@ -2558,9 +2848,9 @@
   const syncDropZone = () => {
     const hasSelection = sel.size > 0;
     const allApps = hasSelection && [...sel].every(ic => ic.dataset.type === 'app');
-    // Variant A: show on mere selection. Other variants: only while dragging.
+    // V1 and variant A show the affordance on selection; other V2 designs require a drag.
     const isVariantA = document.body.dataset.hv === 'a';
-    const show = hasSelection && !allApps && (dragging || isVariantA);
+    const show = hasSelection && !allApps && (dragging || isVariantA || !!document.body.dataset.v1);
     searchBarEl.classList.toggle('drop-mode', show);
     if (show) {
       searchBarEl.classList.remove('thinking');
@@ -2586,6 +2876,19 @@
   let dragGhost     = null;
   let dragGhostGox  = 0, dragGhostGoy = 0;
   let hoveredBtn    = null;   // taskbar button being hovered during drag
+
+  let v1PreviewOpen = false;
+  function openV1Preview() {
+    const composer = document.getElementById('search-composer');
+    renderComposerFileSuggestions(document.getElementById('composer-suggestions'));
+    composer.classList.add('open', 'v1-preview');
+    v1PreviewOpen = true;
+  }
+  function closeV1Preview() {
+    if (!v1PreviewOpen) return;
+    document.getElementById('search-composer').classList.remove('open', 'v1-preview');
+    v1PreviewOpen = false;
+  }
 
   /* ── Rubber-band state ── */
   let rbOn    = false;
@@ -2800,6 +3103,13 @@
         const overSB = e.clientX >= sr.left && e.clientX <= sr.right &&
                        e.clientY >= sr.top  && e.clientY <= sr.bottom;
         searchBarEl.classList.toggle('drag-over', overSB);
+        if (document.body.dataset.v1 === '2' && overSB && !v1PreviewOpen) openV1Preview();
+      }
+      if (document.body.dataset.v1 === '3') {
+        const target = document.elementFromPoint(e.clientX, e.clientY);
+        document.querySelector('.taskbar').classList.toggle('v1-3-drop-target',
+          !!target?.closest('.taskbar') && !target?.closest('.tb-btn, .tb-trigger, .search-bar')
+          && [...sel].some(ic => ic.dataset.type !== 'app'));
       }
       // No-drop indicator when dragging app-only selection over search bar
       if ([...sel].every(ic => ic.dataset.type === 'app')) {
@@ -2861,15 +3171,38 @@
         e.clientX >= cdzR.left && e.clientX <= cdzR.right &&
         e.clientY >= cdzR.top  && e.clientY <= cdzR.bottom;
 
+      const target = document.elementFromPoint(e.clientX, e.clientY);
+      const suggestion = v1PreviewOpen ? target?.closest('.suggestion-row') : null;
+      const droppedInComposer = v1PreviewOpen && !!target?.closest('#search-composer');
+      const droppedOnTaskbar = document.body.dataset.v1 === '3'
+        && !!target?.closest('.taskbar') && !target?.closest('.tb-btn, .tb-trigger, .search-bar');
+
       if (btn) {
+        closeV1Preview();
         // Dropped on taskbar app — ghost flies into button, original snaps back
         showDropEffect(btn, [...sel]);
         dragOffsets.forEach(({ s, origX, origY }) => {
           s.style.left = origX + 'px';
           s.style.top  = origY + 'px';
         });
-      } else if (droppedOnSearchBar || droppedOnCDZ) {
-        // Dropped on search bar or cop-drop-zone — restore originals
+      } else if (suggestion) {
+        dragOffsets.forEach(({ s, origX, origY }) => {
+          s.style.left = origX + 'px';
+          s.style.top = origY + 'px';
+        });
+        const fileIcons = [...sel].filter(ic => ic.dataset.type !== 'app');
+        const names = fileIcons.map(ic => ic.querySelector('span:last-child')?.textContent || 'File');
+        const title = suggestion.querySelector('.suggestion-title')?.textContent || '';
+        closeV1Preview();
+        if (/move/i.test(title) && /folder/i.test(title)) {
+          window._openFolderPicker(names, folder => window._moveFilesToFolder(names, fileIcons, folder));
+        } else {
+          window._openCopilot?.(title, names);
+        }
+        selClear();
+      } else if (droppedOnSearchBar || droppedOnCDZ || droppedInComposer || droppedOnTaskbar) {
+        // Attach without moving the source icons.
+        closeV1Preview();
         dragOffsets.forEach(({ s, origX, origY }) => {
           s.style.left = origX + 'px';
           s.style.top  = origY + 'px';
@@ -2883,6 +3216,7 @@
           showSkipNotice(appIcons.length, 0);
         }
       } else {
+        closeV1Preview();
         // Dropped on desktop — move originals to where ghosts landed
         dragOffsets.forEach(({ s, ox, oy }) => {
           const x = Math.max(0, Math.min(e.clientX - dr.left - ox, dr.width - ICON_W));
@@ -2898,6 +3232,7 @@
 
       if (hoveredBtn) { hoveredBtn.classList.remove('drop-target'); hoveredBtn = null; }
       cdzEl?.classList.remove('visible', 'file-over');
+      document.querySelector('.taskbar').classList.remove('v1-3-drop-target');
       searchBarEl.classList.remove('drag-over', 'no-drop');
       sel.forEach(s => { s.classList.remove('dragging'); s.style.zIndex = ''; });
       dragging    = false;
@@ -3134,7 +3469,7 @@ searchBar.addEventListener('click', () => {
   composerInput.focus();
 });
 
-function closeComposer() {
+function closeComposer({ preserveFiles = false } = {}) {
   searchComposer.classList.remove('open');
   resetCompletedComposer();
   if (!document.querySelector('#composer-chips .file-chip')
@@ -3146,7 +3481,11 @@ function closeComposer() {
   if (skipNotice) { skipNotice.classList.remove('visible'); clearTimeout(skipNotice._hideTimer); }
   setTimeout(() => {
     if (searchComposer.classList.contains('open')) return;
-    const hasChips = !!document.getElementById('composer-chips').querySelector('.file-chip');
+    const chipsEl = document.getElementById('composer-chips');
+    if (document.body.dataset.holdingVar === '0' && !preserveFiles) {
+      chipsEl.querySelectorAll('.file-chip').forEach(c => c.remove());
+    }
+    const hasChips = !!chipsEl.querySelector('.file-chip');
     if (!hasChips && !['loading', 'complete', 'zero'].includes(searchComposer.dataset.composerState)) {
       renderComposerZeroState();
     }
@@ -3155,7 +3494,10 @@ function closeComposer() {
 }
 
 document.addEventListener('mousedown', e => {
-  if (!searchComposer.contains(e.target) && !searchBar.contains(e.target) && !e.target.closest('#chip-overflow-menu')) closeComposer();
+  if (!searchComposer.contains(e.target) && !searchBar.contains(e.target) && !e.target.closest('#chip-overflow-menu')) {
+    const fromExplorer = !!e.target.closest('#folder-window, .tb-btn[data-app="explorer"], .d-icon:has(.folder-thumb)');
+    closeComposer({ preserveFiles: fromExplorer });
+  }
 });
 
 document.addEventListener('keydown', e => {
@@ -4443,6 +4785,79 @@ document.getElementById('fw-sb-downloads')?.addEventListener('click', () => open
 document.getElementById('fw-sb-documents')?.addEventListener('click', () => openFolder('Documents'));
 document.getElementById('fw-sb-design')?.addEventListener('click', () => openFolder('Design Assets'));
 
+window._moveFilesToFolder = function (names, icons, folderPath) {
+  const target = folderPath.split('\\').pop();
+  if (!FOLDER_DATA[target]) FOLDER_DATA[target] = [];
+  names.forEach(name => {
+    if (FOLDER_DATA[target].some(item => item.name === name)) return;
+    FOLDER_DATA[target].unshift(explorerFileDetails({ name }));
+  });
+  icons.forEach(icon => icon.remove());
+  const toast = document.getElementById('move-toast');
+  toast.textContent = `Moved ${names.length === 1 ? `"${names[0]}"` : `${names.length} items`} to ${folderPath}`;
+  toast.classList.add('visible');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('visible'), 2800);
+  openFolder(target);
+};
+
+(function () {
+  const picker = document.getElementById('folder-picker');
+  const input = document.getElementById('fp-folder-input');
+  const list = document.getElementById('fp-content-list');
+  const sidebar = picker.querySelectorAll('.fp-sb-item[data-folder]');
+  const subfolders = {
+    Desktop: [{ name: 'Screenshots', date: '3/2/2026 8:14 AM' }, { name: 'Old Projects', date: '1/12/2026 11:02 AM' }],
+    Downloads: [{ name: 'Alphabets', date: '2/18/2026 9:15 PM' }, { name: 'New folder (2)', date: '3/04/2026 4:21 PM' }],
+    Documents: [{ name: 'Work', date: '2/28/2026 6:00 PM' }, { name: 'Personal', date: '12/03/2025 2:45 PM' }, { name: 'Receipts', date: '1/22/2026 9:33 AM' }],
+    Pictures: [{ name: 'Travel', date: '11/15/2025 7:10 AM' }, { name: 'Family', date: '2/01/2026 10:25 AM' }],
+    Music: [{ name: 'Playlists', date: '10/04/2025 1:08 PM' }],
+    Videos: [{ name: 'Recordings', date: '12/19/2025 3:48 PM' }],
+  };
+  let onSelect = null;
+  function close() {
+    picker.classList.remove('open');
+    onSelect = null;
+  }
+  function finish() {
+    const folder = input.value.trim();
+    if (!folder) return;
+    const callback = onSelect;
+    close();
+    callback?.(folder);
+  }
+  function selectRoot(root) {
+    sidebar.forEach(item => item.classList.toggle('active', item.dataset.folder === root));
+    picker.querySelector('.fp-bc-current').textContent = root;
+    input.value = root;
+    list.innerHTML = subfolders[root].map(folder => `
+      <div class="fp-row" data-folder-name="${folder.name}">
+        <span class="fp-row-icon">&#128193;</span>
+        <span class="fp-col fp-col-name">${folder.name}</span>
+        <span class="fp-col fp-col-date">${folder.date}</span>
+        <span class="fp-col fp-col-type">File folder</span>
+      </div>`).join('');
+    list.querySelectorAll('.fp-row').forEach(row => {
+      row.addEventListener('click', () => {
+        list.querySelectorAll('.fp-row').forEach(item => item.classList.remove('selected'));
+        row.classList.add('selected');
+        input.value = `${root}\\${row.dataset.folderName}`;
+      });
+      row.addEventListener('dblclick', finish);
+    });
+  }
+  sidebar.forEach(item => item.addEventListener('click', () => selectRoot(item.dataset.folder)));
+  document.getElementById('fp-close').addEventListener('click', close);
+  document.getElementById('fp-cancel-btn').addEventListener('click', close);
+  document.getElementById('fp-select-btn').addEventListener('click', finish);
+  window._openFolderPicker = (names, callback) => {
+    document.getElementById('fp-count').textContent = names.length;
+    selectRoot('Documents');
+    onSelect = callback;
+    picker.classList.add('open');
+  };
+})();
+
 // File Explorer taskbar button: toggle minimize/restore
 explorerTbBtn?.addEventListener('click', () => {
   if (folderWin.classList.contains('open')) {
@@ -4526,18 +4941,18 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
   function syncHoldingState() {
     const count   = chips.querySelectorAll('.file-chip').length;
     const isOpen  = composer.classList.contains('open');
-    const holding = count > 0 && !isOpen;
+    const holding = count > 0 && !isOpen && document.body.dataset.holdingVar !== '0';
 
     bar.classList.toggle('holding', holding);
 
     const countEl   = document.getElementById('holding-count');
     const bannerEl  = document.getElementById('fw-held-banner');
     const bannerTxt = document.getElementById('fw-held-banner-text');
-    const label     = `${count} file${count !== 1 ? 's' : ''}`;
+    const label = _holdingLabelText();
 
     if (holding) {
-      if (countEl)   countEl.textContent   = `Holding ${label}`;
-      if (bannerTxt) bannerTxt.textContent = `${label} in Copilot`;
+      if (countEl)   countEl.textContent   = label;
+      if (bannerTxt) bannerTxt.textContent = `${label.replace(/^Holding\s+/, '')} in Copilot`;
       bannerEl?.classList.add('visible');
     } else {
       bannerEl?.classList.remove('visible');
@@ -4547,6 +4962,7 @@ window.addEventListener('mouseup', () => { fwDrag = false; });
   // Watch chips for add/remove and composer for open/close
   new MutationObserver(syncHoldingState).observe(chips, { childList: true });
   new MutationObserver(syncHoldingState).observe(composer, { attributes: true, attributeFilter: ['class'] });
+  new MutationObserver(syncHoldingState).observe(document.body, { attributes: true, attributeFilter: ['data-holding-var'] });
 
   // Clicking the banner re-opens the composer
   document.getElementById('fw-held-banner')?.addEventListener('click', () => {
@@ -5047,6 +5463,15 @@ initializeComposer();
   });
 })();
 
+/* ── Collapsible section toggle ── */
+document.querySelectorAll('.hv-section-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const collapsed = header.closest('.hv-section').classList.toggle('collapsed');
+    header.setAttribute('aria-expanded', String(!collapsed));
+    document.getElementById(header.getAttribute('aria-controls')).hidden = collapsed;
+  });
+});
+
 /* ── Hover Variant Switcher ── */
 const HV_DESCS = {
   a: 'Subtle – slight fill lift',
@@ -5057,6 +5482,7 @@ const HV_DESCS = {
 };
 const hvDesc = document.getElementById('hv-desc');
 function resetUCState() {
+  resetComposerActionState();
   const bar      = document.querySelector('.search-bar');
   const composer = document.getElementById('search-composer');
   const input    = document.getElementById('composer-input');
@@ -5072,7 +5498,7 @@ function resetUCState() {
   sugEl?.classList.remove('visible');
 
   // Now safe to close composer and strip all state classes
-  composer?.classList.remove('open');
+  composer?.classList.remove('open', 'v1-preview');
   bar?.classList.remove('drop-mode', 'thinking', 'holding', 'drag-over', 'no-drop');
 
   if (input) {
@@ -5082,16 +5508,115 @@ function resetUCState() {
   renderComposerZeroState();
 }
 
-document.querySelectorAll('.hv-btn').forEach(btn => {
+const V1_DESCS = {
+  '1': 'V1-1',
+  '2': 'V1-2 – UC opens on drag-hover',
+  '3': 'V1-3 – drop on empty taskbar',
+  '4': 'V1-4 – glow + dotted on hover',
+};
+const v1Desc = document.getElementById('v1-desc');
+
+function clearAllSwitcherActive() {
+  document.querySelectorAll('#hv-switcher .hv-btn[data-v], #hv-switcher .hv-btn[data-v1]')
+    .forEach(b => b.classList.remove('active'));
+}
+
+document.querySelectorAll('#hv-switcher .hv-btn[data-v]').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.hv-btn').forEach(b => b.classList.remove('active'));
+    clearAllSwitcherActive();
     btn.classList.add('active');
     document.body.dataset.hv = btn.dataset.v;
+    delete document.body.dataset.v1;
     hvDesc.textContent = HV_DESCS[btn.dataset.v] || '';
+    v1Desc.textContent = '—';
     resetUCState();
     window.__syncDropZone?.();
   });
 });
+
+document.querySelectorAll('#v1-btns .hv-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    clearAllSwitcherActive();
+    btn.classList.add('active');
+    document.body.dataset.v1 = btn.dataset.v1;
+    delete document.body.dataset.hv;
+    v1Desc.textContent = V1_DESCS[btn.dataset.v1] || '';
+    hvDesc.textContent = '—';
+    resetUCState();
+    window.__syncDropZone?.();
+  });
+});
+
+const HOLDING_DESCS = {
+  '0': 'H0 – no holding (files not held)',
+  '1': 'H1 – file pill in search bar',
+  '2': 'H2 – text alternates every 2s',
+  '3': 'H3 – blue text + blue stroke',
+};
+const holdingVarDesc = document.getElementById('holding-var-desc');
+
+function _holdingLabelText() {
+  const chips = [...document.querySelectorAll('#composer-chips .file-chip')];
+  const folders = chips.filter(c => c.dataset.kind === 'folder').length;
+  const files = chips.length - folders;
+  if (folders && files) return `Holding ${files} file${files !== 1 ? 's' : ''} and ${folders} folder${folders !== 1 ? 's' : ''}`;
+  if (folders) return `Holding ${folders} folder${folders !== 1 ? 's' : ''}`;
+  return `Holding ${files} file${files !== 1 ? 's' : ''}`;
+}
+
+function _refreshHoldingCountText() {
+  if (!document.querySelector('.search-bar')?.classList.contains('holding')) return;
+  document.getElementById('holding-count').textContent = _holdingLabelText();
+}
+
+document.querySelectorAll('#holding-var-btns .hv-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('active');
+      delete document.body.dataset.holdingVar;
+      holdingVarDesc.textContent = '—';
+    } else {
+      document.querySelectorAll('#holding-var-btns .hv-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.body.dataset.holdingVar = btn.dataset.holding;
+      holdingVarDesc.textContent = HOLDING_DESCS[btn.dataset.holding] || '';
+    }
+    document.querySelector('.search-bar')?.classList.remove('h1-alt', 'h1-fading');
+    _refreshHoldingCountText();
+  });
+});
+
+setInterval(() => {
+  const bar = document.querySelector('.search-bar');
+  if (!bar.classList.contains('holding') || document.body.dataset.holdingVar !== '2') {
+    if (bar.classList.contains('h1-alt') || bar.classList.contains('h1-fading')) {
+      bar.classList.remove('h1-alt', 'h1-fading');
+      _refreshHoldingCountText();
+    }
+    return;
+  }
+  bar.classList.add('h1-fading');
+  setTimeout(() => {
+    if (!bar.classList.contains('holding') || document.body.dataset.holdingVar !== '2') {
+      bar.classList.remove('h1-fading', 'h1-alt');
+      return;
+    }
+    const altOn = bar.classList.toggle('h1-alt');
+    if (altOn) document.getElementById('holding-count').textContent = 'Ask Copilot anything';
+    else _refreshHoldingCountText();
+    bar.classList.remove('h1-fading');
+  }, 320);
+}, 2000);
+
+(function () {
+  const chips = document.getElementById('composer-chips');
+  function update() {
+    document.getElementById('holding-pill-count').textContent = `+${chips.querySelectorAll('.file-chip').length}`;
+    document.getElementById('holding-pill-tip').textContent = _holdingLabelText();
+  }
+  new MutationObserver(update).observe(chips, { childList: true });
+  update();
+})();
 </script>
 </body>
 </html>

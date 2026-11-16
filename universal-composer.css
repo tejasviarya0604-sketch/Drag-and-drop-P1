@@ -412,3 +412,256 @@
 @media (prefers-reduced-motion: reduce) {
   .composer-action-spinner { animation-duration: 2s; }
 }
+
+/* Figma 459:301146, 459:301796 and 462:303984: share, sending and success. */
+#search-composer[data-merge-flow] .composer-suggestions.visible {
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+}
+#search-composer[data-merge-flow] .composer-chat-area {
+  min-height: 98px;
+  margin-top: 12px;
+}
+#search-composer[data-merge-flow] .composer-bottom-row {
+  margin-top: 0;
+}
+#search-composer[data-merge-flow] .composer-chips,
+#search-composer[data-merge-flow] .composer-divider {
+  display: none;
+}
+#search-composer[data-merge-flow]:not([data-composer-state="share-complete"]) .composer-footer-right {
+  display: none;
+}
+#search-composer[data-merge-flow] .composer-skip-notice {
+  display: none;
+}
+#search-composer[data-composer-state="share-sending"] .composer-chat-area {
+  background: transparent;
+  margin-top: 0;
+}
+#search-composer[data-composer-state="share-sending"] .composer-add-btn {
+  opacity: 0.45;
+}
+#search-composer[data-composer-state="share-complete"] .composer-footer-right {
+  visibility: visible;
+}
+#search-composer[data-merge-flow] .composer-action-status {
+  align-items: flex-start;
+  min-height: 72px;
+  padding: 10px 8px 10px 16px;
+  gap: 12px;
+}
+#search-composer[data-merge-flow] .composer-action-status .suggestion-icon {
+  height: 44px;
+  padding-top: 6px;
+}
+#search-composer[data-merge-flow] .composer-action-status .suggestion-text {
+  margin-top: 2px;
+}
+#search-composer[data-composer-state="share-complete"] .composer-action-status {
+  min-height: 76px;
+  padding: 6px 4px 6px 16px;
+}
+#search-composer[data-composer-state="share-complete"] .composer-action-status .suggestion-icon {
+  color: #107c10;
+}
+#search-composer[data-composer-state="share-complete"] .composer-action-status .suggestion-title {
+  width: auto;
+  max-height: 40px;
+}
+#search-composer[data-composer-state="share-complete"] .composer-action-status .suggestion-sub {
+  white-space: normal;
+}
+.composer-share-result-actions {
+  align-self: center;
+  width: 84px;
+  gap: 0;
+}
+.composer-share-action-divider {
+  width: 1px;
+  height: 32px;
+  margin-right: 3px;
+  background: rgba(0, 0, 0, 0.08);
+}
+#search-composer .composer-share-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 76px;
+  flex-shrink: 0;
+  padding: 6px 12px 6px 8px;
+  font: 14px/20px 'Segoe UI', sans-serif;
+}
+.composer-share-header > div { min-width: 0; flex: 1; margin-left: 8px; }
+.composer-share-header > .composer-control-icon { width: 24px; height: 64px; }
+.composer-share-subtitle { color: #707070; }
+.composer-share-back {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+.composer-share-back:hover { background: #e5e5e5; }
+.composer-outlook-draft {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  margin-top: 12px;
+  padding: 14px 24px 24px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  font: 14px/20px 'Segoe UI', sans-serif;
+}
+.composer-outlook-heading {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  line-height: 16px;
+}
+.composer-outlook-heading > img { width: 16px; height: 16px; }
+.composer-mail-field {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: 32px;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.composer-mail-field[hidden] { display: none; }
+.composer-mail-field > span,
+.composer-mail-field > label { width: 56px; flex-shrink: 0; color: #707070; }
+.composer-mail-field input {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 1px solid #dedede;
+  border-radius: 0;
+  background: transparent;
+  color: #242424;
+  font: inherit;
+}
+.composer-recipient-line {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  border-bottom: 1px solid #dedede;
+}
+.composer-recipient-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: calc(100% - 64px);
+  height: 24px;
+  padding: 2px 4px;
+  border-radius: 12px;
+  background: #f0efef;
+}
+.composer-recipient-avatar {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.composer-recipient-avatar[hidden] { display: none; }
+.composer-recipient-pill input {
+  field-sizing: content;
+  width: auto;
+  min-width: 1ch;
+  height: 20px;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  text-overflow: ellipsis;
+}
+.composer-recipient-line button {
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #909090;
+  font: inherit;
+  cursor: pointer;
+}
+.composer-recipient-line button:hover { color: #242424; background: #e8e8e8; }
+.composer-recipient-line .composer-remove-recipient { width: 20px; height: 20px; font-size: 18px; }
+.composer-recipient-line .composer-mail-cc { margin-left: auto; }
+.composer-mail-cc, .composer-mail-bcc { width: 32px; height: 28px; }
+.composer-merged-file {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+  min-height: 56px;
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+.composer-merged-file > img { width: 34px; height: 38px; margin: 0 3px; }
+.composer-merged-file > div { min-width: 0; }
+.composer-merged-file strong {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+.composer-merged-file span { display: block; color: #707070; font-size: 12px; line-height: 16px; }
+.composer-outlook-draft > textarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 134px;
+  min-height: 134px;
+  flex-shrink: 0;
+  resize: vertical;
+  margin-top: 12px;
+  border: 1px solid #e8e8e8;
+  border-bottom: 2px solid #0067c0;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: #fff;
+  color: #242424;
+  font: inherit;
+}
+#composer-merge-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+}
+#composer-merge-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 4px 16px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+  color: #242424;
+  font: 14px/20px 'Segoe UI', sans-serif;
+  cursor: pointer;
+}
+#composer-merge-controls .composer-control-icon { width: 16px; height: 16px; }
+#composer-merge-controls button:hover { background: #f5f5f5; }
+#composer-merge-controls .composer-merge-primary { border-color: #0067c0; background: #0067c0; color: #fff; }
+#composer-merge-controls .composer-merge-primary:hover { background: #005a9e; }

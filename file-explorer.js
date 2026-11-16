@@ -113,7 +113,7 @@ function explorerFileDetails(file) {
   return { date, type, size, icon };
 }
 
-function createComposerDesktopFolder(query, files) {
+function createComposerDesktopFolder(query, files, { copy = false } = {}) {
   if (!files.length) throw new Error('Attach files before creating a folder.');
   if (files.some(file => file.kind === 'folder')) throw new Error('Select files rather than folders for this action.');
   const named = query.match(/\bfolder\s+(?:(?:named|called)\s+)?(?:"([^"]+)"|'([^']+)')/i)
@@ -134,7 +134,7 @@ function createComposerDesktopFolder(query, files) {
     .filter(folder => folder && folder !== 'Home' && folder !== 'This PC');
   const rename = /\brename\b/i.test(query);
   const moves = files.map((file, index) => {
-    const source = folders.find(folder => FOLDER_DATA[folder].some(item => item.name === file.name));
+    const source = copy ? undefined : folders.find(folder => FOLDER_DATA[folder].some(item => item.name === file.name));
     const original = source && FOLDER_DATA[source].find(item => item.name === file.name);
     const extension = file.name.match(/\.[^.]+$/)?.[0] || '';
     const category = composerFileCategory(file);
@@ -144,7 +144,7 @@ function createComposerDesktopFolder(query, files) {
     const renamed = rename
       ? `${label} ${String(index + 1).padStart(2, '0')}${extension}`
       : file.name;
-    const desktopIcon = desktopIcons.find(icon => icon.querySelector('span:last-child').textContent === file.name);
+    const desktopIcon = copy ? undefined : desktopIcons.find(icon => icon.querySelector('span:last-child').textContent === file.name);
     return {
       source, original, index: original ? FOLDER_DATA[source].indexOf(original) : -1,
       desktopIcon,
