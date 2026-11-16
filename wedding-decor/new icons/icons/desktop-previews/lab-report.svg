@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#fff" stroke="#cdd4db" stroke-width="2"/>
+  <rect x="2" y="2" width="172" height="38" fill="#754770"/>
+  <text x="15" y="25" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#fff">LABORATORY REPORT</text>
+  <g font-family="Arial, sans-serif" fill="#5a5362">
+    <text x="15" y="58" font-size="7">COMPLETE BLOOD COUNT</text>
+    <text x="15" y="72" font-size="6">Collected: 12 February 2026 / Sample</text>
+  </g>
+  <rect x="15" y="87" width="146" height="91" fill="#faf7fb" stroke="#ded3e3"/>
+  <path d="M15 105h146m-146 18h146m-146 18h146m-146 18h146M91 87v91m34-91v91" stroke="#ded3e3"/>
+  <g font-family="Arial, sans-serif" font-size="7" fill="#4a3c54">
+    <text x="20" y="99" font-weight="700">TEST</text><text x="96" y="99">VALUE</text>
+    <text x="20" y="117">Hemoglobin</text><text x="97" y="117">14.2</text>
+    <text x="20" y="135">White cells</text><text x="97" y="135">6.8</text>
+    <text x="20" y="153">Platelets</text><text x="97" y="153">245</text>
+    <text x="20" y="171">Hematocrit</text><text x="97" y="171">42.0</text>
+  </g>
+  <path d="M18 219h139M18 188v31" stroke="#b9b1c6"/>
+  <path d="m22 211 19-9 18 5 19-17 18 10 18-7 18 4 20-10" fill="none" stroke="#9673b6" stroke-width="3"/>
+  <circle cx="78" cy="190" r="4" fill="#c68145"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#fff" stroke="#cdd4db" stroke-width="2"/>
+  <circle cx="88" cy="32" r="17" fill="#e0f1e8"/>
+  <path d="m79 32 6 6 13-14" fill="none" stroke="#35916b" stroke-width="4"/>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="88" y="67" font-size="11" font-weight="700" fill="#2a634f">APPOINTMENT</text>
+    <text x="88" y="82" font-size="11" font-weight="700" fill="#2a634f">CONFIRMED</text>
+    <text x="88" y="97" font-size="6" fill="#85988c">VISA SERVICES / SAMPLE</text>
+  </g>
+  <rect x="17" y="112" width="142" height="62" rx="3" fill="#f0f7f3"/>
+  <g font-family="Arial, sans-serif" fill="#537565">
+    <text x="26" y="128" font-size="6">DATE AND TIME</text>
+    <text x="26" y="143" font-size="10" font-weight="700">24 MARCH / 09:30</text>
+    <text x="26" y="160" font-size="6">Application center / Desk 04</text>
+  </g>
+  <g fill="#375d4e">
+    <path d="M20 190h18v18H20zm24 0h18v18H44zm-24 24h18v12H20zm24 0h6v6h-6zm12 6h6v6h-6z"/>
+    <path d="M24 194h10v10H24zm24 0h10v10H48zm-24 24h10v4H24z" fill="#fff"/>
+  </g>
+  <path d="M76 194h74m-74 10h65m-65 10h54" stroke="#b4c6bc" stroke-width="3"/>
+</svg>

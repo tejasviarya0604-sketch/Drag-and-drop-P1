@@ -4,6 +4,12 @@ Open `index.html` or `taskbar.html` in a browser. Both use the shared universal 
 
 Permanent hosted preview: https://tejasviarya0604-sketch.github.io/Drag-and-drop-P1/
 
+## Wedding decor prototype
+
+Hosted preview: https://tejasviarya0604-sketch.github.io/Drag-and-drop-P1/wedding-decor/
+
+Select the four wedding photos on the desktop, drag them to the top of the screen, and drop them onto **Wedding decor**. The destination opens with the moved photos selected. This separate, self-contained snapshot leaves the main prototype unchanged.
+
 ## Merge and share using Outlook
 
 1. Drag files from the desktop or File Explorer into the taskbar composer.

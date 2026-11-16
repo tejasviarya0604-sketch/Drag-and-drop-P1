@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#f3f5f7" stroke="#cdd4db" stroke-width="2"/>
+  <text x="16" y="27" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#526475">SCANNED DOCUMENT</text>
+  <rect x="12" y="44" width="152" height="174" rx="3" fill="#f1ecda" stroke="#c9c1a8"/>
+  <path d="M18 100q70-68 139 0m-139 12q70-68 139 0m-139 12q70-68 139 0" fill="none" stroke="#ddd9bf" stroke-width="2"/>
+  <text x="23" y="66" font-family="Georgia, serif" font-size="11" font-weight="700" fill="#3c526a">PASSPORT / SPECIMEN</text>
+  <rect x="23" y="82" width="49" height="67" fill="#b7cbd4"/>
+  <circle cx="47" cy="103" r="12" fill="#768f9d"/>
+  <path d="M28 144v-10a19 19 0 0 1 38 0v10" fill="#768f9d"/>
+  <g font-family="Arial, sans-serif" font-size="5" fill="#667361">
+    <text x="82" y="88">SURNAME</text><text x="82" y="110">GIVEN NAMES</text><text x="82" y="132">DATE OF BIRTH</text>
+  </g>
+  <path d="M82 97h62m-62 22h54m-54 22h46M23 163h121m-121 9h94" stroke="#7f8e84" stroke-width="3"/>
+  <g font-family="monospace" font-size="8" fill="#4c575c">
+    <text x="22" y="195">P&lt;SAMPLE&lt;&lt;PREVIEW</text>
+    <text x="22" y="207">000000&lt;&lt;00000000</text>
+  </g>
+</svg>

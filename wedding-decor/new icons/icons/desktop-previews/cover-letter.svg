@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="240" viewBox="0 0 176 240">
+  <rect x="1" y="1" width="174" height="238" rx="2" fill="#fff" stroke="#cdd4db" stroke-width="2"/>
+  <text x="16" y="30" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#9c5e65">Alex Morgan</text>
+  <text x="16" y="44" font-family="Arial, sans-serif" font-size="6" fill="#9c8b8d">DESIGN / RESEARCH / COLLABORATION</text>
+  <path d="M16 54h144" stroke="#c99097" stroke-width="2"/>
+  <path d="M16 71h68m-68 7h52m-52 7h61" stroke="#aeb6bf" stroke-width="2"/>
+  <text x="16" y="108" font-family="Georgia, serif" font-size="8" fill="#55616e">Dear hiring team,</text>
+  <g stroke="#aeb6bf" stroke-width="2">
+    <path d="M16 122h144m-144 7h144m-144 7h144m-144 7h119M16 158h144m-144 7h144m-144 7h144m-144 7h96"/>
+  </g>
+  <text x="16" y="199" font-family="Georgia, serif" font-size="7" fill="#55616e">Kind regards,</text>
+  <path d="m19 220 9-12-2 15 11-8-4 8 10-5 5 3 10-9-2 8 9-3" fill="none" stroke="#657eaa" stroke-width="2" stroke-linecap="round"/>
+</svg>
